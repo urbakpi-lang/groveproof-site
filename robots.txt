@@ -1,0 +1,4 @@
+User-agent: *
+Disallow: /admin.html
+Disallow: /app.html
+Sitemap: https://groveproof.com/sitemap.xml

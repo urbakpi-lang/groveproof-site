@@ -1,0 +1,914 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>GroveProof — EUDR deforestation check for coffee</title>
+<meta name="description" content="Free EUDR satellite check for coffee roasters: see in seconds whether your suppliers&#x27; farms are deforestation-free since 31 Dec 2020, and keep the records the EUDR asks for. EN · DE · FR · IT · ES · PL.">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<link rel="icon" href="assets/favicon.svg" type="image/svg+xml">
+<link rel="icon" href="assets/favicon-32.png" sizes="32x32" type="image/png">
+<link rel="apple-touch-icon" href="assets/apple-touch-icon.png">
+<meta name="theme-color" content="#2E7D52">
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="GroveProof — EUDR deforestation check for coffee">
+<meta property="og:title" content="GroveProof — EUDR deforestation check for coffee">
+<meta property="og:description" content="Free EUDR satellite check for coffee roasters: see in seconds whether your suppliers&#x27; farms are deforestation-free since 31 Dec 2020, and keep the records the EUDR asks for. EN · DE · FR · IT · ES · PL.">
+<meta property="og:url" content="https://groveproof.com/">
+<meta property="og:image" content="https://groveproof.com/assets/og.jpg">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta property="og:image:alt" content="GroveProof — prove your coffee is deforestation-free">
+<meta name="twitter:card" content="summary_large_image">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,400;9..144,600;9..144,900&family=Libre+Franklin:wght@400;500;600;700&family=IBM+Plex+Mono:wght@400;500;600&display=swap">
+<link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css">
+<script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+<script src="assets/map.js"></script>
+<style>
+  :root{
+    --ground:#F4F0E9;--surface:#FBF8F2;--surface-2:#EBE4D6;--panel:#14241B;--ink:#1E1912;--ink-soft:#574C3E;--ink-faint:#8A7D6B;
+    --line:#DED3C0;--line-strong:#C7B9A1;--accent:#2E7D52;--accent-soft:#D4E8DA;--accent-ink:#1C5737;
+    --coffee:#8A5A2B;--coffee-soft:#EAD9C3;--amber:#B5760F;--amber-soft:#F4E6CC;
+    --good:#2F8D5E;--good-soft:#D7E8DE;--warn:#C8891A;--warn-soft:#F6E8CC;--bad:#C0432F;--bad-soft:#F3DBD4;--grey:#9B9284;
+    --shadow:0 1px 2px rgba(30,25,18,.06),0 14px 40px -20px rgba(30,25,18,.3);
+  }
+  @media (prefers-color-scheme: dark){
+    :root:not([data-theme="light"]){
+      --ground:#12100A;--surface:#1C1810;--surface-2:#272117;--panel:#0C150F;--ink:#EEE8DC;--ink-soft:#B4A994;--ink-faint:#857A67;
+      --line:#2E2819;--line-strong:#443C29;--accent:#54BE86;--accent-soft:#13301F;--accent-ink:#79Cf9d;
+      --coffee:#C9915A;--coffee-soft:#2C2112;--amber:#E0A64E;--amber-soft:#2E2413;
+      --good:#5BCB90;--good-soft:#152a1e;--warn:#E0A64E;--warn-soft:#2E2413;--bad:#E8745C;--bad-soft:#2E1B18;--grey:#6E6757;
+      --shadow:0 1px 2px rgba(0,0,0,.5),0 16px 44px -22px rgba(0,0,0,.85);
+    }
+  }
+  :root[data-theme="dark"]{
+    --ground:#12100A;--surface:#1C1810;--surface-2:#272117;--panel:#0C150F;--ink:#EEE8DC;--ink-soft:#B4A994;--ink-faint:#857A67;
+    --line:#2E2819;--line-strong:#443C29;--accent:#54BE86;--accent-soft:#13301F;--accent-ink:#79Cf9d;
+    --coffee:#C9915A;--coffee-soft:#2C2112;--amber:#E0A64E;--amber-soft:#2E2413;
+    --good:#5BCB90;--good-soft:#152a1e;--warn:#E0A64E;--warn-soft:#2E2413;--bad:#E8745C;--bad-soft:#2E1B18;--grey:#6E6757;
+    --shadow:0 1px 2px rgba(0,0,0,.5),0 16px 44px -22px rgba(0,0,0,.85);
+  }
+  *{box-sizing:border-box}
+  body{margin:0;background:var(--ground);color:var(--ink);font-family:"Libre Franklin",system-ui,-apple-system,sans-serif;line-height:1.6;-webkit-font-smoothing:antialiased;}
+  .wrap{max-width:1040px;margin:0 auto;padding:0 clamp(16px,4vw,32px);}
+  h1,h2,h3{font-family:"Fraunces",Georgia,serif;letter-spacing:-.02em;text-wrap:balance;}
+  a{color:var(--accent-ink);}
+  .mono{font-family:"IBM Plex Mono",ui-monospace,monospace;}
+  nav{position:sticky;top:0;z-index:20;background:color-mix(in srgb,var(--ground) 88%, transparent);backdrop-filter:blur(8px);border-bottom:1px solid var(--line);}
+  .nav{display:flex;align-items:center;gap:1rem;max-width:1040px;margin:0 auto;padding:.7rem clamp(16px,4vw,32px);}
+  .logo{display:flex;align-items:center;gap:.5rem;font-family:"Fraunces",serif;font-weight:900;font-size:1.15rem;margin-right:auto;}
+  .logo .leaf{width:22px;height:22px;}
+  .logo .nm{display:flex;flex-direction:column;line-height:1.05;}
+  .logo .tg{font-family:"IBM Plex Mono",monospace;font-weight:600;font-size:.6rem;letter-spacing:.04em;text-transform:uppercase;color:var(--accent-ink);margin-top:.15rem;}
+  .logo{text-decoration:none;color:var(--ink);}
+  .nav a.lnk{font-size:.85rem;color:var(--ink-soft);text-decoration:none;}
+  .nav a.lnk:hover{color:var(--ink);}
+  .langsel{font-family:"IBM Plex Mono",monospace;font-size:.74rem;font-weight:600;color:var(--ink);background:var(--surface);border:1px solid var(--line-strong);border-radius:8px;padding:.38rem .5rem;cursor:pointer;max-width:9.5rem}
+  .nav a.lnk,.nav .btn{white-space:nowrap;}
+  @media(max-width:1180px){.nav a.lnk[href^="#"]{display:none;}}
+  @media(max-width:760px){.nav a.lnk{display:none;}}
+  @media(max-width:560px){.nav .btn.sm{display:none;}.nav .langsel{max-width:9rem;font-size:.8rem;}}
+  .btn{font-family:"Libre Franklin",sans-serif;font-weight:600;font-size:.9rem;cursor:pointer;border:none;border-radius:10px;padding:.7rem 1.15rem;background:var(--accent);color:#fff;box-shadow:var(--shadow);transition:transform .1s, opacity .2s;text-decoration:none;display:inline-block;}
+  .btn:hover{transform:translateY(-1px);}.btn:active{transform:translateY(0);}
+  .btn:disabled{opacity:.5;cursor:default;transform:none;}
+  .btn.sm{padding:.5rem .8rem;font-size:.82rem;}
+  .btn.ghost{background:var(--surface);color:var(--ink);border:1px solid var(--line-strong);box-shadow:none;}
+  .hero{padding:clamp(2.4rem,6vw,4.6rem) 0 clamp(1.6rem,4vw,2.6rem);display:grid;grid-template-columns:minmax(0,1.15fr) minmax(0,.85fr);gap:2.4rem;align-items:center;}
+  @media(max-width:920px){.hero{grid-template-columns:1fr;}}
+  .hero-ex{background:var(--panel);border-radius:18px;box-shadow:var(--shadow);overflow:hidden;position:relative;}
+  .hero-ex #heroMap{height:360px;width:100%;}
+  .hero-ex .leaflet-control-attribution{font-size:8.5px;line-height:1.25;max-width:100%;background:rgba(255,255,255,.7);}
+  .hero-ex .cap{position:absolute;top:12px;left:12px;z-index:500;font:600 .66rem "IBM Plex Mono",monospace;letter-spacing:.08em;text-transform:uppercase;background:rgba(20,36,27,.85);color:#EEE8DC;border-radius:6px;padding:.3rem .55rem;}
+  .hero-ex .chips{padding:.7rem;display:flex;flex-direction:column;gap:.45rem;background:var(--panel);}
+  .hero-ex .chip2{display:flex;align-items:center;gap:.6rem;background:rgba(251,248,242,.96);border-radius:10px;padding:.5rem .75rem;font-weight:600;font-size:.88rem;color:#1E1912;}
+  .hero-ex .chip2 i{width:11px;height:11px;border-radius:50%;flex:none;}
+  .hero-ex .chip2 .id{margin-left:auto;font:600 .74rem "IBM Plex Mono",monospace;color:#574C3E;}
+  .hero-ex .try{display:block;text-align:center;color:#C9BFAC;font-size:.8rem;padding:0 0 .7rem;text-decoration:underline;cursor:pointer;background:var(--panel);}
+  .pill-top{display:inline-flex;align-items:center;gap:.4rem;font-family:"IBM Plex Mono",monospace;font-size:.7rem;letter-spacing:.08em;text-transform:uppercase;color:var(--accent-ink);background:var(--accent-soft);border-radius:999px;padding:.35rem .7rem;margin-bottom:1.2rem;}
+  .hero h1{font-weight:900;font-size:clamp(2.1rem,6.2vw,3.9rem);line-height:1;margin:0 0 1rem;max-width:16ch;}
+  .hero h1 em{font-style:italic;color:var(--accent);}
+  .hero p{font-size:clamp(1.05rem,2.3vw,1.3rem);color:var(--ink-soft);max-width:54ch;margin:0 0 1.6rem;}
+  .hero .cta{display:flex;flex-wrap:wrap;gap:.7rem;align-items:center;}
+  .hero .note{font-size:.82rem;color:var(--ink-faint);}
+  .trust{display:flex;flex-wrap:wrap;gap:.4rem .5rem;margin-top:2rem;}
+  .trust span{font-family:"IBM Plex Mono",monospace;font-size:.68rem;color:var(--ink-faint);border:1px solid var(--line);border-radius:6px;padding:.28rem .5rem;}
+  section{padding:clamp(1.8rem,4vw,3rem) 0;}
+  .eyebrow{font-family:"IBM Plex Mono",monospace;font-size:.7rem;letter-spacing:.14em;text-transform:uppercase;color:var(--accent-ink);margin-bottom:.6rem;}
+  h2.sh{font-size:clamp(1.5rem,3.4vw,2.1rem);font-weight:600;margin:0 0 .5rem;}
+  .lead{color:var(--ink-soft);max-width:60ch;margin:0 0 1.4rem;}
+  .tool{background:var(--surface);border:1px solid var(--line);border-radius:18px;box-shadow:var(--shadow);overflow:hidden;}
+  .tool .thead{display:flex;flex-wrap:wrap;gap:.6rem;align-items:center;padding:1rem 1.2rem;border-bottom:1px solid var(--line);background:var(--surface-2);}
+  .tool .thead .t{font-family:"Fraunces",serif;font-weight:600;font-size:1.1rem;margin-right:auto;}
+  .tool .body{padding:1.1rem 1.2rem;}
+  .scroll{overflow-x:auto;}
+  table.plots{border-collapse:collapse;width:100%;min-width:620px;}
+  table.plots th{text-align:left;font-family:"IBM Plex Mono",monospace;font-size:.64rem;text-transform:uppercase;letter-spacing:.05em;color:var(--ink-faint);font-weight:600;padding:.4rem .5rem;}
+  table.plots td{padding:.3rem .35rem;}
+  table.plots input{width:100%;background:var(--ground);border:1px solid var(--line);border-radius:7px;padding:.45rem .5rem;font-family:"IBM Plex Mono",monospace;font-size:.82rem;color:var(--ink);}
+  table.plots input:focus{outline:2px solid var(--accent);border-color:var(--accent);}
+  .rm{cursor:pointer;color:var(--ink-faint);border:none;background:none;font-size:1.1rem;line-height:1;padding:.2rem .4rem;}
+  .rm:hover{color:var(--bad);}
+  .toolbar{display:flex;flex-wrap:wrap;gap:.6rem;margin-top:.9rem;}
+  .results{margin-top:1.3rem;display:none;}
+  .results.show{display:block;}
+  .kpis{display:grid;grid-template-columns:repeat(4,1fr);gap:.7rem;margin-bottom:1rem;}
+  @media(max-width:520px){.kpis{grid-template-columns:repeat(2,1fr);}}
+  .kpi{background:var(--ground);border:1px solid var(--line);border-radius:10px;padding:.7rem .8rem;}
+  .kpi .v{font-family:"Fraunces",serif;font-weight:900;font-size:1.5rem;line-height:1;}
+  .kpi .l{font-family:"IBM Plex Mono",monospace;font-size:.56rem;text-transform:uppercase;letter-spacing:.04em;color:var(--ink-faint);margin-top:.3rem;}
+  .kpi.tot .v{color:var(--coffee);}.kpi.low .v{color:var(--good);}.kpi.high .v{color:var(--bad);}.kpi.miss .v{color:var(--warn);}
+  .resgrid{display:grid;grid-template-columns:1.2fr 1fr;gap:1rem;align-items:start;}
+  @media(max-width:780px){.resgrid{grid-template-columns:1fr;}}
+  .mapcard{background:var(--surface);border:1px solid var(--line);border-radius:12px;padding:.4rem;}
+  #map{height:400px;width:100%;border-radius:9px;z-index:0;}
+  .leaflet-container{font-family:"Libre Franklin",sans-serif;background:var(--surface-2);}
+  .leaflet-popup-content{font-size:.82rem;line-height:1.4;}
+  .leaflet-tooltip.plot-label{font-family:"IBM Plex Mono",monospace;font-size:.7rem;font-weight:600;color:#1E1912;background:rgba(255,255,255,.92);border:1px solid #C7B9A1;border-radius:4px;padding:1px 5px;box-shadow:none;}
+  .leaflet-tooltip.plot-label::before{display:none;}
+  .reslist{display:flex;flex-direction:column;gap:.5rem;}
+  .resrow{display:grid;grid-template-columns:auto 1fr auto;gap:.6rem;align-items:center;background:var(--ground);border:1px solid var(--line);border-radius:9px;padding:.5rem .7rem;}
+  .dot{width:10px;height:10px;border-radius:50%;flex:none;background:var(--grey);}
+  .dot.low{background:var(--good);}.dot.high{background:var(--bad);}.dot.miss{background:var(--warn);}
+  .resrow .id{font-family:"IBM Plex Mono",monospace;font-weight:600;font-size:.82rem;}
+  .resrow .or{font-size:.74rem;color:var(--ink-soft);}
+  .tier{font-family:"IBM Plex Mono",monospace;font-size:.6rem;font-weight:600;padding:.2rem .42rem;border-radius:5px;white-space:nowrap;text-transform:uppercase;}
+  .tier.low{background:var(--good-soft);color:var(--good);}.tier.high{background:var(--bad-soft);color:var(--bad);}.tier.miss{background:var(--warn-soft);color:var(--warn);}
+  .lead-cap{margin-top:1.3rem;background:var(--accent-soft);border:1px solid var(--accent);border-radius:12px;padding:1.1rem 1.2rem;}
+  .lead-cap h3{margin:0 0 .3rem;font-size:1.1rem;}
+  .lead-cap p{margin:0 0 .8rem;font-size:.9rem;color:var(--ink-soft);}
+  .lead-form{display:flex;flex-wrap:wrap;gap:.6rem;}
+  .lead-form input{flex:1;min-width:200px;background:var(--surface);border:1px solid var(--line-strong);border-radius:9px;padding:.65rem .8rem;font-size:.92rem;color:var(--ink);}
+  .lead-ok{display:none;font-family:"IBM Plex Mono",monospace;font-size:.85rem;color:var(--accent-ink);margin-top:.6rem;}
+  .steps{display:grid;grid-template-columns:repeat(3,1fr);gap:1rem;}
+  @media(max-width:720px){.steps{grid-template-columns:1fr;}}
+  .step{background:var(--surface);border:1px solid var(--line);border-radius:12px;padding:1.1rem 1.2rem;}
+  .step .n{font-family:"IBM Plex Mono",monospace;font-size:.72rem;color:var(--accent);font-weight:600;}
+  .step h3{font-size:1.05rem;margin:.4rem 0 .3rem;}
+  .step p{font-size:.9rem;color:var(--ink-soft);margin:0;}
+  .facts{display:grid;grid-template-columns:repeat(auto-fit,minmax(150px,1fr));gap:1rem;}
+  .fact{background:var(--surface);border:1px solid var(--line);border-radius:12px;padding:1.1rem 1.2rem;}
+  .fact .big{font-family:"Fraunces",serif;font-weight:900;font-size:1.9rem;color:var(--coffee);line-height:1;}
+  .fact p{font-size:.86rem;color:var(--ink-soft);margin:.4rem 0 0;}
+  .band{background:var(--panel);border-radius:18px;padding:clamp(1.6rem,4vw,2.6rem);text-align:center;color:#EEE8DC;}
+  .band h2{color:#fff;font-size:clamp(1.5rem,3.6vw,2.2rem);margin:0 0 .6rem;}
+  .band p{color:#C9BFAC;max-width:50ch;margin:0 auto 1.3rem;}
+  .flinks a{color:var(--ink-soft);} footer{padding:2.4rem 0 3rem;color:var(--ink-faint);font-size:.8rem;border-top:1px solid var(--line);margin-top:2rem;}
+  .marker-label{font-family:"IBM Plex Mono",monospace;}
+  .resrow .det{grid-column:1/-1;font-size:.76rem;color:var(--ink-soft);border-top:1px dashed var(--line);margin-top:.35rem;padding-top:.35rem;}
+  .resrow .det ul{margin:.2rem 0 0;padding-left:1.1rem;}
+  .resrow .det li{margin:.1rem 0;}
+  .resrow .det li.warn{color:var(--warn);}
+  .chip{display:inline-block;font-family:"IBM Plex Mono",monospace;font-size:.6rem;font-weight:600;text-transform:uppercase;letter-spacing:.03em;padding:.12rem .38rem;border-radius:4px;margin-right:.3rem;background:var(--surface-2);color:var(--ink-soft);}
+  .chip.c-alta{background:var(--good-soft);color:var(--good);} .chip.c-media{background:var(--warn-soft);color:var(--warn);} .chip.c-bassa{background:var(--bad-soft);color:var(--bad);}
+  .upl{position:relative;overflow:hidden;cursor:pointer;}
+  .upl input{position:absolute;inset:0;opacity:0;cursor:pointer;}
+  .quiz{background:var(--surface);border:1px solid var(--line);border-radius:18px;box-shadow:var(--shadow);padding:1.2rem 1.3rem;}
+  .quiz .q{margin-bottom:1rem;} .quiz .q b{display:block;margin-bottom:.45rem;}
+  .quiz .opts{display:flex;flex-wrap:wrap;gap:.5rem;}
+  .quiz .opts button{font:inherit;font-size:.88rem;cursor:pointer;border:1px solid var(--line-strong);background:var(--ground);color:var(--ink);border-radius:9px;padding:.5rem .8rem;}
+  .quiz .opts button.on{background:var(--accent);border-color:var(--accent);color:#fff;}
+  .quiz .ans{display:none;background:var(--accent-soft);border:1px solid var(--accent);border-radius:12px;padding:1rem 1.1rem;margin-top:.6rem;font-size:.92rem;}
+  .quiz .ans.show{display:block;} .quiz .ans ul{margin:.4rem 0 0;padding-left:1.2rem;}
+  .method{display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:1rem;}
+  .method .m{background:var(--surface);border:1px solid var(--line);border-radius:12px;padding:1rem 1.1rem;font-size:.88rem;color:var(--ink-soft);}
+  .method .m b{display:block;color:var(--ink);margin-bottom:.25rem;font-size:.95rem;}
+</style>
+
+<nav>
+  <div class="nav">
+    <div class="logo">
+      <svg class="leaf" viewBox="0 0 24 24" fill="none"><path d="M4 20c0-9 7-16 16-16 0 9-7 16-16 16z" fill="#2E7D52"/><path d="M4 20C8 14 13 10 19 8" stroke="#F4F0E9" stroke-width="1.4" fill="none"/></svg>
+      <span class="nm">GroveProof<small class="tg" data-i18n="tagline">EUDR deforestation check for coffee</small></span>
+    </div>
+    <a class="lnk" href="#how" data-i18n="nav_how">How it works</a>
+    <a class="lnk" href="#duty" data-i18n="nav_duty">What must I do?</a>
+    <a class="lnk" href="#eudr" data-i18n="nav_eudr">EUDR</a>
+    <a class="lnk" href="pricing.html" data-i18n="nav_pricing">Pricing</a>
+    <a class="lnk" href="importers.html" data-i18n="nav_imp">For importers</a>
+    <a class="lnk" href="app.html" data-i18n="nav_login">Sign in</a>
+    <select class="langsel" id="langSel" aria-label="Language"><option value="en">EN · English</option><option value="de">DE · Deutsch</option><option value="fr">FR · Français</option><option value="it">IT · Italiano</option><option value="es">ES · Español</option><option value="pl">PL · Polski</option></select>
+    <a class="btn sm" href="#tool" data-i18n="nav_cta">Free check</a>
+  </div>
+</nav>
+
+<div class="wrap">
+  <header class="hero">
+    <div>
+    <span class="pill-top" data-i18n="hero_badge">● EUDR deadline · 30 Dec 2026</span>
+    <h1 data-i18n="hero_h1">Prove your coffee is <em>deforestation-free</em>.</h1>
+    <p data-i18n="hero_p">The EU Deforestation Regulation lands in 2026. Check your entire supply chain against satellite data in seconds — <b>free</b> — and keep the records the EUDR asks for. Built for roasters who need proof, fast.</p>
+    <div class="cta">
+      <a class="btn" href="#tool" data-i18n="hero_cta">Check my supply chain — free</a>
+      <span class="note" data-i18n="hero_note">No account needed · results in seconds</span>
+    </div>
+    <div class="trust">
+      <span>Sentinel-2</span><span>JRC GFC2020</span><span>Hansen GFC</span><span>JRC TMF</span><span data-i18n="trust_base">Baseline 31 Dec 2020</span>
+    </div>
+    </div>
+    <div class="hero-ex" aria-label="example result">
+      <span class="cap" data-i18n="hero_ex">Example result</span>
+      <div id="heroMap"></div>
+      <div class="chips" id="heroChips"></div>
+      <a class="try" id="heroTry" data-i18n="hero_try">Try the check with these example plots →</a>
+    </div>
+  </header>
+
+  <section id="tool">
+    <div class="eyebrow" data-i18n="tool_eyebrow">Free preliminary check</div>
+    <h2 class="sh" data-i18n="tool_h2">Add your suppliers' plots</h2>
+    <p class="lead" data-i18n="tool_lead">Enter each plot's coordinates and area, or upload a file. Every plot is checked against satellite forest data: you get a verdict with its reasons and a map in seconds.</p>
+
+    <div class="tool">
+      <div class="thead">
+        <span class="t" data-i18n="tool_title">Supply chain</span>
+        <button class="btn ghost sm" id="loadEx" data-i18n="btn_example">Load example</button>
+        <button class="btn ghost sm" id="addRow" data-i18n="btn_add">+ Add plot</button>
+        <label class="btn ghost sm upl"><span data-i18n="btn_upload">Upload GeoJSON / KML / CSV</span><input type="file" id="fileIn" accept=".geojson,.json,.kml,.csv,application/json,text/csv"></label>
+        <button class="btn sm" id="runBtn" data-i18n="btn_run">Run free check</button>
+      </div>
+      <div class="body">
+        <div class="scroll">
+          <table class="plots">
+            <thead><tr>
+              <th data-i18n="th_id">Plot ID</th><th data-i18n="th_origin">Origin (country)</th>
+              <th data-i18n="th_lat">Latitude</th><th data-i18n="th_lng">Longitude</th><th data-i18n="th_area">Area (ha)</th><th></th>
+            </tr></thead>
+            <tbody id="rows"></tbody>
+          </table>
+        </div>
+        <div class="toolbar">
+          <span class="note mono" data-i18n="tip" style="font-size:.72rem;color:var(--ink-faint)">Tip: polygons &gt;4 ha, point coordinates &lt;4 ha (EUDR rule). Decimal degrees, 6 decimals. Upload a GeoJSON or KML to check real polygons.</span>
+        </div>
+
+        <div class="results" id="results">
+          <div class="kpis">
+            <div class="kpi tot"><div class="v" id="kTot">0</div><div class="l" data-i18n="kpi_plots">Plots</div></div>
+            <div class="kpi low"><div class="v" id="kLow">0</div><div class="l" data-i18n="kpi_clear">Clear</div></div>
+            <div class="kpi high"><div class="v" id="kHigh">0</div><div class="l" data-i18n="kpi_risk">At risk</div></div>
+            <div class="kpi miss"><div class="v" id="kMiss">0</div><div class="l" data-i18n="kpi_data">Data needed</div></div>
+          </div>
+          <div class="resgrid">
+            <div class="mapcard"><div id="map"></div></div>
+            <div class="reslist" id="reslist"></div>
+          </div>
+
+          <div class="lead-cap" id="saveBox">
+            <h3 data-i18n="lead_h3">Save this report and share it</h3>
+            <p data-i18n="lead_p">Get a link and a PDF to send to your importer, your customers or an auditor. Your email is optional.</p>
+            <div class="lead-form">
+              <input type="email" id="email" data-ph="ph_email" placeholder="you@roastery.com (optional)" aria-label="email">
+              <input type="text" id="company" data-ph="ph_company" placeholder="Roastery name" aria-label="roastery">
+              <button class="btn" id="sendBtn" data-i18n="btn_send">Save report + PDF</button>
+            </div>
+            <div class="lead-ok" id="leadOk"></div>
+            <p style="margin:.8rem 0 0;font-size:.85rem" data-i18n="acct_cta">Want to keep these plots, record lots and DDS numbers and get alerts? <a href="app.html">Create a free account</a> · <a href="pricing.html">Plans</a></p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section id="duty">
+    <div class="eyebrow" data-i18n="duty_eyebrow">2-question check</div>
+    <h2 class="sh" data-i18n="duty_h2">What does the EUDR require from <em>you</em>?</h2>
+    <p class="lead" data-i18n="duty_lead">Most roasters who buy from an EU importer do not file a Due Diligence Statement — but they must keep records. Find out in 10 seconds.</p>
+    <div class="quiz" id="quiz">
+      <div class="q"><b data-i18n="q1">Who brings the green coffee into the EU?</b>
+        <div class="opts" data-q="who"><button data-v="direct" data-i18n="q1a">I import it myself (direct trade)</button><button data-v="buy" data-i18n="q1b">I buy it from an EU importer or trader</button></div></div>
+      <div class="q"><b data-i18n="q2">How big is your company?</b>
+        <div class="opts" data-q="size"><button data-v="small" data-i18n="q2a">Micro or small (under 50 staff and €10m turnover)</button><button data-v="large" data-i18n="q2b">Medium or large</button></div></div>
+      <div class="ans" id="quizAns"></div>
+    </div>
+  </section>
+
+  <section id="how">
+    <div class="eyebrow" data-i18n="how_eyebrow">How it works</div>
+    <h2 class="sh" data-i18n="how_h2">From coordinates to compliance</h2>
+    <div class="steps">
+      <div class="step"><div class="n">01</div><h3 data-i18n="s1h">Enter your plots</h3><p data-i18n="s1p">Add your suppliers' geolocations — or upload them later. Takes minutes.</p></div>
+      <div class="step"><div class="n">02</div><h3 data-i18n="s2h">Satellite verification</h3><p data-i18n="s2p">Each plot is checked for forest loss after 31 Dec 2020 using Sentinel-2, JRC and Hansen data.</p></div>
+      <div class="step"><div class="n">03</div><h3 data-i18n="s3h">Keep the records</h3><p data-i18n="s3p">Save the report as PDF, keep lots and DDS numbers in your free register, and show your verified origins to customers.</p></div>
+    </div>
+  </section>
+
+  <section id="method">
+    <div class="eyebrow" data-i18n="m_eyebrow">Methodology</div>
+    <h2 class="sh" data-i18n="m_h2">How every plot is checked</h2>
+    <div class="method">
+      <div class="m"><b data-i18n="m1h">1 · Data quality</b><span data-i18n="m1p">Impossible or swapped coordinates, points at sea, wrong country, invalid polygons, the 4-hectare rule.</span></div>
+      <div class="m"><b data-i18n="m2h">2 · Forest in 2020</b><span data-i18n="m2p">JRC Global Forest Cover 2020 — the EU's own reference map — tells whether the plot was forest at the cut-off.</span></div>
+      <div class="m"><b data-i18n="m3h">3 · Loss after 2020</b><span data-i18n="m3p">Hansen/UMD tree-cover loss from 2021 on, with its likely cause (WRI / Google DeepMind) to separate deforestation from fire or pruning.</span></div>
+      <div class="m"><b data-i18n="m4h">4 · Risk & legality signals</b><span data-i18n="m4p">Official EU country risk (Regulation 2025/1093), protected areas and indigenous lands. Every verdict comes with a confidence level and its reasons.</span></div>
+    </div>
+  </section>
+
+  <section id="eudr">
+    <div class="eyebrow" data-i18n="eudr_eyebrow">Why this matters</div>
+    <h2 class="sh" data-i18n="eudr_h2">The EU Deforestation Regulation</h2>
+    <p class="lead" data-i18n="eudr_lead">From 30 December 2026, operators placing coffee on the EU market must prove it is deforestation-free and legally produced, plot by plot. Non-compliance means blocked shipments and heavy fines.</p>
+    <div class="facts">
+      <div class="fact"><div class="big">30/12/26</div><p data-i18n="f1">Deadline for medium &amp; large operators (SMEs: 30 Jun 2027).</p></div>
+      <div class="fact"><div class="big">4%</div><p data-i18n="f2">Maximum fine, of EU-wide annual turnover.</p></div>
+      <div class="fact"><div class="big">2020</div><p data-i18n="f3">Cut-off date: no deforestation after 31 Dec 2020.</p></div>
+      <div class="fact"><div class="big">5 yrs</div><p data-i18n="f4">Supplier and customer records to keep — even if you only buy from an EU importer.</p></div>
+    </div>
+  </section>
+
+  <section>
+    <div class="band">
+      <h2 data-i18n="band_h2">Beat the deadline with confidence.</h2>
+      <p data-i18n="band_p">Start free. See exactly which suppliers are clear and which need a closer look — before your competitors do.</p>
+      <a class="btn" href="#tool" data-i18n="band_cta">Run my free check</a>
+    </div>
+  </section>
+
+  <footer>
+    <p data-i18n="foot">GroveProof provides satellite-based screening to support EUDR due diligence. Results rely on public datasets (Global Forest Watch) and plots flagged at risk need human review. Legal responsibility for due diligence remains with the company. This is not legal advice.</p>
+    <p class="flinks"><a href="pricing.html" data-i18n="nav_pricing">Pricing</a> · <a href="importers.html" data-i18n="nav_imp">For importers</a> · <a href="eudr-kaffee-roesterei.html" hreflang="de">EUDR-Leitfaden</a> · <a href="eudr-coffee-roasters.html" hreflang="en">EUDR guide</a> · <a href="impressum.html" data-i18n="l_imp">Legal notice</a> · <a href="privacy.html" data-i18n="l_priv">Privacy</a> · <a href="terms.html" data-i18n="l_terms">Terms</a> · <a href="mailto:info@groveproof.com">info@groveproof.com</a></p>
+  </footer>
+</div>
+
+<script>
+(function(){
+  // ============ BACKEND HOOK ============
+  // Lascia vuoto per la modalità screening preliminare (offline, per demo).
+  // Imposta l'URL della tua API per la verifica satellitare REALE (vedi backend/README.md).
+  var API_URL = "https://geo-engine-6rcq.onrender.com";
+
+  // ============ i18n (EN/DE) ============
+  var T = {
+    en: {saving:"Saving…", saved:"✓ Report saved:", open:"Open report", pdf:"Download PDF", copy:"Copy link", no_api:"You can save the report after a satellite check.", bad_email:"Enter a valid email or leave the field empty."}, // il resto di EN è inline nell'HTML
+    de: {
+      hero_ex:"Beispielergebnis", hero_try:"Prüfung mit diesen Beispiel-Grundstücken testen →", nav_how:"So funktioniert's", nav_eudr:"EUDR", nav_cta:"Gratis-Check", tagline:"Entwaldungsfrei-Nachweis für Kaffee",
+      hero_badge:"● EUDR-Frist · 30. Dez 2026",
+      hero_h1:"Beweisen Sie, dass Ihr Kaffee <em>entwaldungsfrei</em> ist.",
+      hero_p:"Die EU-Entwaldungsverordnung kommt 2026. Prüfen Sie Ihre gesamte Lieferkette in Sekunden mit Satellitendaten — <b>kostenlos</b> — und führen Sie die Aufzeichnungen, die die EUDR verlangt. Gemacht für Röstereien, die schnell Nachweise brauchen.",
+      hero_cta:"Lieferkette prüfen — gratis", hero_note:"Kein Konto nötig · Ergebnis in Sekunden",
+      trust_base:"Stichtag 31. Dez 2020",
+      tool_eyebrow:"Kostenloser Vorab-Check", tool_h2:"Grundstücke Ihrer Lieferanten eingeben",
+      tool_lead:"Geben Sie Koordinaten und Fläche je Grundstück ein oder laden Sie eine Datei hoch. Jedes Grundstück wird mit Satelliten-Walddaten geprüft: Ergebnis mit Begründung und Karte in Sekunden.",
+      tool_title:"Lieferkette", btn_example:"Beispiel laden", btn_add:"+ Grundstück", btn_run:"Gratis-Check starten",
+      th_id:"Grundstücks-ID", th_origin:"Herkunft (Land)", th_lat:"Breitengrad", th_lng:"Längengrad", th_area:"Fläche (ha)",
+      tip:"Tipp: Polygone >4 ha, Punktkoordinaten <4 ha (EUDR-Regel). Dezimalgrad.",
+      kpi_plots:"Grundstücke", kpi_clear:"Unbedenklich", kpi_risk:"Risiko", kpi_data:"Daten fehlen",
+      map_eq:"Äquator", map_belt:"Kaffeegürtel (Tropen)",
+      lead_h3:"Bericht speichern und teilen",
+      lead_p:"Sie erhalten einen Link und ein PDF für Ihren Importeur, Ihre Kunden oder einen Prüfer. Die E-Mail ist freiwillig.",
+      ph_email:"sie@roesterei.de (optional)", ph_company:"Name der Rösterei", btn_send:"Bericht + PDF speichern",
+      acct_cta:'Grundstücke behalten, Chargen und DDS-Nummern erfassen und Warnungen erhalten? <a href="app.html">Kostenloses Konto erstellen</a> · <a href="pricing.html">Tarife</a>',
+      nav_pricing:"Preise", nav_imp:"Für Importeure", nav_login:"Anmelden", l_imp:"Impressum", l_priv:"Datenschutz", l_terms:"AGB",
+      how_eyebrow:"So funktioniert's", how_h2:"Von Koordinaten zur Konformität",
+      s1h:"Grundstücke eingeben", s1p:"Geolokationen der Lieferanten hinzufügen — oder später hochladen. In Minuten erledigt.",
+      s2h:"Satelliten-Verifizierung", s2p:"Jedes Grundstück wird mit Sentinel-2, JRC und Hansen auf Waldverlust nach dem 31.12.2020 geprüft.",
+      s3h:"Aufzeichnungen führen", s3p:"Bericht als PDF speichern, Chargen und DDS-Nummern im kostenlosen Register führen und Kunden die geprüfte Herkunft zeigen.",
+      eudr_eyebrow:"Warum das zählt", eudr_h2:"Die EU-Entwaldungsverordnung",
+      eudr_lead:"Ab dem 30. Dezember 2026 müssen Marktteilnehmer, die Kaffee in der EU in Verkehr bringen, grundstücksgenau nachweisen, dass er entwaldungsfrei und legal erzeugt ist. Verstöße bedeuten blockierte Sendungen und hohe Bußgelder.",
+      f1:"Frist für mittlere &amp; große Marktteilnehmer (KMU: 30. Juni 2027).",
+      f2:"Höchstbußgeld, am EU-weiten Jahresumsatz.",
+      f3:"Stichtag: keine Entwaldung nach dem 31.12.2020.",
+      f4:"Lieferanten- und Kundendaten aufbewahren — auch wenn Sie nur bei einem EU-Importeur kaufen.",
+      nav_duty:"Was muss ich tun?", btn_upload:"GeoJSON / KML / CSV hochladen",
+      tip:"Tipp: Polygone >4 ha, Punktkoordinaten <4 ha (EUDR-Regel). Dezimalgrad, 6 Nachkommastellen. Laden Sie GeoJSON oder KML hoch, um echte Polygone zu prüfen.",
+      duty_eyebrow:"Check in 2 Fragen", duty_h2:"Was verlangt die EUDR von <em>Ihnen</em>?",
+      duty_lead:"Die meisten Röstereien, die bei einem EU-Importeur kaufen, reichen keine Sorgfaltserklärung ein — müssen aber Aufzeichnungen führen. In 10 Sekunden wissen Sie es.",
+      q1:"Wer bringt den Rohkaffee in die EU?", q1a:"Ich importiere selbst (Direct Trade)", q1b:"Ich kaufe bei einem EU-Importeur oder Händler",
+      q2:"Wie groß ist Ihr Unternehmen?", q2a:"Kleinst- oder Kleinunternehmen (unter 50 Mitarbeitende und 10 Mio. € Umsatz)", q2b:"Mittel oder groß",
+      m_eyebrow:"Methodik", m_h2:"So wird jedes Grundstück geprüft",
+      m1h:"1 · Datenqualität", m1p:"Unmögliche oder vertauschte Koordinaten, Punkte im Meer, falsches Land, ungültige Polygone, die 4-Hektar-Regel.",
+      m2h:"2 · Wald im Jahr 2020", m2p:"JRC Global Forest Cover 2020 — die Referenzkarte der EU — zeigt, ob das Grundstück zum Stichtag Wald war.",
+      m3h:"3 · Verlust nach 2020", m3p:"Baumverlust nach Hansen/UMD ab 2021, mit wahrscheinlicher Ursache (WRI / Google DeepMind), um Entwaldung von Feuer oder Rückschnitt zu trennen.",
+      m4h:"4 · Risiko- und Legalitätssignale", m4p:"Offizielles EU-Länderrisiko (Verordnung 2025/1093), Schutzgebiete und indigene Gebiete. Jedes Ergebnis mit Vertrauensstufe und Begründung.",
+      band_h2:"Schlagen Sie die Frist — mit Sicherheit.",
+      band_p:"Gratis starten. Sehen Sie genau, welche Lieferanten unbedenklich sind und welche einen zweiten Blick brauchen — vor Ihren Wettbewerbern.",
+      band_cta:"Gratis-Check starten",
+      foot:"GroveProof liefert ein satellitenbasiertes Screening zur Unterstützung der EUDR-Sorgfaltspflicht. Die Ergebnisse beruhen auf öffentlichen Daten (Global Forest Watch); als Risiko markierte Grundstücke brauchen eine menschliche Prüfung. Die rechtliche Verantwortung für die Sorgfaltspflicht bleibt beim Unternehmen. Dies ist keine Rechtsberatung.",
+      saving:"Wird gespeichert…", saved:"✓ Bericht gespeichert:", open:"Bericht öffnen", pdf:"PDF herunterladen", copy:"Link kopieren", no_api:"Speichern ist erst nach einer Satellitenprüfung möglich.", bad_email:"Bitte eine gültige E-Mail eingeben oder das Feld leer lassen."
+    },
+    it: {
+      hero_ex:"Esempio di risultato", hero_try:"Prova la verifica con questi appezzamenti di esempio →", nav_how:"Come funziona", nav_eudr:"EUDR", nav_cta:"Verifica gratis", tagline:"Verifica EUDR per il caffè", nav_duty:"Cosa devo fare?",
+      nav_pricing:"Prezzi", nav_imp:"Per importatori", nav_login:"Accedi", l_imp:"Note legali", l_priv:"Privacy", l_terms:"Termini",
+      hero_badge:"● Scadenza EUDR · 30 dic 2026",
+      hero_h1:"Dimostra che il tuo caffè è <em>senza deforestazione</em>.",
+      hero_p:"Il Regolamento UE sulla deforestazione arriva nel 2026. Verifica tutta la tua filiera con i dati satellitari in pochi secondi — <b>gratis</b> — e conserva i dati che l'EUDR richiede. Pensato per le torrefazioni che hanno bisogno di prove, in fretta.",
+      hero_cta:"Verifica la mia filiera — gratis", hero_note:"Nessun account · esito in pochi secondi",
+      trust_base:"Data di riferimento 31 dic 2020",
+      tool_eyebrow:"Verifica gratuita", tool_h2:"Aggiungi gli appezzamenti dei tuoi fornitori",
+      tool_lead:"Inserisci coordinate e superficie di ogni appezzamento, oppure carica un file. Ogni appezzamento è confrontato con i dati satellitari sulle foreste: ottieni un esito con le motivazioni e una mappa in pochi secondi.",
+      tool_title:"Filiera", btn_example:"Carica esempio", btn_add:"+ Appezzamento", btn_run:"Avvia la verifica gratuita", btn_upload:"Carica GeoJSON / KML / CSV",
+      th_id:"Codice appezzamento", th_origin:"Origine (paese)", th_lat:"Latitudine", th_lng:"Longitudine", th_area:"Area (ha)",
+      tip:"Suggerimento: poligoni oltre 4 ha, coordinate puntuali sotto 4 ha (regola EUDR). Gradi decimali, 6 decimali. Carica un GeoJSON o KML per verificare poligoni reali.",
+      kpi_plots:"Appezzamenti", kpi_clear:"Senza problemi", kpi_risk:"A rischio", kpi_data:"Dati mancanti",
+      lead_h3:"Salva questo report e condividilo",
+      lead_p:"Ottieni un link e un PDF da mandare al tuo importatore, ai clienti o a un auditor. L'email è facoltativa.",
+      ph_email:"tu@torrefazione.it (facoltativa)", ph_company:"Nome della torrefazione", btn_send:"Salva report + PDF",
+      acct_cta:'Vuoi conservare questi appezzamenti, registrare lotti e numeri DDS e ricevere avvisi? <a href="app.html">Crea un account gratuito</a> · <a href="pricing.html">Piani</a>',
+      how_eyebrow:"Come funziona", how_h2:"Dalle coordinate alla conformità",
+      s1h:"Inserisci gli appezzamenti", s1p:"Aggiungi le geolocalizzazioni dei fornitori, oppure caricale dopo. Bastano pochi minuti.",
+      s2h:"Verifica satellitare", s2p:"Ogni appezzamento è controllato per perdita di foresta dopo il 31/12/2020 con i dati JRC e Hansen/UMD.",
+      s3h:"Conserva i dati", s3p:"Salva il report in PDF, tieni lotti e numeri DDS nel registro gratuito e mostra ai clienti le origini verificate.",
+      eudr_eyebrow:"Perché conta", eudr_h2:"Il Regolamento UE sulla deforestazione",
+      eudr_lead:"Dal 30 dicembre 2026 chi immette caffè sul mercato UE deve dimostrare, appezzamento per appezzamento, che è senza deforestazione e prodotto legalmente. Chi non è in regola rischia spedizioni bloccate e sanzioni pesanti.",
+      f1:"Scadenza per operatori medi e grandi (PMI: 30 giugno 2027).",
+      f2:"Sanzione massima, sul fatturato annuo nell'UE.",
+      f3:"Data limite: nessuna deforestazione dopo il 31/12/2020.",
+      f4:"Dati di fornitori e clienti da conservare, anche se compri solo da un importatore UE.",
+      duty_eyebrow:"Verifica in 2 domande", duty_h2:"Cosa chiede l'EUDR a <em>te</em>?",
+      duty_lead:"La maggior parte delle torrefazioni che comprano da un importatore UE non presenta una dichiarazione di dovuta diligenza, ma deve conservare i dati. Scoprilo in 10 secondi.",
+      q1:"Chi porta il caffè verde nell'UE?", q1a:"Lo importo io (direct trade)", q1b:"Lo compro da un importatore o trader UE",
+      q2:"Quanto è grande la tua azienda?", q2a:"Micro o piccola (meno di 50 addetti e 10 mln € di fatturato)", q2b:"Media o grande",
+      m_eyebrow:"Metodologia", m_h2:"Come viene verificato ogni appezzamento",
+      m1h:"1 · Qualità dei dati", m1p:"Coordinate impossibili o invertite, punti in mare, paese sbagliato, poligoni non validi, la regola dei 4 ettari.",
+      m2h:"2 · Foresta nel 2020", m2p:"La mappa JRC Global Forest Cover 2020, il riferimento dell'UE, dice se l'appezzamento era foresta alla data limite.",
+      m3h:"3 · Perdita dopo il 2020", m3p:"Perdita di copertura arborea Hansen/UMD dal 2021, con la causa probabile (WRI / Google DeepMind) per distinguere la deforestazione da incendi o potature.",
+      m4h:"4 · Segnali di rischio e legalità", m4p:"Rischio paese ufficiale UE (Regolamento 2025/1093), aree protette e terre indigene. Ogni esito ha un livello di confidenza e le sue motivazioni.",
+      band_h2:"Arriva alla scadenza tranquillo.",
+      band_p:"Inizia gratis. Scopri quali fornitori sono a posto e quali vanno guardati meglio, prima dei tuoi concorrenti.",
+      band_cta:"Avvia la verifica gratuita",
+      foot:"GroveProof offre uno screening satellitare a supporto della dovuta diligenza EUDR. Gli esiti si basano su dati pubblici (Global Forest Watch) e gli appezzamenti segnalati a rischio richiedono una revisione umana. La responsabilità legale della dovuta diligenza resta dell'azienda. Non è consulenza legale.",
+      saving:"Salvataggio…", saved:"✓ Report salvato:", open:"Apri il report", pdf:"Scarica il PDF", copy:"Copia il link", no_api:"Puoi salvare il report solo dopo una verifica satellitare.", bad_email:"Inserisci un'email valida oppure lascia il campo vuoto."
+    },
+    fr: {
+      hero_ex:"Exemple de résultat", hero_try:"Essayer la vérification avec ces parcelles d'exemple →", nav_how:"Comment ça marche", nav_eudr:"EUDR", nav_cta:"Vérification gratuite", tagline:"Vérification EUDR du café", nav_duty:"Que dois-je faire ?",
+      nav_pricing:"Tarifs", nav_imp:"Pour les importateurs", nav_login:"Connexion", l_imp:"Mentions légales", l_priv:"Confidentialité", l_terms:"Conditions",
+      hero_badge:"● Échéance EUDR · 30 déc. 2026",
+      hero_h1:"Prouvez que votre café est <em>sans déforestation</em>.",
+      hero_p:"Le règlement européen sur la déforestation s'applique en 2026. Vérifiez toute votre chaîne d'approvisionnement avec des données satellitaires en quelques secondes — <b>gratuitement</b> — et conservez les informations exigées par l'EUDR. Conçu pour les torréfacteurs qui ont besoin de preuves, vite.",
+      hero_cta:"Vérifier ma chaîne d'approvisionnement — gratuit", hero_note:"Sans compte · résultat en quelques secondes",
+      trust_base:"Date de référence 31 déc. 2020",
+      tool_eyebrow:"Vérification gratuite", tool_h2:"Ajoutez les parcelles de vos fournisseurs",
+      tool_lead:"Saisissez les coordonnées et la surface de chaque parcelle, ou importez un fichier. Chaque parcelle est comparée aux données satellitaires sur les forêts : vous obtenez un résultat motivé et une carte en quelques secondes.",
+      tool_title:"Chaîne d'approvisionnement", btn_example:"Charger un exemple", btn_add:"+ Parcelle", btn_run:"Lancer la vérification gratuite", btn_upload:"Importer GeoJSON / KML / CSV",
+      th_id:"Code de la parcelle", th_origin:"Origine (pays)", th_lat:"Latitude", th_lng:"Longitude", th_area:"Surface (ha)",
+      tip:"Conseil : polygones au-delà de 4 ha, coordonnées ponctuelles en dessous de 4 ha (règle EUDR). Degrés décimaux, 6 décimales. Importez un GeoJSON ou un KML pour vérifier de vrais polygones.",
+      kpi_plots:"Parcelles", kpi_clear:"Sans problème", kpi_risk:"À risque", kpi_data:"Données manquantes",
+      lead_h3:"Enregistrez ce rapport et partagez-le",
+      lead_p:"Obtenez un lien et un PDF à envoyer à votre importateur, à vos clients ou à un auditeur. L'e-mail est facultatif.",
+      ph_email:"vous@torrefaction.fr (facultatif)", ph_company:"Nom de la torréfaction", btn_send:"Enregistrer le rapport + PDF",
+      acct_cta:'Vous voulez conserver ces parcelles, enregistrer lots et numéros DDS et recevoir des alertes ? <a href="app.html">Créez un compte gratuit</a> · <a href="pricing.html">Offres</a>',
+      how_eyebrow:"Comment ça marche", how_h2:"Des coordonnées à la conformité",
+      s1h:"Saisissez les parcelles", s1p:"Ajoutez les géolocalisations de vos fournisseurs, ou importez-les plus tard. Quelques minutes suffisent.",
+      s2h:"Vérification satellitaire", s2p:"Chaque parcelle est contrôlée pour toute perte de forêt après le 31/12/2020 avec les données JRC et Hansen/UMD.",
+      s3h:"Conservez les informations", s3p:"Enregistrez le rapport en PDF, tenez lots et numéros DDS dans le registre gratuit et montrez vos origines vérifiées à vos clients.",
+      eudr_eyebrow:"Pourquoi c'est important", eudr_h2:"Le règlement européen sur la déforestation",
+      eudr_lead:"À partir du 30 décembre 2026, quiconque met du café sur le marché de l'UE doit prouver, parcelle par parcelle, qu'il est sans déforestation et produit légalement. Sinon : expéditions bloquées et lourdes sanctions.",
+      f1:"Échéance pour les moyens et grands opérateurs (micro et petites entreprises : 30 juin 2027).",
+      f2:"Amende maximale, sur le chiffre d'affaires annuel dans l'UE.",
+      f3:"Date butoir : aucune déforestation après le 31/12/2020.",
+      f4:"Informations sur fournisseurs et clients à conserver, même si vous achetez uniquement auprès d'un importateur de l'UE.",
+      duty_eyebrow:"Le test en 2 questions", duty_h2:"Qu'exige l'EUDR de <em>vous</em> ?",
+      duty_lead:"La plupart des torréfacteurs qui achètent auprès d'un importateur de l'UE ne présentent pas de déclaration de diligence raisonnée, mais doivent conserver des informations. Découvrez-le en 10 secondes.",
+      q1:"Qui fait entrer le café vert dans l'UE ?", q1a:"Je l'importe moi-même (commerce direct)", q1b:"Je l'achète à un importateur ou négociant de l'UE",
+      q2:"Quelle est la taille de votre entreprise ?", q2a:"Micro ou petite (moins de 50 salariés et 10 M€ de chiffre d'affaires)", q2b:"Moyenne ou grande",
+      m_eyebrow:"Méthodologie", m_h2:"Comment chaque parcelle est vérifiée",
+      m1h:"1 · Qualité des données", m1p:"Coordonnées impossibles ou inversées, points en mer, mauvais pays, polygones non valides, règle des 4 hectares.",
+      m2h:"2 · Forêt en 2020", m2p:"La carte JRC Global Forest Cover 2020, référence de l'UE, indique si la parcelle était une forêt à la date butoir.",
+      m3h:"3 · Perte après 2020", m3p:"Perte de couvert arboré Hansen/UMD depuis 2021, avec sa cause probable (WRI / Google DeepMind) pour distinguer la déforestation des incendies ou de la taille.",
+      m4h:"4 · Signaux de risque et de légalité", m4p:"Risque pays officiel de l'UE (règlement 2025/1093), aires protégées et terres autochtones. Chaque résultat indique un niveau de confiance et ses motifs.",
+      band_h2:"Abordez l'échéance sereinement.",
+      band_p:"Commencez gratuitement. Voyez quels fournisseurs sont en règle et lesquels méritent un examen, avant vos concurrents.",
+      band_cta:"Lancer la vérification gratuite",
+      foot:"GroveProof fournit un dépistage satellitaire à l'appui de la diligence raisonnée EUDR. Les résultats reposent sur des données publiques (Global Forest Watch) et les parcelles signalées à risque nécessitent un examen humain. La responsabilité juridique de la diligence raisonnée reste celle de l'entreprise. Ceci n'est pas un conseil juridique.",
+      saving:"Enregistrement…", saved:"✓ Rapport enregistré :", open:"Ouvrir le rapport", pdf:"Télécharger le PDF", copy:"Copier le lien", no_api:"Vous pouvez enregistrer le rapport après une vérification satellitaire.", bad_email:"Saisissez un e-mail valide ou laissez le champ vide."
+    },
+    es: {
+      hero_ex:"Ejemplo de resultado", hero_try:"Probar la verificación con estas parcelas de ejemplo →", nav_how:"Cómo funciona", nav_eudr:"EUDR", nav_cta:"Verificación gratuita", tagline:"Verificación EUDR del café", nav_duty:"¿Qué debo hacer?",
+      nav_pricing:"Precios", nav_imp:"Para importadores", nav_login:"Acceder", l_imp:"Aviso legal", l_priv:"Privacidad", l_terms:"Condiciones",
+      hero_badge:"● Plazo EUDR · 30 dic. 2026",
+      hero_h1:"Demuestre que su café está <em>libre de deforestación</em>.",
+      hero_p:"El Reglamento europeo sobre deforestación se aplica en 2026. Verifique toda su cadena de suministro con datos satelitales en segundos — <b>gratis</b> — y conserve los datos que exige el EUDR. Pensado para tostadores que necesitan pruebas, rápido.",
+      hero_cta:"Verificar mi cadena de suministro — gratis", hero_note:"Sin cuenta · resultado en segundos",
+      trust_base:"Fecha de referencia 31 dic. 2020",
+      tool_eyebrow:"Verificación gratuita", tool_h2:"Añada las parcelas de sus proveedores",
+      tool_lead:"Introduzca las coordenadas y la superficie de cada parcela, o suba un archivo. Cada parcela se compara con datos satelitales sobre los bosques: obtiene un resultado con sus motivos y un mapa en segundos.",
+      tool_title:"Cadena de suministro", btn_example:"Cargar ejemplo", btn_add:"+ Parcela", btn_run:"Iniciar la verificación gratuita", btn_upload:"Subir GeoJSON / KML / CSV",
+      th_id:"Código de parcela", th_origin:"Origen (país)", th_lat:"Latitud", th_lng:"Longitud", th_area:"Superficie (ha)",
+      tip:"Consejo: polígonos a partir de 4 ha, coordenadas de punto por debajo de 4 ha (norma EUDR). Grados decimales, 6 decimales. Suba un GeoJSON o KML para verificar polígonos reales.",
+      kpi_plots:"Parcelas", kpi_clear:"Sin problemas", kpi_risk:"En riesgo", kpi_data:"Faltan datos",
+      lead_h3:"Guarde este informe y compártalo",
+      lead_p:"Obtenga un enlace y un PDF para enviar a su importador, a sus clientes o a un auditor. El correo es opcional.",
+      ph_email:"usted@tostador.es (opcional)", ph_company:"Nombre del tostador", btn_send:"Guardar informe + PDF",
+      acct_cta:'¿Quiere conservar estas parcelas, registrar lotes y números DDS y recibir alertas? <a href="app.html">Cree una cuenta gratuita</a> · <a href="pricing.html">Planes</a>',
+      how_eyebrow:"Cómo funciona", how_h2:"De las coordenadas al cumplimiento",
+      s1h:"Introduzca las parcelas", s1p:"Añada las geolocalizaciones de sus proveedores, o súbalas más tarde. Bastan unos minutos.",
+      s2h:"Verificación satelital", s2p:"Cada parcela se controla para detectar pérdida de bosque después del 31/12/2020 con los datos JRC y Hansen/UMD.",
+      s3h:"Conserve los datos", s3p:"Guarde el informe en PDF, lleve lotes y números DDS en el registro gratuito y muestre a sus clientes los orígenes verificados.",
+      eudr_eyebrow:"Por qué importa", eudr_h2:"El Reglamento europeo sobre deforestación",
+      eudr_lead:"Desde el 30 de diciembre de 2026, quien introduzca café en el mercado de la UE debe demostrar, parcela por parcela, que está libre de deforestación y producido legalmente. Si no: envíos bloqueados y sanciones elevadas.",
+      f1:"Plazo para operadores medianos y grandes (micro y pequeñas empresas: 30 de junio de 2027).",
+      f2:"Multa máxima, sobre el volumen de negocios anual en la UE.",
+      f3:"Fecha límite: ninguna deforestación después del 31/12/2020.",
+      f4:"Datos de proveedores y clientes que conservar, aunque solo compre a un importador de la UE.",
+      duty_eyebrow:"Prueba en 2 preguntas", duty_h2:"¿Qué le exige el EUDR a <em>usted</em>?",
+      duty_lead:"La mayoría de los tostadores que compran a un importador de la UE no presentan una declaración de diligencia debida, pero deben conservar datos. Averígüelo en 10 segundos.",
+      q1:"¿Quién introduce el café verde en la UE?", q1a:"Lo importo yo (comercio directo)", q1b:"Lo compro a un importador o comerciante de la UE",
+      q2:"¿Qué tamaño tiene su empresa?", q2a:"Micro o pequeña (menos de 50 empleados y 10 M€ de facturación)", q2b:"Mediana o grande",
+      m_eyebrow:"Metodología", m_h2:"Cómo se verifica cada parcela",
+      m1h:"1 · Calidad de los datos", m1p:"Coordenadas imposibles o invertidas, puntos en el mar, país equivocado, polígonos no válidos, la regla de las 4 hectáreas.",
+      m2h:"2 · Bosque en 2020", m2p:"El mapa JRC Global Forest Cover 2020, referencia de la UE, indica si la parcela era bosque en la fecha límite.",
+      m3h:"3 · Pérdida después de 2020", m3p:"Pérdida de cobertura arbórea Hansen/UMD desde 2021, con su causa probable (WRI / Google DeepMind) para distinguir la deforestación de incendios o podas.",
+      m4h:"4 · Señales de riesgo y legalidad", m4p:"Riesgo país oficial de la UE (Reglamento 2025/1093), áreas protegidas y tierras indígenas. Cada resultado indica un nivel de confianza y sus motivos.",
+      band_h2:"Llegue al plazo con tranquilidad.",
+      band_p:"Empiece gratis. Vea qué proveedores están en regla y cuáles hay que revisar, antes que sus competidores.",
+      band_cta:"Iniciar la verificación gratuita",
+      foot:"GroveProof ofrece un cribado satelital en apoyo de la diligencia debida del EUDR. Los resultados se basan en datos públicos (Global Forest Watch) y las parcelas señaladas en riesgo requieren revisión humana. La responsabilidad legal de la diligencia debida sigue siendo de la empresa. Esto no es asesoramiento jurídico.",
+      saving:"Guardando…", saved:"✓ Informe guardado:", open:"Abrir el informe", pdf:"Descargar el PDF", copy:"Copiar el enlace", no_api:"Puede guardar el informe después de una verificación satelital.", bad_email:"Introduzca un correo válido o deje el campo vacío."
+    },
+    pl: {
+      hero_ex:"Przykładowy wynik", hero_try:"Wypróbuj weryfikację na tych przykładowych działkach →", nav_how:"Jak to działa", nav_eudr:"EUDR", nav_cta:"Bezpłatna weryfikacja", tagline:"Weryfikacja EUDR kawy", nav_duty:"Co muszę zrobić?",
+      nav_pricing:"Cennik", nav_imp:"Dla importerów", nav_login:"Zaloguj", l_imp:"Nota prawna", l_priv:"Prywatność", l_terms:"Regulamin",
+      hero_badge:"● Termin EUDR · 30 gru 2026",
+      hero_h1:"Udowodnij, że Twoja kawa <em>nie powoduje wylesiania</em>.",
+      hero_p:"Unijne rozporządzenie w sprawie wylesiania zacznie obowiązywać w 2026 r. Sprawdź cały łańcuch dostaw na podstawie danych satelitarnych w kilka sekund — <b>za darmo</b> — i przechowuj dane, których wymaga EUDR. Stworzone dla palarni, które szybko potrzebują dowodów.",
+      hero_cta:"Sprawdź mój łańcuch dostaw — za darmo", hero_note:"Bez konta · wynik w kilka sekund",
+      trust_base:"Data odniesienia 31 gru 2020",
+      tool_eyebrow:"Bezpłatna weryfikacja", tool_h2:"Dodaj działki swoich dostawców",
+      tool_lead:"Wpisz współrzędne i powierzchnię każdej działki albo prześlij plik. Każda działka jest porównywana z satelitarnymi danymi o lasach: w kilka sekund otrzymasz wynik z uzasadnieniem i mapę.",
+      tool_title:"Łańcuch dostaw", btn_example:"Wczytaj przykład", btn_add:"+ Działka", btn_run:"Uruchom bezpłatną weryfikację", btn_upload:"Prześlij GeoJSON / KML / CSV",
+      th_id:"Kod działki", th_origin:"Pochodzenie (kraj)", th_lat:"Szerokość geogr.", th_lng:"Długość geogr.", th_area:"Powierzchnia (ha)",
+      tip:"Wskazówka: wielokąty powyżej 4 ha, współrzędne punktu poniżej 4 ha (zasada EUDR). Stopnie dziesiętne, 6 miejsc po przecinku. Prześlij GeoJSON lub KML, aby sprawdzić prawdziwe wielokąty.",
+      kpi_plots:"Działki", kpi_clear:"Bez zastrzeżeń", kpi_risk:"Ryzyko", kpi_data:"Brak danych",
+      lead_h3:"Zapisz ten raport i udostępnij go",
+      lead_p:"Otrzymasz link i PDF do wysłania importerowi, klientom lub audytorowi. E-mail jest opcjonalny.",
+      ph_email:"ty@palarnia.pl (opcjonalnie)", ph_company:"Nazwa palarni", btn_send:"Zapisz raport + PDF",
+      acct_cta:'Chcesz zachować te działki, zapisywać partie i numery DDS oraz otrzymywać alerty? <a href="app.html">Załóż bezpłatne konto</a> · <a href="pricing.html">Plany</a>',
+      how_eyebrow:"Jak to działa", how_h2:"Od współrzędnych do zgodności",
+      s1h:"Wpisz działki", s1p:"Dodaj geolokalizację od dostawców albo prześlij ją później. Wystarczy kilka minut.",
+      s2h:"Weryfikacja satelitarna", s2p:"Każda działka jest sprawdzana pod kątem utraty lasu po 31.12.2020 na podstawie danych JRC i Hansen/UMD.",
+      s3h:"Przechowuj dane", s3p:"Zapisz raport w PDF, prowadź partie i numery DDS w bezpłatnym rejestrze i pokaż klientom zweryfikowane pochodzenie.",
+      eudr_eyebrow:"Dlaczego to ważne", eudr_h2:"Unijne rozporządzenie w sprawie wylesiania",
+      eudr_lead:"Od 30 grudnia 2026 r. każdy, kto wprowadza kawę na rynek UE, musi wykazać, działka po działce, że nie powoduje ona wylesiania i została wyprodukowana legalnie. W przeciwnym razie grożą zatrzymane dostawy i wysokie kary.",
+      f1:"Termin dla średnich i dużych podmiotów (mikro- i małe przedsiębiorstwa: 30 czerwca 2027 r.).",
+      f2:"Maksymalna kara, liczona od rocznego obrotu w UE.",
+      f3:"Data graniczna: brak wylesiania po 31.12.2020.",
+      f4:"Dane dostawców i klientów do przechowywania, nawet jeśli kupujesz tylko od importera z UE.",
+      duty_eyebrow:"Test w 2 pytaniach", duty_h2:"Czego EUDR wymaga od <em>Ciebie</em>?",
+      duty_lead:"Większość palarni kupujących od importera z UE nie składa oświadczenia o należytej staranności, ale musi przechowywać dane. Sprawdź w 10 sekund.",
+      q1:"Kto wprowadza zieloną kawę do UE?", q1a:"Importuję ją sam (handel bezpośredni)", q1b:"Kupuję ją od importera lub handlowca z UE",
+      q2:"Jak duża jest Twoja firma?", q2a:"Mikro lub mała (poniżej 50 pracowników i 10 mln € obrotu)", q2b:"Średnia lub duża",
+      m_eyebrow:"Metodologia", m_h2:"Jak sprawdzamy każdą działkę",
+      m1h:"1 · Jakość danych", m1p:"Niemożliwe lub zamienione współrzędne, punkty w morzu, niewłaściwy kraj, nieprawidłowe wielokąty, zasada 4 hektarów.",
+      m2h:"2 · Las w 2020 r.", m2p:"Mapa JRC Global Forest Cover 2020, punkt odniesienia UE, pokazuje, czy działka była lasem w dacie granicznej.",
+      m3h:"3 · Utrata po 2020 r.", m3p:"Utrata pokrywy drzewnej Hansen/UMD od 2021 r., z prawdopodobną przyczyną (WRI / Google DeepMind), aby odróżnić wylesianie od pożarów lub przycinki.",
+      m4h:"4 · Sygnały ryzyka i legalności", m4p:"Oficjalne unijne ryzyko kraju (rozporządzenie 2025/1093), obszary chronione i ziemie ludności rdzennej. Każdy wynik ma poziom pewności i uzasadnienie.",
+      band_h2:"Podejdź do terminu ze spokojem.",
+      band_p:"Zacznij za darmo. Zobacz, którzy dostawcy są w porządku, a których trzeba sprawdzić, zanim zrobi to konkurencja.",
+      band_cta:"Uruchom bezpłatną weryfikację",
+      foot:"GroveProof zapewnia satelitarną weryfikację wstępną wspierającą należytą staranność w ramach EUDR. Wyniki opierają się na publicznych danych (Global Forest Watch), a działki oznaczone jako ryzykowne wymagają weryfikacji przez człowieka. Odpowiedzialność prawna za należytą staranność pozostaje po stronie firmy. To nie jest porada prawna.",
+      saving:"Zapisywanie…", saved:"✓ Raport zapisany:", open:"Otwórz raport", pdf:"Pobierz PDF", copy:"Kopiuj link", no_api:"Raport można zapisać po weryfikacji satelitarnej.", bad_email:"Wpisz prawidłowy e-mail lub zostaw pole puste."
+    }
+  };
+  var LABELS = {
+    en:{miss:"Data needed",high:"Elevated risk",low:"Clear (pending check)",ok:"Deforestation-free",risk:"At risk — review",nofor:"No forest (clear)",pending:"Satellite check pending",std:"Standard-risk origin · check pending",lowc:"Low-risk origin · check pending",highc:"High-risk origin",conf:{alta:"high confidence",media:"medium confidence",bassa:"low confidence"},crisk:{alto:"high-risk country",standard:"standard-risk country",basso:"low-risk country"}},
+    de:{miss:"Daten fehlen",high:"Erhöhtes Risiko",low:"Unbedenklich (Prüfung folgt)",ok:"Entwaldungsfrei",risk:"Risiko — prüfen",nofor:"Kein Wald (unbedenklich)",pending:"Satellitenprüfung folgt",std:"Herkunft Standardrisiko · Prüfung folgt",lowc:"Herkunft geringes Risiko · Prüfung folgt",highc:"Herkunft hohes Risiko",conf:{alta:"hohe Sicherheit",media:"mittlere Sicherheit",bassa:"geringe Sicherheit"},crisk:{alto:"Land mit hohem Risiko",standard:"Land mit Standardrisiko",basso:"Land mit geringem Risiko"}},
+    it:{miss:"Dati mancanti",high:"Rischio elevato",low:"Senza problemi (verifica in corso)",ok:"Senza deforestazione",risk:"A rischio — da rivedere",nofor:"Nessuna foresta (a posto)",pending:"Verifica satellitare in attesa",std:"Origine a rischio standard · verifica in attesa",lowc:"Origine a basso rischio · verifica in attesa",highc:"Origine ad alto rischio",conf:{alta:"confidenza alta",media:"confidenza media",bassa:"confidenza bassa"},crisk:{alto:"paese ad alto rischio",standard:"paese a rischio standard",basso:"paese a basso rischio"}},
+    fr:{miss:"Données manquantes",high:"Risque élevé",low:"Sans problème (vérification à venir)",ok:"Sans déforestation",risk:"À risque — à examiner",nofor:"Pas de forêt (sans problème)",pending:"Vérification satellitaire à venir",std:"Origine à risque standard · vérification à venir",lowc:"Origine à faible risque · vérification à venir",highc:"Origine à risque élevé",conf:{alta:"confiance élevée",media:"confiance moyenne",bassa:"confiance faible"},crisk:{alto:"pays à risque élevé",standard:"pays à risque standard",basso:"pays à faible risque"}},
+    es:{miss:"Faltan datos",high:"Riesgo elevado",low:"Sin problemas (verificación pendiente)",ok:"Libre de deforestación",risk:"En riesgo — revisar",nofor:"Sin bosque (sin problemas)",pending:"Verificación satelital pendiente",std:"Origen de riesgo estándar · verificación pendiente",lowc:"Origen de bajo riesgo · verificación pendiente",highc:"Origen de alto riesgo",conf:{alta:"confianza alta",media:"confianza media",bassa:"confianza baja"},crisk:{alto:"país de alto riesgo",standard:"país de riesgo estándar",basso:"país de bajo riesgo"}},
+    pl:{miss:"Brak danych",high:"Podwyższone ryzyko",low:"Bez zastrzeżeń (weryfikacja w toku)",ok:"Bez wylesiania",risk:"Ryzyko — do weryfikacji",nofor:"Brak lasu (bez zastrzeżeń)",pending:"Weryfikacja satelitarna w toku",std:"Pochodzenie o standardowym ryzyku · weryfikacja w toku",lowc:"Pochodzenie o niskim ryzyku · weryfikacja w toku",highc:"Pochodzenie o wysokim ryzyku",conf:{alta:"wysoka pewność",media:"średnia pewność",bassa:"niska pewność"},crisk:{alto:"kraj wysokiego ryzyka",standard:"kraj standardowego ryzyka",basso:"kraj niskiego ryzyka"}}
+  };
+  var lang="en";
+  var PH_C={en:"Country",de:"Land",fr:"Pays",it:"Paese",es:"País",pl:"Kraj"};
+  function applyLang(){
+    var d=T[lang]||{}, e=T.en;
+    document.querySelectorAll('[data-i18n]').forEach(function(el){
+      var k=el.getAttribute('data-i18n'); var v=d[k]!=null?d[k]:e[k]; if(v!=null) el.innerHTML=v;
+    });
+    document.querySelectorAll('[data-ph]').forEach(function(el){
+      var k=el.getAttribute('data-ph'); var v=d[k]!=null?d[k]:e[k]; if(v!=null) el.placeholder=v;
+    });
+    document.documentElement.lang=lang;
+  }
+  function S(k){ var d=T[lang]||{}; return d[k]!=null?d[k]:T.en[k]; }
+  // snapshot EN defaults so switching back works
+  (function snapshot(){
+    document.querySelectorAll('[data-i18n]').forEach(function(el){ var k=el.getAttribute('data-i18n'); if(T.en[k]==null) T.en[k]=el.innerHTML; });
+    document.querySelectorAll('[data-ph]').forEach(function(el){ var k=el.getAttribute('data-ph'); if(T.en[k]==null) T.en[k]=el.placeholder; });
+  })();
+  document.getElementById('langSel').addEventListener('change',function(){ setLang(this.value); setTimeout(drawQuiz,0); });
+  function setLang(l){
+    lang=['en','de','fr','it','es','pl'].indexOf(l)>=0?l:'en';
+    try{ localStorage.setItem('gp_lang',lang); }catch(e){}
+    document.getElementById('langSel').value=lang;
+    applyLang();
+    if(typeof drawHeroChips==='function') drawHeroChips();
+  }
+  (function initLang(){
+    var q=new URLSearchParams(location.search).get('lang'), s=null; try{ s=localStorage.getItem('gp_lang'); }catch(e){}
+    var l=q||s||(navigator.language||'en').slice(0,2); if(l!=='en') setLang(l); else { try{ localStorage.setItem('gp_lang','en'); }catch(e){} }
+  })();
+  function L(k){ return (LABELS[lang]||LABELS.en)[k]; }
+
+  // ============ data & tool ============
+  // Classificazione ufficiale UE (Reg. di esecuzione 2025/1093): alto = 4 paesi, standard = elenco, basso = tutti gli altri.
+  var RISK_HIGH=['belarus','north korea','myanmar','burma','russia','russian federation'];
+  var RISK_STD=['angola','argentina','belize','benin','bolivia','botswana','brazil','brasil','brasilien','burkina faso','cambodia','cameroon','kamerun','chad','colombia','kolumbien',"cote d'ivoire","côte d'ivoire",'ivory coast','dr congo','democratic republic of the congo','ecuador','el salvador','equatorial guinea','eritrea','ethiopia','äthiopien','gambia','guatemala','guinea','guinea-bissau','haiti','honduras','indonesia','indonesien','israel','liberia','malawi','malaysia','mauritania','mexico','mexiko','mozambique','namibia','nicaragua','niger','nigeria','pakistan','panama','paraguay','peru','perú','senegal','sierra leone','somalia','sudan','tanzania','tansania','uganda','venezuela','zambia','zimbabwe'];
+  function countryRisk(c){ var k=(c||'').toLowerCase().trim(); if(!k) return null; if(RISK_HIGH.indexOf(k)>=0) return 'alto'; if(RISK_STD.indexOf(k)>=0) return 'standard'; return 'basso'; }
+  function esc(v){ return String(v==null?'':v).replace(/[&<>"']/g,function(ch){return {'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[ch];}); }
+
+  var EXAMPLE = [
+    {id:'COL-001', c:'Colombia', lat:'4.531', lng:'-75.681', a:'18'},
+    {id:'ETH-002', c:'Ethiopia', lat:'6.162', lng:'38.204', a:'1.6'},
+    {id:'BRA-003', c:'Brazil', lat:'-21.552', lng:'-45.433', a:'24'},
+    {id:'HND-004', c:'Honduras', lat:'14.162', lng:'-88.003', a:'2.0'},
+    {id:'VNM-005', c:'Vietnam', lat:'12.668', lng:'108.052', a:'20'},
+    {id:'KEN-006', c:'Kenya', lat:'-0.517', lng:'37.280', a:'12'}
+  ];
+  var rowsEl=document.getElementById('rows');
+  function addRow(d){
+    d=d||{id:'',c:'',lat:'',lng:'',a:''};
+    var tr=document.createElement('tr');
+    if(d.geom) tr.dataset.geom=JSON.stringify(d.geom);
+    tr.innerHTML='<td><input class="i-id" value="'+esc(d.id)+'" placeholder="COL-001"></td>'+
+      '<td><input class="i-c" value="'+esc(d.c)+'" placeholder="'+esc(PH_C[lang]||PH_C.en)+'"></td>'+
+      '<td><input class="i-lat" value="'+esc(d.lat)+'" placeholder="lat"'+(d.geom?' title="polygon centroid"':'')+'></td>'+
+      '<td><input class="i-lng" value="'+esc(d.lng)+'" placeholder="lng"></td>'+
+      '<td><input class="i-a" value="'+esc(d.a)+'" placeholder="ha"></td>'+
+      '<td><button class="rm" title="remove">×</button></td>';
+    tr.querySelector('.rm').addEventListener('click',function(){ tr.remove(); });
+    rowsEl.appendChild(tr);
+  }
+  function readRows(){
+    return Array.prototype.map.call(rowsEl.querySelectorAll('tr'),function(tr){
+      var g=function(s){return (tr.querySelector(s)||{}).value||'';};
+      var geom=null; try{ geom=tr.dataset.geom?JSON.parse(tr.dataset.geom):null; }catch(e){}
+      return {id:g('.i-id').trim(), c:g('.i-c').trim(), lat:parseFloat(g('.i-lat')), lng:parseFloat(g('.i-lng')), a:parseFloat(g('.i-a')), geom:geom};
+    });
+  }
+  function tierOf(p){
+    if(!p.id || ((isNaN(p.lat) || isNaN(p.lng)) && !p.geom)) return 'miss';
+    var r=countryRisk(p.c); return r==='alto'?'high':r==='basso'?'low':'standard';
+  }
+  var projX=function(l){return 10+(l+180)/360*900;}, projY=function(l){return 20+(90-l)/180*440;};
+
+  var LMAP=null, LLAYER=null, lastApi=null, lastApiLang='en';
+  function tileUrl(){ return 'https://tile.openstreetmap.org/{z}/{x}/{y}.png'; }
+  function render(rows){
+    // rows: [{id,c,lat,lng,cls,label}]
+    var list=document.getElementById('reslist'); list.innerHTML='';
+    var low=0,high=0,miss=0;
+    document.getElementById('results').classList.add('show');
+    if(!LMAP){
+      LMAP=window.L.map('map',{scrollWheelZoom:false,worldCopyJump:true}).setView([15,10],2);
+      if(window.GPMap) window.GPMap.decorate(LMAP,lang);
+      else window.L.tileLayer(tileUrl(),{maxZoom:18,attribution:'© <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'}).addTo(LMAP);
+      LLAYER=window.L.layerGroup().addTo(LMAP);
+    }
+    LLAYER.clearLayers();
+    var pts=[];
+    rows.forEach(function(r){
+      if(r.cls==='miss')miss++; else if(r.cls==='high')high++; else low++;
+      var color=r.cls==='miss'?'#C8891A':r.cls==='high'?'#C0432F':'#2F8D5E';
+      if(r.geom){ try{ window.L.geoJSON(r.geom,{style:{color:color,weight:2,fillOpacity:.25}}).addTo(LLAYER); }catch(e){} }
+      if(!isNaN(r.lat)&&!isNaN(r.lng)){
+        var m=window.L.circleMarker([r.lat,r.lng],{radius:9,weight:2,color:'#ffffff',fillColor:color,fillOpacity:1});
+        m.bindPopup('<b>'+esc(r.id)+'</b><br>'+esc(r.c)+'<br><span style="color:'+color+'">●</span> '+esc(r.label));
+        if(r.id) m.bindTooltip(String(r.id),{permanent:true,direction:'right',offset:[10,0],className:'plot-label'});
+        m.addTo(LLAYER); pts.push([r.lat,r.lng]);
+      }
+      var row=document.createElement('div'); row.className='resrow';
+      var det='';
+      if(r.conf||r.risk||(r.reasons&&r.reasons.length)||(r.warns&&r.warns.length)){
+        det='<div class="det">'+(r.conf?'<span class="chip c-'+esc(r.conf)+'">'+esc(L('conf')[r.conf]||r.conf)+'</span>':'')+
+          (r.risk?'<span class="chip">'+esc(L('crisk')[r.risk]||r.risk)+'</span>':'')+
+          '<ul>'+(r.reasons||[]).map(function(x){return '<li>'+esc(x)+'</li>';}).join('')+
+          (r.warns||[]).map(function(x){return '<li class="warn">⚠ '+esc(x)+'</li>';}).join('')+'</ul></div>';
+      }
+      row.innerHTML='<span class="dot '+r.cls+'"></span>'+
+        '<span><span class="id">'+esc(r.id||'—')+'</span> · <span class="or">'+esc(r.c||'—')+'</span></span>'+
+        '<span class="tier '+r.cls+'">'+esc(r.label)+'</span>'+det;
+      list.appendChild(row);
+    });
+    document.getElementById('kTot').textContent=rows.length;
+    document.getElementById('kLow').textContent=low;
+    document.getElementById('kHigh').textContent=high;
+    document.getElementById('kMiss').textContent=miss;
+    if(pts.length){ try{ LMAP.fitBounds(pts,{padding:[34,34],maxZoom:pts.length===1?12:6}); }catch(e){} }
+    setTimeout(function(){ if(LMAP) LMAP.invalidateSize(); },140);
+    document.getElementById('results').scrollIntoView({behavior:'smooth',block:'nearest'});
+  }
+
+  function offlineRows(plots){
+    return plots.map(function(p){
+      var t=tierOf(p);
+      var cls = t==='miss'?'miss':t==='high'?'high':'low';
+      var label = t==='miss'?L('miss'):t==='high'?L('highc'):t==='low'?L('lowc'):L('std');
+      return {id:p.id,c:p.c,lat:p.lat,lng:p.lng,geom:p.geom,cls:cls,label:label,risk:countryRisk(p.c)};
+    });
+  }
+
+  async function runCheck(){
+    var plots=readRows().filter(function(p){return p.id||!isNaN(p.lat);});
+    if(!plots.length){ alert({de:'Mindestens ein Grundstück hinzufügen (oder „Beispiel laden“).',it:'Aggiungi almeno un appezzamento (o "Carica esempio").',fr:'Ajoutez au moins une parcelle (ou « Charger un exemple »).',es:'Añada al menos una parcela (o «Cargar ejemplo»).',pl:'Dodaj co najmniej jedną działkę (lub „Wczytaj przykład”).'}[lang]||'Add at least one plot (or "Load example").'); return; }
+    if(API_URL){
+      var btn=document.getElementById('runBtn'); btn.disabled=true;
+      var okp=function(p){return p.id&&(p.geom||(!isNaN(p.lat)&&!isNaN(p.lng)));};
+      var complete=plots.filter(okp);
+      var incomplete=plots.filter(function(p){return !okp(p);});
+      var oldTxt=btn.textContent; btn.textContent=({de:'Prüfung läuft…',it:'Verifica in corso…',fr:'Vérification…',es:'Verificando…',pl:'Weryfikacja…'}[lang]||'Checking…');
+      var body=JSON.stringify({plots:complete.map(function(p){var o={plot_id:p.id,origine:p.c,area_ha:isNaN(p.a)?null:p.a};
+        if(!isNaN(p.lat)) o.lat=p.lat; if(!isNaN(p.lng)) o.lng=p.lng; if(p.geom) o.geometry=p.geom; return o;}), lang:lang});
+      try{
+        // Render free si addormenta: la prima chiamata può fallire (502/503) mentre si sveglia → riprova.
+        var data=null, lastErr=null;
+        for(var attempt=0; attempt<4 && !data; attempt++){
+          if(attempt>0){ btn.textContent=({de:'Server startet… ',it:'Avvio del server… ',fr:'Démarrage du serveur… ',es:'Iniciando el servidor… ',pl:'Uruchamianie serwera… '}[lang]||'Waking server… ')+attempt+'/3'; await new Promise(function(r){setTimeout(r,15000);}); }
+          try{
+            var res=await fetch(API_URL.replace(/\/$/,'')+'/check',{method:'POST',headers:{'Content-Type':'application/json'},body:body});
+            if(!res.ok) throw new Error('HTTP '+res.status);
+            data=await res.json();
+          }catch(e){ lastErr=e; }
+        }
+        if(!data) throw lastErr||new Error('no response');
+        lastApi=(data.results||[]).filter(function(r){return r&&!r.error;}); lastApiLang=lang;
+        var byId={}; (data.results||[]).forEach(function(r){byId[r.plot_id]=r;});
+        var rows=complete.map(function(p){
+          var r=byId[p.id]||{}; var v=r.verdict||'';
+          if(r.error) console.warn('[GroveProof] '+p.id+': '+r.error);
+          var cls = v==='A_RISCHIO'?'high':(v==='OK'||v==='OK_NO_FOREST_2020')?'low':'miss';
+          var label = v==='A_RISCHIO'?L('risk'):v==='OK_NO_FOREST_2020'?L('nofor'):v==='OK'?L('ok'):L('pending');
+          var warns=(r.issues||[]).filter(function(i){return i.level==='avviso';}).map(function(i){return i.msg;});
+          return {id:p.id,c:p.c,lat:(r.lat!=null?r.lat:p.lat),lng:(r.lon!=null?r.lon:p.lng),geom:p.geom,cls:cls,label:label,
+                  conf:r.confidence,risk:r.country_risk||countryRisk(p.c),reasons:r.reasons,warns:warns};
+        }).concat(incomplete.map(function(p){return {id:p.id,c:p.c,lat:p.lat,lng:p.lng,cls:'miss',label:L('miss'),reasons:[{de:'Grundstücks-ID oder Koordinaten fehlen.',it:'Mancano codice dell\'appezzamento o coordinate.',fr:'Code de la parcelle ou coordonnées manquants.',es:'Faltan el código de la parcela o las coordenadas.',pl:'Brak kodu działki lub współrzędnych.'}[lang]||'Plot ID or coordinates missing.']};}));
+        render(rows);
+      }catch(err){ console.warn('[GroveProof] backend:',err); lastApi=null; render(offlineRows(plots)); }
+      finally{ btn.disabled=false; btn.textContent=oldTxt; }
+    } else {
+      render(offlineRows(plots));
+    }
+  }
+
+  document.getElementById('addRow').addEventListener('click',function(){ addRow(); });
+  document.getElementById('loadEx').addEventListener('click',function(){ rowsEl.innerHTML=''; EXAMPLE.forEach(addRow); runCheck(); });
+  document.getElementById('runBtn').addEventListener('click',runCheck);
+  document.getElementById('sendBtn').addEventListener('click',async function(){
+    var out=document.getElementById('leadOk'), btn=this;
+    var e=document.getElementById('email').value.trim(), co=document.getElementById('company').value.trim();
+    out.style.display='block';
+    if(e && !/^[^@\s]+@[^@\s]+\.[^@\s]+$/.test(e)){ out.textContent=S('bad_email'); return; }
+    if(!lastApi||!lastApi.length){ out.textContent=S('no_api'); return; }
+    btn.disabled=true; out.textContent=S('saving');
+    try{
+      var res=await fetch(API_URL.replace(/\/$/,'')+'/reports',{method:'POST',headers:{'Content-Type':'application/json'},
+        body:JSON.stringify({results:lastApi,lang:lastApiLang,email:e,company:co,title:co?(co+' — EUDR screening'):''})});
+      if(!res.ok) throw new Error('HTTP '+res.status);
+      var r=await res.json(), page='r.html?id='+encodeURIComponent(r.id), pdf=API_URL.replace(/\/$/,'')+r.pdf;
+      out.innerHTML=esc(S('saved'))+' <a href="'+esc(page)+'" target="_blank" rel="noopener">'+esc(S('open'))+'</a> · <a href="'+esc(pdf)+'" target="_blank" rel="noopener">'+esc(S('pdf'))+'</a> · <a href="#" id="cpLink">'+esc(S('copy'))+'</a>';
+      document.getElementById('cpLink').onclick=function(ev){ ev.preventDefault(); try{ navigator.clipboard.writeText(new URL(page,location.href).href); this.textContent='✓'; }catch(x){} };
+    }catch(err){ out.textContent='⚠ '+err.message; }
+    finally{ btn.disabled=false; }
+  });
+
+  // ============ import GeoJSON / KML / CSV ============
+  function centroidOf(g){
+    var pts=[]; (function walk(c){ if(typeof c[0]==='number') pts.push(c); else if(typeof c[0][0]==='number'){ var r=c.slice(); if(r.length>1&&r[0][0]===r[r.length-1][0]&&r[0][1]===r[r.length-1][1]) r.pop(); r.forEach(function(p){pts.push(p);}); } else c.forEach(walk); })(g.coordinates||[]);
+    if(!pts.length) return [NaN,NaN];
+    var x=0,y=0; pts.forEach(function(p){x+=p[0];y+=p[1];}); return [y/pts.length, x/pts.length];
+  }
+  function areaHa(g){
+    if(!g||(g.type!=='Polygon'&&g.type!=='MultiPolygon')) return null;
+    var polys=g.type==='Polygon'?[g.coordinates]:g.coordinates, tot=0;
+    polys.forEach(function(poly){ poly.forEach(function(ring,ri){ var lat0=ring[0][1]*Math.PI/180, kx=111320*Math.cos(lat0), ky=110540, a=0;
+      for(var i=0;i<ring.length-1;i++){ a+=(ring[i][0]*kx)*(ring[i+1][1]*ky)-(ring[i+1][0]*kx)*(ring[i][1]*ky); }
+      tot+=(ri===0?1:-1)*Math.abs(a)/2; }); });
+    return Math.round(tot/1000)/10;
+  }
+  function pick(o,keys){ for(var i=0;i<keys.length;i++){ if(o[keys[i]]!=null&&o[keys[i]]!=='') return o[keys[i]]; } return ''; }
+  function featureToRow(f,n){
+    var pr=f.properties||{}, g=f.geometry; if(!g) return null;
+    var id=String(pick(pr,['plot_id','id','ID','name','Name','plot','ProducerName'])||('PLOT-'+(n+1)));
+    var c=String(pick(pr,['country','origine','origin','Country','ProducerCountry'])||'');
+    var a=pick(pr,['area_ha','area','Area','ha']);
+    if(g.type==='Point') return {id:id,c:c,lat:g.coordinates[1],lng:g.coordinates[0],a:a};
+    var ce=centroidOf(g); return {id:id,c:c,lat:ce[0].toFixed(6),lng:ce[1].toFixed(6),a:a||areaHa(g)||'',geom:g};
+  }
+  function parseKML(txt){
+    var doc=new DOMParser().parseFromString(txt,'text/xml'), out=[];
+    Array.prototype.forEach.call(doc.getElementsByTagName('Placemark'),function(pm,n){
+      var nm=(pm.getElementsByTagName('name')[0]||{}).textContent||('PLOT-'+(n+1));
+      var polys=Array.prototype.map.call(pm.getElementsByTagName('Polygon'),function(pg){
+        return Array.prototype.map.call(pg.getElementsByTagName('coordinates'),function(cn){
+          return cn.textContent.trim().split(/\s+/).map(function(t){var v=t.split(',');return [parseFloat(v[0]),parseFloat(v[1])];});});});
+      if(polys.length){ out.push(featureToRow({properties:{name:nm},geometry:polys.length===1?{type:'Polygon',coordinates:polys[0]}:{type:'MultiPolygon',coordinates:polys}},n)); return; }
+      var pt=pm.getElementsByTagName('Point')[0];
+      if(pt){ var v=pt.textContent.trim().split(','); out.push({id:nm.trim(),c:'',lat:parseFloat(v[1]),lng:parseFloat(v[0]),a:''}); }
+    });
+    return out;
+  }
+  function parseCSV(txt){
+    var lines=txt.replace(/\r/g,'').split('\n').filter(function(l){return l.trim();}); if(lines.length<2) return [];
+    var sep=lines[0].indexOf(';')>=0&&lines[0].indexOf(',')<0?';':',';
+    var h=lines[0].split(sep).map(function(x){return x.trim().toLowerCase();});
+    var ix=function(names){ for(var i=0;i<names.length;i++){ var k=h.indexOf(names[i]); if(k>=0) return k; } return -1; };
+    var iId=ix(['plot_id','id','name']), iC=ix(['country','origine','origin','paese','land']), iLat=ix(['lat','latitude','latitudine']), iLng=ix(['lng','lon','long','longitude','longitudine']), iA=ix(['area_ha','area','ha']);
+    return lines.slice(1).map(function(l,n){ var v=l.split(sep); var g=function(i){return i>=0?(v[i]||'').trim():'';};
+      return {id:g(iId)||('PLOT-'+(n+1)),c:g(iC),lat:g(iLat),lng:g(iLng),a:g(iA)}; });
+  }
+  document.getElementById('fileIn').addEventListener('change',function(e){
+    var f=e.target.files&&e.target.files[0]; if(!f) return;
+    var rd=new FileReader();
+    rd.onload=function(){
+      var rows=[], txt=String(rd.result), name=f.name.toLowerCase();
+      try{
+        if(name.endsWith('.kml')) rows=parseKML(txt);
+        else if(name.endsWith('.csv')) rows=parseCSV(txt);
+        else { var j=JSON.parse(txt); var feats=j.type==='FeatureCollection'?j.features:(j.type==='Feature'?[j]:[{properties:{},geometry:j}]);
+               rows=feats.map(featureToRow).filter(Boolean); }
+      }catch(err){ alert(({de:'Datei nicht lesbar: ',it:'File non leggibile: ',fr:'Fichier illisible : ',es:'Archivo ilegible: ',pl:'Nie można odczytać pliku: '}[lang]||'Could not read the file: ')+err.message); return; }
+      rows=rows.filter(Boolean);
+      if(!rows.length){ alert({de:'Keine Grundstücke in der Datei gefunden.',it:'Nessun appezzamento trovato nel file.',fr:'Aucune parcelle trouvée dans le fichier.',es:'No se encontraron parcelas en el archivo.',pl:'Nie znaleziono działek w pliku.'}[lang]||'No plots found in the file.'); return; }
+      if(rows.length>200){ alert({de:'Maximal 200 Grundstücke pro Prüfung: die ersten 200 werden geladen.',it:'Massimo 200 appezzamenti per verifica: carico i primi 200.',fr:'200 parcelles maximum par vérification : chargement des 200 premières.',es:'Máximo 200 parcelas por verificación: se cargan las 200 primeras.',pl:'Maksymalnie 200 działek na weryfikację: wczytuję pierwsze 200.'}[lang]||'Up to 200 plots per check: loading the first 200.'); rows=rows.slice(0,200); }
+      rowsEl.innerHTML=''; rows.forEach(addRow); e.target.value='';
+    };
+    rd.readAsText(f);
+  });
+
+  // ============ quiz "What must I do?" ============
+  var QA={
+    en:{direct_small:['<b>You are an operator (micro/small): from 30 June 2027.</b>','Collect the geolocation of every plot (polygon above 4 ha).','Check deforestation-free and legality, assess and mitigate risk.','File a Due Diligence Statement in TRACES before import and put its reference on the customs declaration.'],
+        direct_large:['<b>You are an operator: from 30 December 2026.</b>','Collect the geolocation of every plot (polygon above 4 ha).','Check deforestation-free and legality, assess and mitigate risk.','File a Due Diligence Statement in TRACES before each import (one statement can cover up to 12 months).'],
+        buy_small:['<b>You are a downstream SME: from 30 December 2026, but light duties.</b>','No registration and no Due Diligence Statement of your own.','Keep a record of your suppliers and customers for 5 years and show it on request.','Note the DDS reference number of the importer who sold you the coffee.'],
+        buy_large:['<b>You are a downstream operator (non-SME): from 30 December 2026.</b>','Register in the EU information system.','Record suppliers, customers and the importer\'s DDS reference numbers, for 5 years.','If you have substantiated concerns, check before selling on and inform the authority.'],
+        foot:'GroveProof keeps this register for you, free. Source: Regulation (EU) 2023/1115 as amended by 2025/2650. Not legal advice.'},
+    de:{direct_small:['<b>Sie sind Marktteilnehmer (Kleinst-/Kleinunternehmen): ab 30. Juni 2027.</b>','Geolokalisierung jedes Grundstücks erfassen (Polygon über 4 ha).','Entwaldungsfreiheit und Legalität prüfen, Risiko bewerten und mindern.','Sorgfaltserklärung vor dem Import in TRACES einreichen und die Referenz in der Zollanmeldung angeben.'],
+        direct_large:['<b>Sie sind Marktteilnehmer: ab 30. Dezember 2026.</b>','Geolokalisierung jedes Grundstücks erfassen (Polygon über 4 ha).','Entwaldungsfreiheit und Legalität prüfen, Risiko bewerten und mindern.','Vor jedem Import eine Sorgfaltserklärung in TRACES einreichen (eine Erklärung kann bis zu 12 Monate abdecken).'],
+        buy_small:['<b>Sie sind nachgelagertes KMU: ab 30. Dezember 2026, mit leichten Pflichten.</b>','Keine Registrierung und keine eigene Sorgfaltserklärung.','Lieferanten und Kunden 5 Jahre lang aufzeichnen und auf Anfrage vorlegen.','Die DDS-Referenznummer des Importeurs notieren, von dem Sie gekauft haben.'],
+        buy_large:['<b>Sie sind nachgelagerter Marktteilnehmer (kein KMU): ab 30. Dezember 2026.</b>','Im EU-Informationssystem registrieren.','Lieferanten, Kunden und DDS-Referenznummern des Importeurs 5 Jahre lang aufzeichnen.','Bei begründeten Bedenken vor dem Weiterverkauf prüfen und die Behörde informieren.'],
+        foot:'GroveProof führt dieses Register kostenlos für Sie. Quelle: Verordnung (EU) 2023/1115 in der Fassung 2025/2650. Keine Rechtsberatung.'},
+    it:{direct_small:['<b>Sei un operatore (micro/piccola impresa): dal 30 giugno 2027.</b>','Raccogli la geolocalizzazione di ogni appezzamento (poligono oltre 4 ha).','Verifica assenza di deforestazione e legalità, valuta e riduci il rischio.','Presenta la dichiarazione di dovuta diligenza in TRACES prima dell\'importazione e indica il riferimento nella dichiarazione doganale.'],
+        direct_large:['<b>Sei un operatore: dal 30 dicembre 2026.</b>','Raccogli la geolocalizzazione di ogni appezzamento (poligono oltre 4 ha).','Verifica assenza di deforestazione e legalità, valuta e riduci il rischio.','Presenta la dichiarazione di dovuta diligenza in TRACES prima di ogni importazione (una dichiarazione può coprire fino a 12 mesi).'],
+        buy_small:['<b>Sei una PMI a valle: dal 30 dicembre 2026, con obblighi leggeri.</b>','Nessuna registrazione e nessuna dichiarazione di dovuta diligenza propria.','Conserva per 5 anni i dati di fornitori e clienti e mostrali su richiesta.','Annota il numero di riferimento DDS dell\'importatore da cui hai comprato il caffè.'],
+        buy_large:['<b>Sei un operatore a valle (non PMI): dal 30 dicembre 2026.</b>','Registrati nel sistema informativo UE.','Registra fornitori, clienti e numeri di riferimento DDS dell\'importatore, per 5 anni.','Se hai dubbi fondati, verifica prima di rivendere e informa l\'autorità.'],
+        foot:'GroveProof tiene questo registro per te, gratis. Fonte: Regolamento (UE) 2023/1115 modificato dal 2025/2650. Non è consulenza legale.'},
+    fr:{direct_small:['<b>Vous êtes un opérateur (micro/petite entreprise) : à partir du 30 juin 2027.</b>','Collectez la géolocalisation de chaque parcelle (polygone au-delà de 4 ha).','Vérifiez l\'absence de déforestation et la légalité, évaluez et atténuez le risque.','Présentez la déclaration de diligence raisonnée dans TRACES avant l\'importation et indiquez sa référence dans la déclaration en douane.'],
+        direct_large:['<b>Vous êtes un opérateur : à partir du 30 décembre 2026.</b>','Collectez la géolocalisation de chaque parcelle (polygone au-delà de 4 ha).','Vérifiez l\'absence de déforestation et la légalité, évaluez et atténuez le risque.','Présentez la déclaration de diligence raisonnée dans TRACES avant chaque importation (une déclaration peut couvrir jusqu\'à 12 mois).'],
+        buy_small:['<b>Vous êtes une PME en aval : à partir du 30 décembre 2026, avec des obligations allégées.</b>','Pas d\'enregistrement ni de déclaration de diligence raisonnée propre.','Conservez pendant 5 ans les informations sur vos fournisseurs et clients et présentez-les sur demande.','Notez le numéro de référence DDS de l\'importateur qui vous a vendu le café.'],
+        buy_large:['<b>Vous êtes un opérateur en aval (non PME) : à partir du 30 décembre 2026.</b>','Enregistrez-vous dans le système d\'information de l\'UE.','Enregistrez fournisseurs, clients et numéros de référence DDS de l\'importateur, pendant 5 ans.','En cas de préoccupations fondées, vérifiez avant de revendre et informez l\'autorité.'],
+        foot:'GroveProof tient ce registre pour vous, gratuitement. Source : règlement (UE) 2023/1115 modifié par le 2025/2650. Ceci n\'est pas un conseil juridique.'},
+    es:{direct_small:['<b>Usted es un operador (micro/pequeña empresa): desde el 30 de junio de 2027.</b>','Recoja la geolocalización de cada parcela (polígono a partir de 4 ha).','Verifique la ausencia de deforestación y la legalidad, evalúe y reduzca el riesgo.','Presente la declaración de diligencia debida en TRACES antes de la importación e indique su referencia en la declaración aduanera.'],
+        direct_large:['<b>Usted es un operador: desde el 30 de diciembre de 2026.</b>','Recoja la geolocalización de cada parcela (polígono a partir de 4 ha).','Verifique la ausencia de deforestación y la legalidad, evalúe y reduzca el riesgo.','Presente la declaración de diligencia debida en TRACES antes de cada importación (una declaración puede cubrir hasta 12 meses).'],
+        buy_small:['<b>Usted es una pyme posterior en la cadena: desde el 30 de diciembre de 2026, con obligaciones ligeras.</b>','Sin registro ni declaración de diligencia debida propia.','Conserve durante 5 años los datos de proveedores y clientes y muéstrelos cuando se los pidan.','Anote el número de referencia DDS del importador que le vendió el café.'],
+        buy_large:['<b>Usted es un operador posterior en la cadena (no pyme): desde el 30 de diciembre de 2026.</b>','Regístrese en el sistema de información de la UE.','Registre proveedores, clientes y números de referencia DDS del importador, durante 5 años.','Si tiene dudas fundadas, verifique antes de revender e informe a la autoridad.'],
+        foot:'GroveProof lleva este registro por usted, gratis. Fuente: Reglamento (UE) 2023/1115 modificado por el 2025/2650. No es asesoramiento jurídico.'},
+    pl:{direct_small:['<b>Jesteś podmiotem (mikro/małe przedsiębiorstwo): od 30 czerwca 2027 r.</b>','Zbierz geolokalizację każdej działki (wielokąt powyżej 4 ha).','Sprawdź brak wylesiania i legalność, oceń i ogranicz ryzyko.','Złóż oświadczenie o należytej staranności w TRACES przed importem i podaj jego numer w zgłoszeniu celnym.'],
+        direct_large:['<b>Jesteś podmiotem: od 30 grudnia 2026 r.</b>','Zbierz geolokalizację każdej działki (wielokąt powyżej 4 ha).','Sprawdź brak wylesiania i legalność, oceń i ogranicz ryzyko.','Przed każdym importem złóż oświadczenie o należytej staranności w TRACES (jedno oświadczenie może obejmować do 12 miesięcy).'],
+        buy_small:['<b>Jesteś MŚP na dalszym etapie łańcucha dostaw: od 30 grudnia 2026 r., z lekkimi obowiązkami.</b>','Bez rejestracji i bez własnego oświadczenia o należytej staranności.','Przechowuj przez 5 lat dane dostawców i klientów i udostępniaj je na żądanie.','Zapisz numer referencyjny DDS importera, od którego kupiłeś kawę.'],
+        buy_large:['<b>Jesteś podmiotem na dalszym etapie łańcucha dostaw (nie MŚP): od 30 grudnia 2026 r.</b>','Zarejestruj się w unijnym systemie informacyjnym.','Przez 5 lat zapisuj dostawców, klientów i numery referencyjne DDS importera.','W razie uzasadnionych wątpliwości sprawdź przed dalszą sprzedażą i poinformuj właściwy organ.'],
+        foot:'GroveProof prowadzi ten rejestr za Ciebie, za darmo. Źródło: rozporządzenie (UE) 2023/1115 zmienione rozporządzeniem 2025/2650. To nie jest porada prawna.'}
+  };
+  var quizSel={};
+  function drawQuiz(){
+    var ans=document.getElementById('quizAns');
+    if(!quizSel.who||!quizSel.size){ ans.classList.remove('show'); return; }
+    var t=QA[lang]||QA.en, lines=t[quizSel.who+'_'+quizSel.size];
+    ans.innerHTML=lines[0]+'<ul>'+lines.slice(1).map(function(x){return '<li>'+x+'</li>';}).join('')+'</ul><p style="margin:.6rem 0 0;font-size:.8rem;color:var(--ink-faint)">'+t.foot+'</p>';
+    ans.classList.add('show');
+  }
+  document.querySelectorAll('#quiz .opts').forEach(function(g){
+    g.querySelectorAll('button').forEach(function(b){ b.addEventListener('click',function(){
+      quizSel[g.getAttribute('data-q')]=b.getAttribute('data-v');
+      g.querySelectorAll('button').forEach(function(x){x.classList.toggle('on',x===b);}); drawQuiz(); }); });
+  });
+
+
+  addRow(); addRow();
+  // sveglia il motore appena si apre la pagina (Render free dorme dopo 15 min)
+  if(API_URL){ try{ fetch(API_URL.replace(/\/$/,'')+'/health').catch(function(){}); }catch(e){} }
+  // ============ esempio nella parte alta (illustrativo) ============
+  var HERO=[{id:'COL-001',v:'ok',c:[1.958,-75.962],d:.0040},{id:'COL-002',v:'risk',c:[1.949,-75.946],d:.0034},{id:'COL-003',v:'nofor',c:[1.940,-75.958],d:.0030}];
+  var HCOL={ok:'#2F8D5E',risk:'#C0432F',nofor:'#2F8D5E'};
+  function drawHeroChips(){
+    var el=document.getElementById('heroChips'); if(!el||!HERO) return;
+    el.innerHTML=HERO.map(function(h){ return '<div class="chip2"><i style="background:'+HCOL[h.v]+'"></i>'+esc(L(h.v))+'<span class="id">'+h.id+'</span></div>'; }).join('');
+  }
+  (function heroMap(){
+    try{
+      if(!window.L||!document.getElementById('heroMap')) return;
+      var m=window.L.map('heroMap',{zoomControl:false,dragging:false,scrollWheelZoom:false,doubleClickZoom:false,boxZoom:false,keyboard:false,touchZoom:false,tap:false});
+      window.L.tileLayer('https://tiles.maps.eox.at/wmts/1.0.0/s2cloudless_3857/default/g/{z}/{y}/{x}.jpg',{maxZoom:18,maxNativeZoom:15,
+        attribution:'<a href="https://s2maps.eu">Sentinel-2 cloudless - https://s2maps.eu</a> by <a href="https://eox.at">EOX IT Services GmbH</a> (Contains modified Copernicus Sentinel data 2016 &amp; 2017)'}).addTo(m);
+      var b=[];
+      HERO.forEach(function(h){ var la=h.c[0],lo=h.c[1],d=h.d;
+        var poly=[[la-d,lo-d*1.1],[la-d*0.8,lo+d],[la+d,lo+d*0.9],[la+d*0.9,lo-d]];
+        window.L.polygon(poly,{color:h.v==='risk'?'#E8745C':'#5BCB90',weight:2.5,fillColor:HCOL[h.v],fillOpacity:.3}).addTo(m);
+        window.L.circleMarker([la,lo],{radius:6,color:'#fff',weight:2,fillColor:HCOL[h.v],fillOpacity:1}).addTo(m)
+          .bindTooltip(h.id,{permanent:true,direction:'right',offset:[8,0],className:'plot-label'});
+        b=b.concat(poly); });
+      m.fitBounds(b,{paddingTopLeft:[30,40],paddingBottomRight:[30,46]});
+    }catch(e){}
+    drawHeroChips();
+  })();
+  document.getElementById('heroTry').addEventListener('click',function(){ document.getElementById('loadEx').click(); document.getElementById('tool').scrollIntoView({behavior:'smooth'}); });
+
+  // Statistiche anonime: nessun cookie, nessun dato personale; rispetta "Do Not Track".
+  window.addEventListener('load',function(){ try{
+    if(navigator.doNotTrack==='1'||window.doNotTrack==='1'||localStorage.getItem('gp_notrack')==='1') return;
+    var q=new URLSearchParams(location.search);
+    var body=JSON.stringify({k:'view',p:location.pathname||'/',l:lang,bl:navigator.language||'',
+      tz:(Intl.DateTimeFormat().resolvedOptions().timeZone||''),r:document.referrer||'',u:[q.get('utm_source')||q.get('ref')||'',q.get('utm_campaign')||''].filter(Boolean).join('-')});
+    var url=API_URL.replace(/\/$/,'')+'/e';
+    if(navigator.sendBeacon) navigator.sendBeacon(url,new Blob([body],{type:'text/plain'}));
+    else fetch(url,{method:'POST',body:body,keepalive:true}).catch(function(){});
+  }catch(e){} });
+})();
+</script>

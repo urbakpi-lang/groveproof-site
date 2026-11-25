@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>EUDR screening report — GroveProof · EUDR check for coffee</title>
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="description" content="EUDR satellite screening report for coffee plots, made with GroveProof.">
+<link rel="icon" href="assets/favicon.svg" type="image/svg+xml">
+<link rel="icon" href="assets/favicon-32.png" sizes="32x32" type="image/png">
+<link rel="apple-touch-icon" href="assets/apple-touch-icon.png">
+<meta name="theme-color" content="#2E7D52">
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="GroveProof — EUDR deforestation check for coffee">
+<meta property="og:title" content="EUDR screening report — GroveProof · EUDR check for coffee">
+<meta property="og:description" content="EUDR satellite screening report for coffee plots, made with GroveProof.">
+<meta property="og:url" content="https://groveproof.com/r.html">
+<meta property="og:image" content="https://groveproof.com/assets/og.jpg">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta property="og:image:alt" content="GroveProof — prove your coffee is deforestation-free">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="robots" content="noindex">
+<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,600;9..144,900&family=Libre+Franklin:wght@400;500;600;700&family=IBM+Plex+Mono:wght@400;600&display=swap">
+<link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css">
+<script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+<script src="assets/map.js"></script>
+<link rel="stylesheet" href="assets/gp.css">
+<script src="assets/gp.js"></script>
+</head>
+<body>
+<nav class="top" id="gpnav"></nav>
+<main class="wrap" style="padding-top:1.6rem">
+  <div id="box"><p class="muted" data-t="loading">Loading…</p><p class="faint" id="waking"></p></div>
+</main>
+<footer class="ft" id="gpfoot"></footer>
+<script>
+GP.strings = {
+  en:{loading:"Loading…",waking:"Waking up the server, this can take up to a minute…",notfound:"Report not found.",h:"EUDR satellite screening",created:"Created",pdf:"Download PDF",copy:"Copy link",copied:"Link copied",
+    plot:"Plot",origin:"Origin",result:"Result",forest:"Forest 2020 (ha)",loss:"Loss after 2020 (ha)",why:"Reasons",
+    disc:"Screening based on public satellite data (Global Forest Watch). It supports, but does not replace, the due diligence required by Regulation (EU) 2023/1115.",
+    cta_h:"Keep your EUDR records in one place",cta_p:"Free account: register of lots and DDS numbers, monitoring of your plots, public page and badge for your customers.",cta:"Create a free account"},
+  de:{loading:"Wird geladen…",waking:"Server startet, das kann bis zu einer Minute dauern…",notfound:"Bericht nicht gefunden.",h:"EUDR-Satellitenscreening",created:"Erstellt",pdf:"PDF herunterladen",copy:"Link kopieren",copied:"Link kopiert",
+    plot:"Grundstück",origin:"Herkunft",result:"Ergebnis",forest:"Wald 2020 (ha)",loss:"Verlust nach 2020 (ha)",why:"Begründung",
+    disc:"Screening auf Basis öffentlicher Satellitendaten (Global Forest Watch). Es unterstützt die Sorgfaltspflicht nach Verordnung (EU) 2023/1115, ersetzt sie aber nicht.",
+    cta_h:"Alle EUDR-Aufzeichnungen an einem Ort",cta_p:"Kostenloses Konto: Register der Chargen und DDS-Nummern, Überwachung der Grundstücke, öffentliche Seite und Siegel für Ihre Kunden.",cta:"Kostenloses Konto erstellen"},
+  it:{loading:"Caricamento…",waking:"Il server si sta svegliando, può servire fino a un minuto…",notfound:"Report non trovato.",h:"Screening satellitare EUDR",created:"Creato il",pdf:"Scarica il PDF",copy:"Copia il link",copied:"Link copiato",
+    plot:"Appezzamento",origin:"Origine",result:"Esito",forest:"Foresta 2020 (ha)",loss:"Perdita dopo il 2020 (ha)",why:"Motivazioni",
+    disc:"Screening basato su dati satellitari pubblici (Global Forest Watch). Supporta, ma non sostituisce, la dovuta diligenza richiesta dal Regolamento (UE) 2023/1115.",
+    cta_h:"Tutti i dati EUDR in un unico posto",cta_p:"Account gratuito: registro dei lotti e dei numeri DDS, monitoraggio degli appezzamenti, pagina pubblica e badge per i clienti.",cta:"Crea un account gratuito"},
+  fr:{loading:"Chargement…",waking:"Démarrage du serveur, cela peut prendre jusqu'à une minute…",notfound:"Rapport introuvable.",h:"Dépistage satellitaire EUDR",created:"Créé le",pdf:"Télécharger le PDF",copy:"Copier le lien",copied:"Lien copié",
+    plot:"Parcelle",origin:"Origine",result:"Résultat",forest:"Forêt 2020 (ha)",loss:"Perte après 2020 (ha)",why:"Motifs",
+    disc:"Dépistage fondé sur des données satellitaires publiques (Global Forest Watch). Il soutient, sans la remplacer, la diligence raisonnée exigée par le règlement (UE) 2023/1115.",
+    cta_h:"Toutes vos informations EUDR au même endroit",cta_p:"Compte gratuit : registre des lots et des numéros DDS, suivi de vos parcelles, page publique et badge pour vos clients.",cta:"Créer un compte gratuit"},
+  es:{loading:"Cargando…",waking:"Iniciando el servidor, puede tardar hasta un minuto…",notfound:"Informe no encontrado.",h:"Cribado satelital EUDR",created:"Creado el",pdf:"Descargar PDF",copy:"Copiar enlace",copied:"Enlace copiado",
+    plot:"Parcela",origin:"Origen",result:"Resultado",forest:"Bosque 2020 (ha)",loss:"Pérdida después de 2020 (ha)",why:"Motivos",
+    disc:"Cribado basado en datos satelitales públicos (Global Forest Watch). Respalda, pero no sustituye, la diligencia debida exigida por el Reglamento (UE) 2023/1115.",
+    cta_h:"Todos sus datos EUDR en un solo lugar",cta_p:"Cuenta gratuita: registro de lotes y números DDS, seguimiento de sus parcelas, página pública y sello para sus clientes.",cta:"Crear una cuenta gratuita"},
+  pl:{loading:"Ładowanie…",waking:"Uruchamianie serwera, może to potrwać do minuty…",notfound:"Nie znaleziono raportu.",h:"Satelitarna weryfikacja EUDR",created:"Utworzono",pdf:"Pobierz PDF",copy:"Kopiuj link",copied:"Skopiowano link",
+    plot:"Działka",origin:"Pochodzenie",result:"Wynik",forest:"Las 2020 (ha)",loss:"Utrata po 2020 r. (ha)",why:"Uzasadnienie",
+    disc:"Weryfikacja wstępna na podstawie publicznych danych satelitarnych (Global Forest Watch). Wspiera, ale nie zastępuje, należytej staranności wymaganej przez rozporządzenie (UE) 2023/1115.",
+    cta_h:"Wszystkie dane EUDR w jednym miejscu",cta_p:"Bezpłatne konto: rejestr partii i numerów DDS, monitorowanie działek, strona publiczna i odznaka dla klientów.",cta:"Załóż bezpłatne konto"}
+};
+(function(){
+  var esc=GP.esc, t=GP.t, rep=null, id=new URLSearchParams(location.search).get("id")||"";
+  GP.onWaking=function(){ var w=document.getElementById("waking"); if(w) w.textContent=t("waking"); };
+  GP.onLang=function(){ GP.nav(); render(); };
+  function n(v){ return v==null?"":v; }
+  function render(){
+    if(!rep) return; GP.applyI18n();
+    var R=rep.results||[];
+    document.getElementById("box").innerHTML =
+      '<h1>'+esc(rep.title||t("h"))+'</h1><p class="faint">'+esc(t("created"))+' '+esc((rep.created_at||"").slice(0,10))+' · ID <span class="mono">'+esc(rep.id)+'</span></p>'+
+      '<div class="row" style="margin:.6rem 0 1rem"><a class="btn sm" href="'+esc(GP.API+"/reports/"+encodeURIComponent(rep.id)+"/pdf")+'" target="_blank" rel="noopener">'+esc(t("pdf"))+'</a><button class="btn sm ghost" id="cp">'+esc(t("copy"))+'</button></div>'+
+      '<div class="card"><div class="map" id="rmap"></div><div class="scroll" style="margin-top:.8rem"><table class="t"><tr><th>'+esc(t("plot"))+'</th><th>'+esc(t("origin"))+'</th><th>'+esc(t("result"))+'</th><th>'+esc(t("forest"))+'</th><th>'+esc(t("loss"))+'</th></tr>'+
+      R.map(function(r){ var w=(r.issues||[]).filter(function(i){return i&&i.level==="avviso";}).map(function(i){return '<li class="w">⚠ '+esc(i.msg)+'</li>';}).join("");
+        return '<tr><td class="mono">'+esc(r.plot_id)+'<ul class="reasons">'+(r.reasons||[]).map(function(x){return '<li>'+esc(x)+'</li>';}).join("")+w+'</ul></td><td>'+esc(n(r.origine))+'</td><td>'+GP.vchip(r.verdict,r.confidence)+'</td><td>'+esc(n(r.forest_ha_2020))+'</td><td>'+esc(n(r.disturb_ha_post2020))+'</td></tr>'; }).join("")+
+      '</table></div><p class="faint">'+esc(t("disc"))+'</p></div>'+
+      '<div class="card"><h3>'+esc(t("cta_h"))+'</h3><p class="muted">'+esc(t("cta_p"))+'</p><a class="btn" href="app.html">'+esc(t("cta"))+'</a></div>';
+    document.getElementById("cp").onclick=function(){ var b=this; try{ navigator.clipboard.writeText(location.href).then(function(){ b.textContent=t("copied"); }); }catch(e){} };
+    GP.map("rmap").draw(R.map(function(r){ return {lat:r.lat,lng:r.lon,verdict:r.verdict,label:R.length<=30?r.plot_id:""}; }));
+  }
+  GP.nav(); GP.applyI18n();
+  if(!/^[A-Za-z0-9_-]{6,64}$/.test(id)){ document.getElementById("box").innerHTML='<p class="muted">'+esc(t("notfound"))+'</p>'; return; }
+  GP.api("/reports/"+encodeURIComponent(id)).then(function(d){ rep=d; if(!new URLSearchParams(location.search).get("lang") && !GP.store("gp_lang") && d.lang){ GP.lang=d.lang; GP.nav(); } render(); })
+    .catch(function(){ document.getElementById("box").innerHTML='<p class="muted">'+esc(t("notfound"))+'</p>'; });
+})();
+</script>
+</body>
+</html>

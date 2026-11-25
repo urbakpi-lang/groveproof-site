@@ -1,0 +1,194 @@
+<!DOCTYPE html>
+<html lang="it" data-notrack>
+<head>
+<meta charset="utf-8">
+<title>Statistiche — GroveProof · EUDR check for coffee</title>
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<link rel="icon" href="assets/favicon.svg" type="image/svg+xml">
+<link rel="icon" href="assets/favicon-32.png" sizes="32x32" type="image/png">
+<link rel="apple-touch-icon" href="assets/apple-touch-icon.png">
+<meta name="theme-color" content="#2E7D52">
+<meta name="robots" content="noindex, nofollow">
+<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,600;9..144,900&family=Libre+Franklin:wght@400;500;600;700&family=IBM+Plex+Mono:wght@400;600&display=swap">
+<link rel="stylesheet" href="assets/gp.css">
+<script src="assets/gp.js"></script>
+<style>
+  .kpis{display:grid;grid-template-columns:repeat(auto-fit,minmax(170px,1fr));gap:.8rem;margin:1rem 0}
+  .kpi .n{font-family:"Fraunces",serif;font-weight:900;font-size:2rem;line-height:1}
+  .kpi .k{font-size:.82rem;color:var(--ink-soft);margin-top:.35rem}
+  .delta{font:600 .72rem "IBM Plex Mono",monospace;margin-top:.35rem;color:var(--ink-faint)}
+  .delta.up{color:var(--good)} .delta.down{color:var(--bad)}
+  .chart{position:relative} .chart svg{display:block;width:100%;height:auto;overflow:visible}
+  .chart .tip{position:absolute;pointer-events:none;background:var(--ink);color:var(--ground);font:500 .74rem "Libre Franklin",sans-serif;padding:.3rem .5rem;border-radius:6px;white-space:nowrap;transform:translate(-50%,-110%);display:none}
+  .chart rect.bar{transition:opacity .1s} .chart g.col:hover rect.bar{opacity:.75}
+  .axis{font:500 10px "IBM Plex Mono",monospace;fill:var(--ink-faint)}
+  .funnel .row{display:grid;grid-template-columns:minmax(150px,230px) 1fr 110px;gap:.7rem;align-items:center;margin:.45rem 0;font-size:.88rem}
+  .funnel .track{background:var(--surface-2);border-radius:4px;height:22px;overflow:hidden}
+  .funnel .fill{height:100%;background:var(--accent);border-radius:0 4px 4px 0;min-width:2px}
+  .funnel .num{font:600 .82rem "IBM Plex Mono",monospace;text-align:right}
+  .funnel .num span{color:var(--ink-faint);font-weight:400}
+  .lists{display:grid;grid-template-columns:repeat(auto-fit,minmax(250px,1fr));gap:1rem}
+  .lists table td:last-child,.lists table th:last-child{text-align:right}
+  .seg{display:inline-flex;border:1px solid var(--line-strong);border-radius:8px;overflow:hidden}
+  .seg button{border:none;background:var(--surface);padding:.4rem .8rem;cursor:pointer;font:600 .8rem "Libre Franklin",sans-serif;color:var(--ink-soft)}
+  .seg button.on{background:var(--ink);color:var(--ground)}
+  .leads td{font-size:.82rem;vertical-align:top}
+</style>
+</head>
+<body>
+<nav class="top" id="gpnav"></nav>
+<main class="wrap" style="padding-top:1.6rem">
+  <section id="vLogin" class="hide" style="max-width:480px;margin:2rem auto">
+    <div class="card">
+      <h1>Statistiche GroveProof</h1>
+      <p class="muted">Pagina riservata. Inserisci il tuo <b>ADMIN_TOKEN</b> (lo trovi su Render → geo-engine → Environment).</p>
+      <label class="f">ADMIN_TOKEN</label><input class="i mono" id="tok" type="password" autocomplete="off">
+      <div class="row" style="margin-top:.8rem"><button class="btn" id="go">Entra</button></div>
+      <div id="loginMsg"></div>
+      <p class="faint" style="margin-top:1rem">Il token resta solo in questa scheda del browser e si cancella quando la chiudi.</p>
+    </div>
+  </section>
+
+  <section id="vApp" class="hide">
+    <div class="row" style="justify-content:space-between;align-items:flex-end">
+      <div><h1 style="margin:0">Statistiche</h1><div class="faint" id="period"></div></div>
+      <div class="row">
+        <div class="seg" id="seg"><button data-d="7">7 giorni</button><button data-d="30" class="on">30 giorni</button><button data-d="90">90 giorni</button><button data-d="365">1 anno</button></div>
+        <button class="btn sm ghost" id="out">Esci</button>
+      </div>
+    </div>
+    <div id="msg"></div>
+    <div class="kpis" id="kpis"></div>
+
+    <div class="card"><h3 style="margin-top:0">Visitatori unici al giorno</h3><div class="chart" id="chVisitors"></div></div>
+    <div class="card"><h3 style="margin-top:0">Verifiche gratuite al giorno</h3><div class="chart" id="chChecks"></div></div>
+
+    <div class="card">
+      <h3 style="margin-top:0">Imbuto: dalla visita al cliente</h3>
+      <p class="faint" style="margin-top:0">Persone diverse che hanno fatto ciascun passo nel periodo. La percentuale è calcolata sui visitatori.</p>
+      <div class="funnel" id="funnel"></div>
+    </div>
+
+    <div class="lists" id="lists"></div>
+
+    <div class="card">
+      <h3 style="margin-top:0">Situazione complessiva</h3>
+      <div class="kpis" id="totals" style="margin:0"></div>
+    </div>
+
+    <div class="card">
+      <h3 style="margin-top:0">Ultimi contatti</h3>
+      <div class="scroll"><table class="t leads" id="leads"></table></div>
+    </div>
+
+    <div class="card">
+      <h3 style="margin-top:0">Impostazioni</h3>
+      <label class="f"><input type="checkbox" id="notrack"> Non contare le mie visite da questo browser</label>
+      <p class="faint">Spuntalo sui tuoi dispositivi, così le tue prove non gonfiano i numeri. Le verifiche che fai tu vengono comunque contate.</p>
+      <div class="row" style="margin-top:.6rem"><button class="btn sm ghost" id="sendWeekly">Invia ora il report settimanale</button><span class="faint" id="weeklyMsg"></span></div>
+      <p class="faint">Il report arriva da solo ogni lunedì mattina su info@groveproof.com.</p>
+    </div>
+  </section>
+</main>
+<footer class="ft" id="gpfoot"></footer>
+<script>
+(function(){
+  var $=function(id){return document.getElementById(id);}, esc=GP.esc, days=30, data=null;
+  var COUNTRY={DE:"Germania",AT:"Austria",CH:"Svizzera",IT:"Italia",FR:"Francia",ES:"Spagna",PL:"Polonia",NL:"Paesi Bassi",BE:"Belgio",LU:"Lussemburgo",PT:"Portogallo",IE:"Irlanda",GB:"Regno Unito",DK:"Danimarca",SE:"Svezia",NO:"Norvegia",FI:"Finlandia",CZ:"Cechia",SK:"Slovacchia",HU:"Ungheria",SI:"Slovenia",HR:"Croazia",GR:"Grecia",RO:"Romania",BG:"Bulgaria",EE:"Estonia",LV:"Lettonia",LT:"Lituania",MT:"Malta",CY:"Cipro",US:"Stati Uniti",CA:"Canada",CO:"Colombia",BR:"Brasile",PE:"Perù",MX:"Messico",GT:"Guatemala",HN:"Honduras",CR:"Costa Rica",ET:"Etiopia",KE:"Kenya",UG:"Uganda",RW:"Ruanda",VN:"Vietnam",ID:"Indonesia",IN:"India"};
+  var LANG={en:"Inglese",de:"Tedesco",it:"Italiano",fr:"Francese",es:"Spagnolo",pl:"Polacco"};
+  function tok(){ try{ return sessionStorage.getItem("gp_admin")||""; }catch(e){ return ""; } }
+  function show(v){ $("vLogin").classList.toggle("hide",v!=="login"); $("vApp").classList.toggle("hide",v!=="app"); }
+  function fmt(n){ return String(n).replace(/\B(?=(\d{3})+(?!\d))/g,"."); }
+  function fdate(d){ var p=d.split("-"); return p[2]+"/"+p[1]; }
+
+  async function load(){
+    $("msg").innerHTML='<div class="notice info">Caricamento… (se il server dorme serve fino a un minuto)</div>';
+    var r;
+    for(var i=0;i<6;i++){
+      try{ r=await fetch(GP.API+"/admin/analytics?days="+days,{headers:{"X-Admin-Token":tok()}}); }catch(e){ r=null; }
+      if(r && r.status!==502 && r.status!==503) break;
+      await new Promise(function(z){ setTimeout(z,12000); });
+    }
+    if(!r){ $("msg").innerHTML='<div class="notice err">Server non raggiungibile.</div>'; return false; }
+    if(r.status===404){ try{ sessionStorage.removeItem("gp_admin"); }catch(e){} show("login"); $("loginMsg").innerHTML='<div class="notice err">Token non valido.</div>'; return false; }
+    data=await r.json(); $("msg").innerHTML=""; show("app"); render(); return true;
+  }
+
+  function delta(a,b){
+    if(!b && !a) return '<div class="delta">= periodo precedente</div>';
+    if(!b) return '<div class="delta up">▲ nuovo rispetto a 0</div>';
+    var d=Math.round((a-b)*100/b);
+    return '<div class="delta '+(d>0?"up":d<0?"down":"")+'">'+(d>0?"▲ +":d<0?"▼ ":"= ")+d+'% vs periodo precedente ('+fmt(b)+')</div>';
+  }
+
+  function barChart(el, rows, key, color, label){
+    var W=900,H=200,pl=34,pb=22,pt=10, n=rows.length, max=Math.max(1,Math.max.apply(null,rows.map(function(r){return r[key];})));
+    var step=Math.pow(10,Math.floor(Math.log10(max))); var top=Math.ceil(max/step)*step; if(top/step<3) { step=step/2; top=Math.ceil(max/step)*step; }
+    var cw=(W-pl)/n, bw=Math.max(1,cw-2), y=function(v){ return pt+(H-pt-pb)*(1-v/top); };
+    var s='<svg viewBox="0 0 '+W+' '+H+'" role="img" aria-label="'+esc(label)+'">';
+    for(var g=0; g<=top+1e-9; g+=step){ s+='<line x1="'+pl+'" x2="'+W+'" y1="'+y(g)+'" y2="'+y(g)+'" stroke="var(--line)" stroke-width="1"/><text class="axis" x="'+(pl-6)+'" y="'+(y(g)+3)+'" text-anchor="end">'+fmt(Math.round(g))+'</text>'; }
+    var every=Math.ceil(n/10);
+    rows.forEach(function(r,i){
+      var v=r[key], x=pl+i*cw+1, yy=y(v), h=(H-pb)-yy, rad=Math.min(4,bw/2,h);
+      s+='<g class="col" data-i="'+i+'"><rect x="'+(pl+i*cw)+'" y="'+pt+'" width="'+cw+'" height="'+(H-pt-pb)+'" fill="transparent"/>';
+      if(v>0) s+='<path class="bar" d="M'+x+','+(H-pb)+' V'+(yy+rad)+' Q'+x+','+yy+' '+(x+rad)+','+yy+' H'+(x+bw-rad)+' Q'+(x+bw)+','+yy+' '+(x+bw)+','+(yy+rad)+' V'+(H-pb)+' Z" fill="'+color+'"/>';
+      s+='</g>';
+      if(i%every===0) s+='<text class="axis" x="'+(pl+i*cw+cw/2)+'" y="'+(H-6)+'" text-anchor="middle">'+fdate(r.day)+'</text>';
+    });
+    s+='<line x1="'+pl+'" x2="'+W+'" y1="'+(H-pb)+'" y2="'+(H-pb)+'" stroke="var(--line-strong)"/></svg><div class="tip"></div>';
+    el.innerHTML=s;
+    var tip=el.querySelector(".tip"), svg=el.querySelector("svg");
+    el.querySelectorAll("g.col").forEach(function(gEl){
+      gEl.addEventListener("mousemove",function(ev){ var r=rows[+gEl.getAttribute("data-i")]; var b=el.getBoundingClientRect();
+        tip.style.display="block"; tip.style.left=(ev.clientX-b.left)+"px"; tip.style.top=(ev.clientY-b.top)+"px";
+        tip.textContent=fdate(r.day)+" · "+fmt(r[key])+" "+label; });
+      gEl.addEventListener("mouseleave",function(){ tip.style.display="none"; });
+    });
+  }
+
+  function list(title, rows, map, unit){
+    var tot=rows.reduce(function(a,r){return a+r[1];},0);
+    return '<div class="card"><h3 style="margin-top:0">'+esc(title)+'</h3>'+(rows.length?'<table class="t"><tr><th></th><th>'+esc(unit||"visitatori")+'</th></tr>'+
+      rows.map(function(r){ return '<tr><td>'+esc(map?(map[r[0]]||r[0]):r[0])+'</td><td class="mono">'+fmt(r[1])+(tot?' <span class="faint">'+Math.round(r[1]*100/tot)+'%</span>':'')+'</td></tr>'; }).join("")+'</table>'
+      :'<p class="faint">Ancora nessun dato.</p>')+'</div>';
+  }
+
+  function render(){
+    var c=data.current, p=data.previous, t=data.totals;
+    $("period").textContent="Dal "+c.start.split("-").reverse().join("/")+" al "+c.end.split("-").reverse().join("/");
+    var K=[["Visitatori unici","visitors"],["Pagine viste","pageviews"],["Verifiche gratuite","checks"],["Appezzamenti verificati","plots_checked"],["Report salvati","reports"],["PDF scaricati","pdfs"],["Nuovi account","signups"],["Contatti ricevuti","leads"]];
+    $("kpis").innerHTML=K.map(function(k){ return '<div class="card kpi"><div class="n">'+fmt(c[k[1]])+'</div><div class="k">'+k[0]+'</div>'+delta(c[k[1]],p[k[1]])+'</div>'; }).join("");
+    barChart($("chVisitors"), data.daily, "visitors", "#2E7D52", "visitatori");
+    barChart($("chChecks"), data.daily, "checks", "#8A5A2B", "verifiche");
+    var v0=Math.max(1,c.funnel[0].visitors);
+    $("funnel").innerHTML=c.funnel.map(function(f,i){ var pct=Math.round(f.visitors*1000/v0)/10;
+      return '<div class="row"><div>'+esc(f.label)+'</div><div class="track"><div class="fill" style="width:'+(i===0?100:Math.min(100,f.visitors*100/v0))+'%"></div></div><div class="num">'+fmt(f.visitors)+(i?' <span>'+pct+'%</span>':'')+'</div></div>'; }).join("");
+    $("lists").innerHTML=list("Paesi",c.countries,COUNTRY)+list("Lingue del sito",c.langs,LANG)+list("Provenienze (siti che vi linkano)",c.refs)+
+      list("Campagne (origine-campagna)",c.utm)+list("Pagine più viste",c.pages,null,"visitatori")+list("Dispositivi",c.devices,{mobile:"Telefono",desktop:"Computer"})+
+      list("Paesi di chi fa verifiche",c.check_countries,COUNTRY);
+    var plans=t.plans||{};
+    $("totals").innerHTML=[["Account",t.orgs],["Piano Pro",plans.pro||0],["Piano Business",plans.business||0],["Appezzamenti salvati",t.plots],["Report salvati (totale)",t.reports],["Contatti (totale)",t.leads],["Pagine pubbliche attive",t.public_pages],["Badge mostrati nel periodo",c.badge_views]]
+      .map(function(k){ return '<div class="card kpi" style="margin:0"><div class="n" style="font-size:1.5rem">'+fmt(k[1]||0)+'</div><div class="k">'+k[0]+'</div></div>'; }).join("");
+    $("leads").innerHTML=data.leads.length?'<tr><th>Data</th><th>Email</th><th>Azienda</th><th>Da dove</th><th>Messaggio</th></tr>'+data.leads.map(function(l){
+      return '<tr><td class="mono">'+esc((l.at||"").slice(0,10))+'</td><td><a href="mailto:'+esc(l.email)+'">'+esc(l.email)+'</a></td><td>'+esc(l.company)+'</td><td>'+esc([l.source,l.kind].filter(Boolean).join(" · "))+'</td><td>'+esc(l.message)+'</td></tr>'; }).join("")
+      :'<tr><td class="faint">Ancora nessun contatto.</td></tr>';
+  }
+
+  $("go").onclick=async function(){ try{ sessionStorage.setItem("gp_admin",$("tok").value.trim()); }catch(e){} $("loginMsg").innerHTML=""; await load(); };
+  $("tok").addEventListener("keydown",function(e){ if(e.key==="Enter") $("go").click(); });
+  $("out").onclick=function(){ try{ sessionStorage.removeItem("gp_admin"); }catch(e){} data=null; show("login"); };
+  document.querySelectorAll("#seg button").forEach(function(b){ b.onclick=function(){ days=+b.getAttribute("data-d");
+    document.querySelectorAll("#seg button").forEach(function(x){ x.classList.toggle("on",x===b); }); load(); }; });
+  try{ $("notrack").checked=localStorage.getItem("gp_notrack")==="1"; }catch(e){}
+  $("notrack").onchange=function(){ try{ if(this.checked) localStorage.setItem("gp_notrack","1"); else localStorage.removeItem("gp_notrack"); }catch(e){} };
+  $("sendWeekly").onclick=async function(){ var b=this; b.disabled=true; $("weeklyMsg").textContent="Invio…";
+    try{ var r=await fetch(GP.API+"/admin/weekly-report",{method:"POST",headers:{"X-Admin-Token":tok()}}); var j=await r.json();
+      $("weeklyMsg").textContent=j.sent?("Inviato a "+j.to):"Invio non riuscito"; }catch(e){ $("weeklyMsg").textContent="Errore: "+e.message; }
+    b.disabled=false; };
+  GP.nav();
+  if(tok()) load(); else show("login");
+})();
+</script>
+</body>
+</html>

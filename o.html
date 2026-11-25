@@ -1,0 +1,109 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>Verified origins — GroveProof · EUDR check for coffee</title>
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<link rel="icon" href="assets/favicon.svg" type="image/svg+xml">
+<link rel="icon" href="assets/favicon-32.png" sizes="32x32" type="image/png">
+<link rel="apple-touch-icon" href="assets/apple-touch-icon.png">
+<meta name="theme-color" content="#2E7D52">
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="GroveProof — EUDR deforestation check for coffee">
+<meta property="og:title" content="Verified origins — GroveProof · EUDR check for coffee">
+<meta property="og:description" content="Coffee origins checked by satellite against EU deforestation rules (EUDR, cut-off 31 Dec 2020).">
+<meta property="og:url" content="https://groveproof.com/o.html">
+<meta property="og:image" content="https://groveproof.com/assets/og.jpg">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta property="og:image:alt" content="GroveProof — prove your coffee is deforestation-free">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="description" content="Coffee origins checked against satellite deforestation data (EUDR cut-off 31 Dec 2020).">
+<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,600;9..144,900&family=Libre+Franklin:wght@400;500;600;700&family=IBM+Plex+Mono:wght@400;600&display=swap">
+<link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css">
+<script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+<script src="assets/map.js"></script>
+<link rel="stylesheet" href="assets/gp.css">
+<script src="assets/gp.js"></script>
+<style>.hero{padding:2.2rem 0 1rem}.seal{display:inline-flex;align-items:center;gap:.5rem;background:var(--good-soft);color:var(--good);border-radius:99px;padding:.35rem .8rem;font:600 .78rem "IBM Plex Mono",monospace;text-transform:uppercase;letter-spacing:.04em}</style>
+</head>
+<body>
+<nav class="top" id="gpnav"></nav>
+<main class="wrap">
+  <div id="box"><p class="muted hero" data-t="loading">Loading…</p><p class="faint" id="waking"></p></div>
+</main>
+<footer class="ft" id="gpfoot"></footer>
+<script>
+GP.strings = {
+  en:{loading:"Loading…",waking:"Waking up the server, this can take up to a minute…",notfound:"This page does not exist or is not published.",seal:"Origins checked by satellite",
+    intro:"%n checked the farms its coffee comes from against satellite forest data. EUDR rule: no deforestation after 31 December 2020.",
+    k_plots:"Plots of origin",k_ok:"Deforestation-free",k_countries:"Countries",k_last:"Last check",
+    plot:"Plot",country:"Country",result:"Result",checked:"Checked",privacy:"Locations are rounded to about 1 km and producer names are not shown, to protect the farmers.",
+    how_h:"How it works",how_p:"GroveProof compares each farm with public satellite datasets (Global Forest Watch: JRC forest cover 2020, UMD tree cover loss, protected areas). A screening result is not a legal certificate; the company remains responsible for its due diligence.",
+    method:"Read the methodology",visit:"Visit the website",own:"Are you a roaster? Check your own origins for free",at_risk:"Under review"},
+  de:{loading:"Wird geladen…",waking:"Server startet, das kann bis zu einer Minute dauern…",notfound:"Diese Seite existiert nicht oder ist nicht veröffentlicht.",seal:"Herkunft per Satellit geprüft",
+    intro:"%n hat die Farmen, von denen sein Kaffee stammt, mit Satelliten-Walddaten geprüft. EUDR-Regel: keine Entwaldung nach dem 31. Dezember 2020.",
+    k_plots:"Herkunftsgrundstücke",k_ok:"Entwaldungsfrei",k_countries:"Länder",k_last:"Letzte Prüfung",
+    plot:"Grundstück",country:"Land",result:"Ergebnis",checked:"Geprüft",privacy:"Standorte sind auf ca. 1 km gerundet, Produzentennamen werden zum Schutz der Bauern nicht gezeigt.",
+    how_h:"So funktioniert es",how_p:"GroveProof vergleicht jede Farm mit öffentlichen Satellitendaten (Global Forest Watch: JRC-Waldbedeckung 2020, UMD-Baumverlust, Schutzgebiete). Ein Screening-Ergebnis ist kein rechtliches Zertifikat; das Unternehmen bleibt für seine Sorgfaltspflicht verantwortlich.",
+    method:"Zur Methodik",visit:"Zur Website",own:"Sie rösten selbst? Prüfen Sie Ihre Herkünfte kostenlos",at_risk:"In Prüfung"},
+  it:{loading:"Caricamento…",waking:"Il server si sta svegliando, può servire fino a un minuto…",notfound:"Questa pagina non esiste o non è pubblicata.",seal:"Origini verificate da satellite",
+    intro:"%n ha verificato le aziende agricole da cui arriva il suo caffè con i dati satellitari sulle foreste. Regola EUDR: nessuna deforestazione dopo il 31 dicembre 2020.",
+    k_plots:"Appezzamenti d'origine",k_ok:"Senza deforestazione",k_countries:"Paesi",k_last:"Ultima verifica",
+    plot:"Appezzamento",country:"Paese",result:"Esito",checked:"Verificato",privacy:"Le posizioni sono arrotondate a circa 1 km e i nomi dei produttori non sono mostrati, per tutelare i coltivatori.",
+    how_h:"Come funziona",how_p:"GroveProof confronta ogni azienda agricola con dati satellitari pubblici (Global Forest Watch: copertura forestale JRC 2020, perdita di copertura arborea UMD, aree protette). L'esito di uno screening non è un certificato legale; l'azienda resta responsabile della propria dovuta diligenza.",
+    method:"Leggi la metodologia",visit:"Visita il sito",own:"Sei una torrefazione? Verifica gratis le tue origini",at_risk:"In verifica"},
+  fr:{loading:"Chargement…",waking:"Démarrage du serveur, cela peut prendre jusqu'à une minute…",notfound:"Cette page n'existe pas ou n'est pas publiée.",seal:"Origines vérifiées par satellite",
+    intro:"%n a vérifié les exploitations d'où vient son café grâce aux données satellitaires sur les forêts. Règle EUDR : aucune déforestation après le 31 décembre 2020.",
+    k_plots:"Parcelles d'origine",k_ok:"Sans déforestation",k_countries:"Pays",k_last:"Dernière vérification",
+    plot:"Parcelle",country:"Pays",result:"Résultat",checked:"Vérifiée",privacy:"Les positions sont arrondies à environ 1 km et les noms des producteurs ne sont pas affichés, pour protéger les agriculteurs.",
+    how_h:"Comment ça marche",how_p:"GroveProof compare chaque exploitation à des données satellitaires publiques (Global Forest Watch : couvert forestier JRC 2020, perte de couvert arboré UMD, aires protégées). Un résultat de dépistage n'est pas un certificat légal ; l'entreprise reste responsable de sa diligence raisonnée.",
+    method:"Lire la méthodologie",visit:"Visiter le site",own:"Vous êtes torréfacteur ? Vérifiez vos origines gratuitement",at_risk:"En cours d'examen"},
+  es:{loading:"Cargando…",waking:"Iniciando el servidor, puede tardar hasta un minuto…",notfound:"Esta página no existe o no está publicada.",seal:"Origen verificado por satélite",
+    intro:"%n ha verificado las fincas de las que procede su café con datos satelitales sobre los bosques. Norma EUDR: ninguna deforestación después del 31 de diciembre de 2020.",
+    k_plots:"Parcelas de origen",k_ok:"Libres de deforestación",k_countries:"Países",k_last:"Última verificación",
+    plot:"Parcela",country:"País",result:"Resultado",checked:"Verificada",privacy:"Las ubicaciones están redondeadas a aprox. 1 km y no se muestran los nombres de los productores, para proteger a los agricultores.",
+    how_h:"Cómo funciona",how_p:"GroveProof compara cada finca con datos satelitales públicos (Global Forest Watch: cobertura forestal JRC 2020, pérdida de cobertura arbórea UMD, áreas protegidas). Un resultado de cribado no es un certificado legal; la empresa sigue siendo responsable de su diligencia debida.",
+    method:"Leer la metodología",visit:"Visitar el sitio web",own:"¿Es usted tostador? Verifique sus orígenes gratis",at_risk:"En revisión"},
+  pl:{loading:"Ładowanie…",waking:"Uruchamianie serwera, może to potrwać do minuty…",notfound:"Ta strona nie istnieje lub nie została opublikowana.",seal:"Pochodzenie zweryfikowane satelitarnie",
+    intro:"%n sprawdził gospodarstwa, z których pochodzi jego kawa, na podstawie satelitarnych danych o lasach. Zasada EUDR: brak wylesiania po 31 grudnia 2020 r.",
+    k_plots:"Działki pochodzenia",k_ok:"Bez wylesiania",k_countries:"Kraje",k_last:"Ostatnia weryfikacja",
+    plot:"Działka",country:"Kraj",result:"Wynik",checked:"Sprawdzono",privacy:"Lokalizacje są zaokrąglone do ok. 1 km, a nazwiska producentów nie są pokazywane, aby chronić rolników.",
+    how_h:"Jak to działa",how_p:"GroveProof porównuje każde gospodarstwo z publicznymi danymi satelitarnymi (Global Forest Watch: pokrywa leśna JRC 2020, utrata pokrywy drzewnej UMD, obszary chronione). Wynik wstępnej weryfikacji nie jest certyfikatem prawnym; firma pozostaje odpowiedzialna za należytą staranność.",
+    method:"Przeczytaj metodologię",visit:"Odwiedź stronę",own:"Prowadzisz palarnię? Sprawdź swoje pochodzenie za darmo",at_risk:"W trakcie weryfikacji"}
+};
+(function(){
+  var esc=GP.esc, t=GP.t, data=null, slug=new URLSearchParams(location.search).get("s")||"";
+  GP.onWaking=function(){ var w=document.getElementById("waking"); if(w) w.textContent=t("waking"); };
+  GP.onLang=function(){ GP.nav(); render(); };
+  function vt(v){ return v==="A_RISCHIO" ? '<span class="chip miss">'+esc(t("at_risk"))+'</span>' : GP.vchip(v); }
+  function render(){
+    var box=document.getElementById("box"); GP.applyI18n();
+    if(!data){ return; }
+    var s=data.summary, name=data.name||slug, safeWeb=/^https?:\/\//i.test(data.website||"")?data.website:(data.website?"https://"+data.website:"");
+    document.title = name+" — "+t("seal")+" · GroveProof, "+GP.tagline();
+    box.innerHTML =
+      '<section class="hero"><span class="seal">✓ '+esc(t("seal"))+'</span><h1 style="margin-top:.8rem">'+esc(name)+'</h1>'+
+      '<p class="muted" style="max-width:680px">'+esc(t("intro").replace("%n",name))+'</p>'+
+      (data.text?'<p style="max-width:680px">'+esc(data.text)+'</p>':'')+
+      (safeWeb?'<a class="btn sm ghost" href="'+esc(safeWeb)+'" rel="noopener" target="_blank">'+esc(t("visit"))+' →</a>':'')+'</section>'+
+      '<div class="grid g4"><div class="card kpi"><div class="n">'+s.plots+'</div><div class="k">'+esc(t("k_plots"))+'</div></div>'+
+      '<div class="card kpi"><div class="n" style="color:var(--good)">'+s.deforestation_free+'</div><div class="k">'+esc(t("k_ok"))+'</div></div>'+
+      '<div class="card kpi"><div class="n">'+s.countries.length+'</div><div class="k">'+esc(t("k_countries"))+'</div><div class="faint">'+esc(s.countries.join(", "))+'</div></div>'+
+      '<div class="card kpi"><div class="n" style="font-size:1.3rem">'+esc((s.last_check||"—").slice(0,10))+'</div><div class="k">'+esc(t("k_last"))+'</div></div></div>'+
+      '<div class="card" style="margin-top:1rem"><div class="map" id="omap"></div><p class="faint">'+esc(t("privacy"))+'</p>'+
+      '<div class="scroll"><table class="t"><tr><th>'+esc(t("plot"))+'</th><th>'+esc(t("country"))+'</th><th>ha</th><th>'+esc(t("result"))+'</th><th>'+esc(t("checked"))+'</th></tr>'+
+      data.plots.map(function(p){ return '<tr><td class="mono">'+esc(p.ref)+'</td><td>'+esc(p.country)+'</td><td>'+esc(p.area_ha==null?"":p.area_ha)+'</td><td>'+vt(p.verdict)+'</td><td class="mono faint">'+esc((p.checked_at||"").slice(0,10))+'</td></tr>'; }).join("")+
+      '</table></div></div>'+
+      '<div class="card"><h3>'+esc(t("how_h"))+'</h3><p class="muted">'+esc(t("how_p"))+'</p><div class="row"><a class="btn sm ghost" href="index.html#method">'+esc(t("method"))+'</a><a class="btn sm" href="index.html?ref=origin-page#tool">'+esc(t("own"))+'</a></div></div>';
+    var m=GP.map("omap"); m.draw(data.plots.map(function(p){ return {lat:p.lat,lng:p.lng,verdict:p.verdict==="A_RISCHIO"?"DATI_MANCANTI":p.verdict,label:data.plots.length<=30?p.ref:""}; }));
+  }
+  GP.nav(); GP.applyI18n();
+  if(!/^[a-z0-9-]{3,60}$/.test(slug)){ document.getElementById("box").innerHTML='<p class="hero muted">'+esc(t("notfound"))+'</p>'; return; }
+  GP.api("/public/"+encodeURIComponent(slug)).then(function(d){ data=d; if(!new URLSearchParams(location.search).get("lang") && !GP.store("gp_lang") && d.lang){ GP.lang=d.lang; GP.nav(); } render(); })
+    .catch(function(){ document.getElementById("box").innerHTML='<p class="hero muted">'+esc(t("notfound"))+'</p>'; });
+})();
+</script>
+</body>
+</html>

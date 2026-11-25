@@ -1,0 +1,75 @@
+/* GroveProof — stile comune delle pagine (area utente, origini, report, prezzi, legali) */
+:root{
+  --ground:#F4F0E9;--surface:#FBF8F2;--surface-2:#EBE4D6;--ink:#1E1912;--ink-soft:#574C3E;--ink-faint:#8A7D6B;
+  --line:#DED3C0;--line-strong:#C7B9A1;--accent:#2E7D52;--accent-soft:#D4E8DA;--accent-ink:#1C5737;
+  --good:#2F8D5E;--good-soft:#D7E8DE;--warn:#C8891A;--warn-soft:#F6E8CC;--bad:#C0432F;--bad-soft:#F3DBD4;
+  --shadow:0 1px 2px rgba(30,25,18,.06),0 14px 40px -20px rgba(30,25,18,.3);
+}
+@media (prefers-color-scheme: dark){:root{
+  --ground:#12100A;--surface:#1C1810;--surface-2:#272117;--ink:#EEE8DC;--ink-soft:#B4A994;--ink-faint:#857A67;
+  --line:#2E2819;--line-strong:#443C29;--accent:#54BE86;--accent-soft:#13301F;--accent-ink:#79CF9D;
+  --good:#5BCB90;--good-soft:#152a1e;--warn:#E0A64E;--warn-soft:#2E2413;--bad:#E8745C;--bad-soft:#2E1B18;
+  --shadow:0 1px 2px rgba(0,0,0,.5),0 16px 44px -22px rgba(0,0,0,.85);}}
+*{box-sizing:border-box}
+body{margin:0;background:var(--ground);color:var(--ink);font-family:"Libre Franklin",system-ui,-apple-system,sans-serif;line-height:1.55;-webkit-font-smoothing:antialiased;}
+h1,h2,h3{font-family:"Fraunces",Georgia,serif;letter-spacing:-.02em;text-wrap:balance;margin:0 0 .5rem;}
+h1{font-size:clamp(1.9rem,5vw,3rem);font-weight:900;line-height:1.05}
+h2{font-size:clamp(1.35rem,3vw,1.8rem);font-weight:600}
+h3{font-size:1.1rem;font-weight:600}
+a{color:var(--accent-ink)}
+.mono{font-family:"IBM Plex Mono",ui-monospace,monospace}
+.wrap{max-width:1080px;margin:0 auto;padding:0 clamp(16px,4vw,32px)}
+nav.top{position:sticky;top:0;z-index:30;background:color-mix(in srgb,var(--ground) 90%,transparent);backdrop-filter:blur(8px);border-bottom:1px solid var(--line)}
+nav.top .in{display:flex;align-items:center;gap:1rem;max-width:1080px;margin:0 auto;padding:.7rem clamp(16px,4vw,32px);flex-wrap:wrap}
+.logo{display:flex;align-items:center;gap:.45rem;font-family:"Fraunces",serif;font-weight:900;font-size:1.15rem;margin-right:auto;color:var(--ink);text-decoration:none}
+.logo svg{width:22px;height:22px}
+nav.top a.l{font-size:.86rem;color:var(--ink-soft);text-decoration:none}
+nav.top a.l:hover{color:var(--ink)}
+.langsel{font-family:"IBM Plex Mono",monospace;font-size:.74rem;font-weight:600;color:var(--ink);background:var(--surface);border:1px solid var(--line-strong);border-radius:8px;padding:.38rem .5rem;cursor:pointer;max-width:9.5rem}
+nav.top a.l{white-space:nowrap}
+.btn{font:600 .9rem "Libre Franklin",sans-serif;cursor:pointer;border:none;border-radius:10px;padding:.65rem 1.1rem;background:var(--accent);color:#fff;text-decoration:none;display:inline-block;transition:transform .1s,opacity .2s}
+.btn:hover{transform:translateY(-1px)}.btn:disabled{opacity:.5;cursor:default;transform:none}
+.btn.sm{padding:.45rem .75rem;font-size:.8rem}
+.btn.ghost{background:var(--surface);color:var(--ink);border:1px solid var(--line-strong)}
+.btn.danger{background:var(--surface);color:var(--bad);border:1px solid var(--bad)}
+.card{background:var(--surface);border:1px solid var(--line);border-radius:16px;box-shadow:var(--shadow);padding:1.2rem 1.3rem}
+.card+.card{margin-top:1rem}
+.grid{display:grid;gap:1rem}
+.g2{grid-template-columns:repeat(auto-fit,minmax(280px,1fr))}
+.g3{grid-template-columns:repeat(auto-fit,minmax(220px,1fr))}
+.g4{grid-template-columns:repeat(auto-fit,minmax(160px,1fr))}
+.kpi .n{font-family:"Fraunces",serif;font-weight:900;font-size:2rem;line-height:1}
+.kpi .k{font-family:"IBM Plex Mono",monospace;font-size:.66rem;letter-spacing:.06em;text-transform:uppercase;color:var(--ink-faint);margin-top:.35rem}
+.muted{color:var(--ink-soft)}.faint{color:var(--ink-faint);font-size:.85rem}
+label.f{display:block;font-size:.78rem;font-weight:600;color:var(--ink-soft);margin:.5rem 0 .25rem}
+input.i,select.i,textarea.i{width:100%;background:var(--ground);border:1px solid var(--line);border-radius:8px;padding:.55rem .65rem;font:inherit;font-size:.9rem;color:var(--ink)}
+input.i:focus,select.i:focus,textarea.i:focus{outline:2px solid var(--accent);border-color:var(--accent)}
+.row{display:flex;gap:.6rem;flex-wrap:wrap;align-items:center}
+.scroll{overflow-x:auto}
+table.t{border-collapse:collapse;width:100%;font-size:.86rem}
+table.t th{text-align:left;font-family:"IBM Plex Mono",monospace;font-size:.64rem;text-transform:uppercase;letter-spacing:.05em;color:var(--ink-faint);font-weight:600;padding:.5rem;border-bottom:1px solid var(--line)}
+table.t td{padding:.5rem;border-bottom:1px solid var(--line);vertical-align:top}
+table.t tr:last-child td{border-bottom:none}
+.chip{display:inline-block;font-family:"IBM Plex Mono",monospace;font-size:.62rem;font-weight:600;text-transform:uppercase;letter-spacing:.03em;padding:.15rem .42rem;border-radius:5px;background:var(--surface-2);color:var(--ink-soft);white-space:nowrap}
+.chip.ok{background:var(--good-soft);color:var(--good)}.chip.risk{background:var(--bad-soft);color:var(--bad)}.chip.miss{background:var(--warn-soft);color:var(--warn)}
+.tabs{display:flex;gap:.3rem;flex-wrap:wrap;border-bottom:1px solid var(--line);margin:1.2rem 0 1rem}
+.tabs button{background:none;border:none;border-bottom:2px solid transparent;padding:.6rem .8rem;font:600 .9rem "Libre Franklin",sans-serif;color:var(--ink-soft);cursor:pointer}
+.tabs button.on{color:var(--ink);border-bottom-color:var(--accent)}
+.hide{display:none!important}
+.notice{border-radius:10px;padding:.7rem .9rem;font-size:.88rem;margin:.6rem 0}
+.notice.ok{background:var(--good-soft);color:var(--good)}.notice.err{background:var(--bad-soft);color:var(--bad)}.notice.info{background:var(--accent-soft);color:var(--accent-ink)}
+.map{height:360px;border-radius:12px;border:1px solid var(--line);overflow:hidden}
+.reasons{font-size:.78rem;color:var(--ink-soft);margin:.25rem 0 0;padding-left:1rem}
+.reasons li.w{color:var(--warn)}
+footer.ft{border-top:1px solid var(--line);margin-top:3rem;padding:1.6rem 0;font-size:.82rem;color:var(--ink-faint)}
+footer.ft a{color:var(--ink-soft);margin-right:1rem}
+.price{display:flex;flex-direction:column}
+.price .p{font-family:"Fraunces",serif;font-size:2.1rem;font-weight:900}
+.price ul{padding-left:1.1rem;margin:.6rem 0 1rem;flex:1}
+.price.hl{border:2px solid var(--accent)}
+.legal{max-width:760px}
+.legal .todo{background:var(--warn-soft);color:var(--warn);padding:.05rem .3rem;border-radius:4px;font-weight:600}
+.leaflet-tooltip.plot-label{font-family:"IBM Plex Mono",monospace;font-size:.7rem;font-weight:600;color:#1E1912;background:rgba(255,255,255,.92);border:1px solid #C7B9A1;border-radius:4px;padding:1px 5px;box-shadow:none}
+.leaflet-tooltip.plot-label::before{display:none}
+.logo .nm{display:flex;flex-direction:column;line-height:1.05}
+.logo .tg{font-family:"IBM Plex Mono",monospace;font-weight:600;font-size:.6rem;letter-spacing:.04em;text-transform:uppercase;color:var(--accent-ink);margin-top:.15rem}

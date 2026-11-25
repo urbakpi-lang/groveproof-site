@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>Page not found — GroveProof · EUDR check for coffee</title>
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="robots" content="noindex">
+<link rel="icon" href="/assets/favicon.svg" type="image/svg+xml">
+<link rel="icon" href="/assets/favicon-32.png" sizes="32x32" type="image/png">
+<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,600;9..144,900&family=Libre+Franklin:wght@400;500;600;700&family=IBM+Plex+Mono:wght@400;600&display=swap">
+<link rel="stylesheet" href="/assets/gp.css">
+<script src="/assets/gp.js"></script>
+</head>
+<body>
+<nav class="top" id="gpnav"></nav>
+<main class="wrap" style="padding:4rem 0 3rem;max-width:640px">
+  <div class="faint mono">404</div>
+  <h1 data-t="h">This page does not exist</h1>
+  <p class="muted" data-t="p">The link may be old or mistyped. The free satellite check is still here.</p>
+  <div class="row" style="margin-top:1.2rem">
+    <a class="btn" href="/" data-t="home">Go to the free check</a>
+    <a class="btn ghost" href="/app.html" data-t="acct">My account</a>
+  </div>
+</main>
+<footer class="ft" id="gpfoot"></footer>
+<script>
+GP.strings={
+  en:{h:"This page does not exist",p:"The link may be old or mistyped. The free satellite check is still here.",home:"Go to the free check",acct:"My account"},
+  de:{h:"Diese Seite gibt es nicht",p:"Der Link ist vielleicht veraltet oder falsch geschrieben. Der kostenlose Satelliten-Check ist weiterhin hier.",home:"Zum kostenlosen Check",acct:"Mein Konto"},
+  fr:{h:"Cette page n'existe pas",p:"Le lien est peut-être ancien ou mal saisi. La vérification satellitaire gratuite est toujours là.",home:"Aller à la vérification gratuite",acct:"Mon compte"},
+  it:{h:"Questa pagina non esiste",p:"Il link potrebbe essere vecchio o sbagliato. La verifica satellitare gratuita è sempre qui.",home:"Vai alla verifica gratuita",acct:"Il mio account"},
+  es:{h:"Esta página no existe",p:"Puede que el enlace sea antiguo o esté mal escrito. La verificación satelital gratuita sigue aquí.",home:"Ir a la verificación gratuita",acct:"Mi cuenta"},
+  pl:{h:"Ta strona nie istnieje",p:"Link może być nieaktualny lub błędnie wpisany. Bezpłatna weryfikacja satelitarna nadal jest tutaj.",home:"Przejdź do bezpłatnej weryfikacji",acct:"Moje konto"}
+};
+GP.onLang=function(){ GP.nav(); GP.applyI18n(); };
+GP.nav(); GP.applyI18n();
+</script>
+</body>
+</html>

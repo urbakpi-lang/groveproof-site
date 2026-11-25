@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>EUDR checklist for coffee roasters — GroveProof</title>
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="description" content="Interactive EUDR checklist for coffee roasters: find your role, tick off the steps, keep reference numbers digitally. Free, no account.">
+<link rel="canonical" href="https://groveproof.com/eudr-checklist.html">
+<link rel="alternate" hreflang="en" href="https://groveproof.com/eudr-checklist.html">
+<link rel="alternate" hreflang="de" href="https://groveproof.com/eudr-checkliste.html">
+<link rel="icon" href="assets/favicon.svg" type="image/svg+xml">
+<link rel="apple-touch-icon" href="assets/apple-touch-icon.png">
+<meta name="theme-color" content="#2E7D52">
+<meta property="og:title" content="EUDR checklist for coffee roasters">
+<meta property="og:description" content="Interactive EUDR checklist for coffee roasters: find your role, tick off the steps, keep reference numbers digitally. Free, no account.">
+<meta property="og:image" content="https://groveproof.com/assets/og.jpg">
+<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,600;9..144,900&family=Libre+Franklin:wght@400;500;600;700&family=IBM+Plex+Mono:wght@400;600&display=swap">
+<link rel="stylesheet" href="assets/gp.css">
+<script src="assets/gp.js"></script>
+<style>
+.cl{max-width:760px}
+.cl h1{font-family:Fraunces,serif;font-weight:900;font-size:clamp(1.9rem,4.5vw,2.5rem);line-height:1.08;margin:.4rem 0 .6rem}
+.cl h2{font-family:Fraunces,serif;font-weight:900;font-size:1.35rem;margin:2rem 0 .5rem}
+.cl .meta{font-family:"IBM Plex Mono",monospace;font-size:.72rem;color:var(--ink-faint);text-transform:uppercase;letter-spacing:.05em}
+.cl .intro{background:var(--accent-soft);border-radius:14px;padding:.9rem 1.1rem;line-height:1.55}
+.role{display:flex;gap:.7rem;align-items:flex-start;border:1px solid var(--line);border-radius:12px;padding:.8rem;margin:.5rem 0;cursor:pointer;background:var(--surface)}
+.role small{display:none;margin-top:.35rem;color:var(--ink-soft);line-height:1.5;font-size:.9rem}
+.role:has(input:checked){border-color:var(--accent);box-shadow:0 0 0 2px var(--accent-soft)}
+.role:has(input:checked) small{display:block}
+.role span{display:block}
+.it{display:flex;gap:.7rem;align-items:flex-start;padding:.65rem .2rem;border-bottom:1px solid var(--line);cursor:pointer;line-height:1.5}
+.it input{width:1.15rem;height:1.15rem;margin-top:.15rem;accent-color:var(--accent);flex:none}
+.it:has(input:checked) span{text-decoration:line-through;color:var(--ink-faint)}
+.it.hide{display:none}
+.bar{height:8px;background:var(--surface-2);border-radius:99px;overflow:hidden;margin:.4rem 0 .2rem}.bar i{display:block;height:100%;background:var(--accent);width:0;transition:width .3s}
+.prog{font-family:"IBM Plex Mono",monospace;font-size:.78rem;color:var(--ink-soft)}
+.box2{border:1px solid var(--line);border-radius:14px;padding:1.1rem;margin:1rem 0}
+.tools{display:flex;gap:.8rem;flex-wrap:wrap;align-items:center;margin-top:1.5rem;font-size:.9rem}
+.tools button{background:none;border:1px solid var(--line-strong);border-radius:8px;padding:.35rem .7rem;font:inherit;color:var(--ink);cursor:pointer}
+@media print{nav.top,footer,.tools,.box2 .btn{display:none!important}.role small{display:block}.it.hide{display:flex}}
+</style>
+</head>
+<body>
+<nav class="top" id="gpnav"></nav>
+<main class="wrap cl" style="padding-top:2rem">
+<div class="meta">Checklist · Updated 24 November 2026 · <a href="eudr-checkliste.html">Deutsch</a></div>
+<h1>EUDR checklist for coffee roasters</h1>
+<p class="intro">Applies from 30 December 2026 (large and medium-sized companies) and from 30 June 2027 (micro and small companies). Deforestation cut-off: 31 December 2020. Your progress is saved only in this browser.</p>
+<h2>1. Your role</h2><p>How do you buy your green coffee? If you use several routes, pick the strictest.</p>
+<div id="roles"><label class="role"><input type="radio" name="role" value="op"><span><b>Directly at origin – I bring it into the EU myself</b><small>You are an <b>operator</b>: geolocation of every plot, risk assessment and a due diligence statement in the EU information system before import.</small></span></label><label class="role"><input type="radio" name="role" value="ds"><span><b>From an importer in the EU</b><small>You are the <b>first downstream operator</b>: no statement of your own. You collect and keep the reference number of your importer's due diligence statement.</small></span></label><label class="role"><input type="radio" name="role" value="tr"><span><b>From a trader or another roaster</b><small>You are <b>further downstream</b>: you keep information on your direct business partners.</small></span></label></div>
+<h2>2. Tick off</h2>
+<div class="bar"><i id="bar"></i></div><div class="prog" id="prog"></div>
+<div id="items"><label class="it" data-r="all"><input type="checkbox" data-i="0"><span>Set the role for every supplier (direct import or EU importer).</span></label><label class="it" data-r="ds"><input type="checkbox" data-i="1"><span>Agree with every importer that the statement reference number comes with each delivery.</span></label><label class="it" data-r="ds"><input type="checkbox" data-i="2"><span>File reference numbers per lot.</span></label><label class="it" data-r="op"><input type="checkbox" data-i="3"><span>Ask producers for the geolocation of every plot (point or polygon).</span></label><label class="it" data-r="op"><input type="checkbox" data-i="4"><span>Carry out the risk assessment and submit the due diligence statement before import.</span></label><label class="it" data-r="all"><input type="checkbox" data-i="5"><span>Check plots with satellite data: forest loss after 31 Dec 2020?</span></label><label class="it" data-r="all"><input type="checkbox" data-i="6"><span>Keep a list of customers and suppliers.</span></label><label class="it" data-r="all"><input type="checkbox" data-i="7"><span>Keep everything for five years.</span></label><label class="it" data-r="all"><input type="checkbox" data-i="8"><span>Large companies (non-SMEs): check registration in the EU information system.</span></label></div>
+<h2>3. Keep reference numbers digitally</h2>
+<div class="box2"><p style="margin-top:0">The free GroveProof account has the register: supplier, lot, reference number, plots – with satellite check and export as CSV or PDF.</p>
+<a class="btn" href="app.html?utm_source=checklist&amp;utm_campaign=en">Create your free register</a> &nbsp; <a href="index.html?utm_source=checklist&amp;utm_campaign=en#tool">Check a plot →</a></div>
+<div class="tools"><button onclick="window.print()">Print</button><a href="assets/eudr-checklist-roasters.pdf">PDF version</a><button id="reset">Reset</button><a href="eudr-coffee-roasters.html">Read the full guide →</a></div>
+<p class="note" style="font-size:.82rem;color:var(--ink-faint);margin-top:1.5rem">Not legal advice. Sources and explanations in the guide.</p>
+</main>
+<footer class="ft" id="gpfoot"></footer>
+<script>
+GP.lang="en";GP.nav();
+(function(){var K="gp_checklist",st={};try{st=JSON.parse(localStorage.getItem(K)||"{}")}catch(e){}
+var DONE="{n} of {t} done",boxes=[].slice.call(document.querySelectorAll("#items input")),radios=[].slice.call(document.querySelectorAll("#roles input"));
+function save(){try{localStorage.setItem(K,JSON.stringify(st))}catch(e){}}
+function paint(){var role=st.role||"",vis=0,n=0;
+ document.querySelectorAll("#items .it").forEach(function(el){var r=el.getAttribute("data-r"),show=r==="all"||!role||r===role||(role==="tr"&&false);
+  if(role==="tr"&&r!=="all")show=false; el.classList.toggle("hide",!show);
+  var cb=el.querySelector("input");if(show){vis++;if(cb.checked)n++;}});
+ document.getElementById("prog").textContent=DONE.replace("{n}",n).replace("{t}",vis);
+ document.getElementById("bar").style.width=(vis?Math.round(100*n/vis):0)+"%";}
+boxes.forEach(function(b){var i=b.getAttribute("data-i");b.checked=!!(st.c&&st.c[i]);b.onchange=function(){st.c=st.c||{};st.c[i]=b.checked;save();paint();};});
+radios.forEach(function(r){r.checked=st.role===r.value;r.onchange=function(){st.role=r.value;save();paint();};});
+document.getElementById("reset").onclick=function(){st={};save();boxes.forEach(function(b){b.checked=false});radios.forEach(function(r){r.checked=false});paint();};
+paint();})();
+</script>
+</body>
+</html>

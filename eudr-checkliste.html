@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+<meta charset="utf-8">
+<title>EUDR-Checkliste für Kaffeeröstereien — GroveProof</title>
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="description" content="Interaktive EUDR-Checkliste für Kaffeeröstereien: Rolle bestimmen, Punkte abhaken, Referenznummern digital führen. Kostenlos, ohne Konto.">
+<link rel="canonical" href="https://groveproof.com/eudr-checkliste.html">
+<link rel="alternate" hreflang="de" href="https://groveproof.com/eudr-checkliste.html">
+<link rel="alternate" hreflang="en" href="https://groveproof.com/eudr-checklist.html">
+<link rel="icon" href="assets/favicon.svg" type="image/svg+xml">
+<link rel="apple-touch-icon" href="assets/apple-touch-icon.png">
+<meta name="theme-color" content="#2E7D52">
+<meta property="og:title" content="EUDR-Checkliste für Kaffeeröstereien">
+<meta property="og:description" content="Interaktive EUDR-Checkliste für Kaffeeröstereien: Rolle bestimmen, Punkte abhaken, Referenznummern digital führen. Kostenlos, ohne Konto.">
+<meta property="og:image" content="https://groveproof.com/assets/og.jpg">
+<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,600;9..144,900&family=Libre+Franklin:wght@400;500;600;700&family=IBM+Plex+Mono:wght@400;600&display=swap">
+<link rel="stylesheet" href="assets/gp.css">
+<script src="assets/gp.js"></script>
+<style>
+.cl{max-width:760px}
+.cl h1{font-family:Fraunces,serif;font-weight:900;font-size:clamp(1.9rem,4.5vw,2.5rem);line-height:1.08;margin:.4rem 0 .6rem}
+.cl h2{font-family:Fraunces,serif;font-weight:900;font-size:1.35rem;margin:2rem 0 .5rem}
+.cl .meta{font-family:"IBM Plex Mono",monospace;font-size:.72rem;color:var(--ink-faint);text-transform:uppercase;letter-spacing:.05em}
+.cl .intro{background:var(--accent-soft);border-radius:14px;padding:.9rem 1.1rem;line-height:1.55}
+.role{display:flex;gap:.7rem;align-items:flex-start;border:1px solid var(--line);border-radius:12px;padding:.8rem;margin:.5rem 0;cursor:pointer;background:var(--surface)}
+.role small{display:none;margin-top:.35rem;color:var(--ink-soft);line-height:1.5;font-size:.9rem}
+.role:has(input:checked){border-color:var(--accent);box-shadow:0 0 0 2px var(--accent-soft)}
+.role:has(input:checked) small{display:block}
+.role span{display:block}
+.it{display:flex;gap:.7rem;align-items:flex-start;padding:.65rem .2rem;border-bottom:1px solid var(--line);cursor:pointer;line-height:1.5}
+.it input{width:1.15rem;height:1.15rem;margin-top:.15rem;accent-color:var(--accent);flex:none}
+.it:has(input:checked) span{text-decoration:line-through;color:var(--ink-faint)}
+.it.hide{display:none}
+.bar{height:8px;background:var(--surface-2);border-radius:99px;overflow:hidden;margin:.4rem 0 .2rem}.bar i{display:block;height:100%;background:var(--accent);width:0;transition:width .3s}
+.prog{font-family:"IBM Plex Mono",monospace;font-size:.78rem;color:var(--ink-soft)}
+.box2{border:1px solid var(--line);border-radius:14px;padding:1.1rem;margin:1rem 0}
+.tools{display:flex;gap:.8rem;flex-wrap:wrap;align-items:center;margin-top:1.5rem;font-size:.9rem}
+.tools button{background:none;border:1px solid var(--line-strong);border-radius:8px;padding:.35rem .7rem;font:inherit;color:var(--ink);cursor:pointer}
+@media print{nav.top,footer,.tools,.box2 .btn{display:none!important}.role small{display:block}.it.hide{display:flex}}
+</style>
+</head>
+<body>
+<nav class="top" id="gpnav"></nav>
+<main class="wrap cl" style="padding-top:2rem">
+<div class="meta">Checkliste · Stand: 24. November 2026 · <a href="eudr-checklist.html">English</a></div>
+<h1>EUDR-Checkliste für Kaffeeröstereien</h1>
+<p class="intro">Gilt ab 30. Dezember 2026 (große und mittlere Unternehmen) und ab 30. Juni 2027 (Kleinst- und Kleinunternehmen). Stichtag für Entwaldung: 31. Dezember 2020. Ihr Fortschritt wird nur in diesem Browser gespeichert.</p>
+<h2>1. Ihre Rolle</h2><p>Wie kaufen Sie Ihren Rohkaffee? Bei mehreren Wegen wählen Sie den strengsten.</p>
+<div id="roles"><label class="role"><input type="radio" name="role" value="op"><span><b>Direkt im Ursprungsland, ich bringe ihn selbst in die EU</b><small>Sie sind <b>Marktteilnehmer</b>: Geolokalisierung jedes Grundstücks, Risikobewertung und Sorgfaltserklärung im EU-Informationssystem vor dem Import.</small></span></label><label class="role"><input type="radio" name="role" value="ds"><span><b>Bei einem Importeur in der EU</b><small>Sie sind <b>erster nachgelagerter Marktteilnehmer</b>: keine eigene Sorgfaltserklärung. Sie sammeln und bewahren die Referenznummer der Sorgfaltserklärung Ihres Importeurs auf.</small></span></label><label class="role"><input type="radio" name="role" value="tr"><span><b>Bei einem Händler oder einer anderen Rösterei</b><small>Sie sind <b>weiter nachgelagert</b>: Sie halten Angaben zu Ihren direkten Geschäftspartnern bereit.</small></span></label></div>
+<h2>2. Abhaken</h2>
+<div class="bar"><i id="bar"></i></div><div class="prog" id="prog"></div>
+<div id="items"><label class="it" data-r="all"><input type="checkbox" data-i="0"><span>Für jeden Lieferanten die Rolle festlegen (Direktimport oder EU-Importeur).</span></label><label class="it" data-r="ds"><input type="checkbox" data-i="1"><span>Mit jedem Importeur vereinbaren, dass die Referenznummer der Sorgfaltserklärung mit jeder Lieferung kommt.</span></label><label class="it" data-r="ds"><input type="checkbox" data-i="2"><span>Referenznummern je Los ablegen.</span></label><label class="it" data-r="op"><input type="checkbox" data-i="3"><span>Geolokalisierung jedes Grundstücks (Punkt oder Polygon) bei den Produzenten anfordern.</span></label><label class="it" data-r="op"><input type="checkbox" data-i="4"><span>Risikobewertung durchführen und die Sorgfaltserklärung vor dem Import einreichen.</span></label><label class="it" data-r="all"><input type="checkbox" data-i="5"><span>Grundstücke mit Satellitendaten prüfen: Waldverlust nach dem 31.12.2020?</span></label><label class="it" data-r="all"><input type="checkbox" data-i="6"><span>Liste der Kunden und Lieferanten pflegen.</span></label><label class="it" data-r="all"><input type="checkbox" data-i="7"><span>Alles fünf Jahre aufbewahren.</span></label><label class="it" data-r="all"><input type="checkbox" data-i="8"><span>Große Unternehmen (keine KMU): Registrierung im EU-Informationssystem prüfen.</span></label></div>
+<h2>3. Referenznummern digital führen</h2>
+<div class="box2"><p style="margin-top:0">Im kostenlosen GroveProof-Konto führen Sie das Register: Lieferant, Los, Referenznummer, Grundstücke – mit Satellitenprüfung und Export als CSV oder PDF.</p>
+<a class="btn" href="app.html?utm_source=checklist&amp;utm_campaign=de">Register kostenlos anlegen</a> &nbsp; <a href="index.html?utm_source=checklist&amp;utm_campaign=de#tool">Grundstück prüfen →</a></div>
+<div class="tools"><button onclick="window.print()">Drucken</button><a href="assets/eudr-checkliste-roesterei.pdf">PDF-Version</a><button id="reset">Zurücksetzen</button><a href="eudr-kaffee-roesterei.html">Zum ausführlichen Leitfaden →</a></div>
+<p class="note" style="font-size:.82rem;color:var(--ink-faint);margin-top:1.5rem">Keine Rechtsberatung. Quellen und Erläuterungen im Leitfaden.</p>
+</main>
+<footer class="ft" id="gpfoot"></footer>
+<script>
+GP.lang="de";GP.nav();
+(function(){var K="gp_checklist",st={};try{st=JSON.parse(localStorage.getItem(K)||"{}")}catch(e){}
+var DONE="{n} von {t} erledigt",boxes=[].slice.call(document.querySelectorAll("#items input")),radios=[].slice.call(document.querySelectorAll("#roles input"));
+function save(){try{localStorage.setItem(K,JSON.stringify(st))}catch(e){}}
+function paint(){var role=st.role||"",vis=0,n=0;
+ document.querySelectorAll("#items .it").forEach(function(el){var r=el.getAttribute("data-r"),show=r==="all"||!role||r===role||(role==="tr"&&false);
+  if(role==="tr"&&r!=="all")show=false; el.classList.toggle("hide",!show);
+  var cb=el.querySelector("input");if(show){vis++;if(cb.checked)n++;}});
+ document.getElementById("prog").textContent=DONE.replace("{n}",n).replace("{t}",vis);
+ document.getElementById("bar").style.width=(vis?Math.round(100*n/vis):0)+"%";}
+boxes.forEach(function(b){var i=b.getAttribute("data-i");b.checked=!!(st.c&&st.c[i]);b.onchange=function(){st.c=st.c||{};st.c[i]=b.checked;save();paint();};});
+radios.forEach(function(r){r.checked=st.role===r.value;r.onchange=function(){st.role=r.value;save();paint();};});
+document.getElementById("reset").onclick=function(){st={};save();boxes.forEach(function(b){b.checked=false});radios.forEach(function(r){r.checked=false});paint();};
+paint();})();
+</script>
+</body>
+</html>
