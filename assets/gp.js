@@ -17,6 +17,7 @@
     document.querySelectorAll("[data-t]").forEach(function (el) { el.textContent = GP.t(el.getAttribute("data-t")); });
     document.querySelectorAll("[data-th]").forEach(function (el) { el.innerHTML = GP.t(el.getAttribute("data-th")); });
     document.querySelectorAll("[data-tp]").forEach(function (el) { el.setAttribute("placeholder", GP.t(el.getAttribute("data-tp"))); });
+    document.querySelectorAll(".gp-disc").forEach(function (x) { x.textContent = GP.disclaimer(); });
     document.querySelectorAll(".langsel").forEach(function (x) { x.value = GP.lang; });
   };
   GP.setLang = function (l) { GP.lang = l; store("gp_lang", l); GP.applyI18n(); if (GP.onLang) GP.onLang(l); };
@@ -87,6 +88,15 @@
     fr: "Vérification EUDR du café", es: "Verificación EUDR del café", pl: "Weryfikacja EUDR kawy" };
   var LANGNAME = { en: "EN · English", de: "DE · Deutsch", fr: "FR · Français", it: "IT · Italiano", es: "ES · Español", pl: "PL · Polski" };
   GP.tagline = function () { return TAG[GP.lang] || TAG.en; };
+  var DISC = {
+    en: "Automated screening on third-party satellite data – not a certificate and not legal advice. The due diligence remains with the operator. Data: UMD/Hansen tree cover loss, JRC Global Forest Cover 2020, WRI/Google DeepMind drivers, LandMark (via Global Forest Watch, CC BY 4.0); Natural Earth borders.",
+    de: "Automatisiertes Screening auf Satellitendaten Dritter – kein Zertifikat und keine Rechtsberatung. Die Sorgfaltspflicht bleibt beim Marktteilnehmer. Daten: UMD/Hansen Baumverlust, JRC Global Forest Cover 2020, WRI/Google DeepMind Ursachen, LandMark (über Global Forest Watch, CC BY 4.0); Grenzen: Natural Earth.",
+    it: "Screening automatico su dati satellitari di terzi – non è un certificato né una consulenza legale. La due diligence resta dell'operatore. Dati: UMD/Hansen perdita di copertura arborea, JRC Global Forest Cover 2020, cause WRI/Google DeepMind, LandMark (via Global Forest Watch, CC BY 4.0); confini Natural Earth.",
+    fr: "Analyse automatisée sur des données satellitaires de tiers – ni certificat ni conseil juridique. La diligence raisonnée reste à la charge de l'opérateur. Données : UMD/Hansen perte de couvert arboré, JRC Global Forest Cover 2020, causes WRI/Google DeepMind, LandMark (via Global Forest Watch, CC BY 4.0) ; frontières Natural Earth.",
+    es: "Análisis automático con datos satelitales de terceros: no es un certificado ni asesoramiento jurídico. La diligencia debida corresponde al operador. Datos: UMD/Hansen pérdida de cobertura arbórea, JRC Global Forest Cover 2020, causas WRI/Google DeepMind, LandMark (vía Global Forest Watch, CC BY 4.0); fronteras Natural Earth.",
+    pl: "Automatyczna analiza danych satelitarnych stron trzecich – nie jest certyfikatem ani poradą prawną. Obowiązek należytej staranności spoczywa na podmiocie. Dane: UMD/Hansen utrata pokrywy drzewnej, JRC Global Forest Cover 2020, przyczyny WRI/Google DeepMind, LandMark (przez Global Forest Watch, CC BY 4.0); granice Natural Earth."
+  };
+  GP.disclaimer = function () { return DISC[GP.lang] || DISC.en; };
   GP.nav = function () {
     var n = NAV[GP.lang] || NAV.en, el = document.getElementById("gpnav"), ft = document.getElementById("gpfoot");
     if (el) el.innerHTML = '<div class="in"><a class="logo" href="index.html">' + LEAF + '<span class="nm">GroveProof<small class="tg">' + GP.tagline() + '</small></span></a>' +

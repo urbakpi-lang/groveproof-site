@@ -17,13 +17,11 @@
 <meta property="og:image" content="https://groveproof.com/assets/og.jpg">
 <meta property="og:image:width" content="1200">
 <meta property="og:image:height" content="630">
-<meta property="og:image:alt" content="GroveProof — prove your coffee is deforestation-free">
+<meta property="og:image:alt" content="GroveProof — EUDR deforestation check for coffee">
 <meta name="twitter:card" content="summary_large_image">
-<link rel="preconnect" href="https://fonts.googleapis.com">
-<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,400;9..144,600;9..144,900&family=Libre+Franklin:wght@400;500;600;700&family=IBM+Plex+Mono:wght@400;500;600&display=swap">
-<link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css">
-<script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+<link rel="stylesheet" href="assets/fonts/fonts.css">
+<link rel="stylesheet" href="assets/leaflet/leaflet.css">
+<script src="assets/leaflet/leaflet.js"></script>
 <script src="assets/map.js"></script>
 <style>
   :root{
@@ -196,7 +194,7 @@
   <header class="hero">
     <div>
     <span class="pill-top" data-i18n="hero_badge">● EUDR deadline · 30 Dec 2026</span>
-    <h1 data-i18n="hero_h1">Prove your coffee is <em>deforestation-free</em>.</h1>
+    <h1 data-i18n="hero_h1">Check whether your coffee is <em>deforestation-free</em>.</h1>
     <p data-i18n="hero_p">The EU Deforestation Regulation lands in 2026. Check your entire supply chain against satellite data in seconds — <b>free</b> — and keep the records the EUDR asks for. Built for roasters who need proof, fast.</p>
     <div class="cta">
       <a class="btn" href="#tool" data-i18n="hero_cta">Check my supply chain — free</a>
@@ -284,11 +282,11 @@
 
   <section id="how">
     <div class="eyebrow" data-i18n="how_eyebrow">How it works</div>
-    <h2 class="sh" data-i18n="how_h2">From coordinates to compliance</h2>
+    <h2 class="sh" data-i18n="how_h2">From coordinates to due-diligence records</h2>
     <div class="steps">
       <div class="step"><div class="n">01</div><h3 data-i18n="s1h">Enter your plots</h3><p data-i18n="s1p">Add your suppliers' geolocations — or upload them later. Takes minutes.</p></div>
       <div class="step"><div class="n">02</div><h3 data-i18n="s2h">Satellite verification</h3><p data-i18n="s2p">Each plot is checked for forest loss after 31 Dec 2020 using Sentinel-2, JRC and Hansen data.</p></div>
-      <div class="step"><div class="n">03</div><h3 data-i18n="s3h">Keep the records</h3><p data-i18n="s3p">Save the report as PDF, keep lots and DDS numbers in your free register, and show your verified origins to customers.</p></div>
+      <div class="step"><div class="n">03</div><h3 data-i18n="s3h">Keep the records</h3><p data-i18n="s3p">Save the report as PDF, keep lots and DDS numbers in your free register, and show customers your origin data.</p></div>
     </div>
   </section>
 
@@ -299,7 +297,7 @@
       <div class="m"><b data-i18n="m1h">1 · Data quality</b><span data-i18n="m1p">Impossible or swapped coordinates, points at sea, wrong country, invalid polygons, the 4-hectare rule.</span></div>
       <div class="m"><b data-i18n="m2h">2 · Forest in 2020</b><span data-i18n="m2p">JRC Global Forest Cover 2020 — the EU's own reference map — tells whether the plot was forest at the cut-off.</span></div>
       <div class="m"><b data-i18n="m3h">3 · Loss after 2020</b><span data-i18n="m3p">Hansen/UMD tree-cover loss from 2021 on, with its likely cause (WRI / Google DeepMind) to separate deforestation from fire or pruning.</span></div>
-      <div class="m"><b data-i18n="m4h">4 · Risk & legality signals</b><span data-i18n="m4p">Official EU country risk (Regulation 2025/1093), protected areas and indigenous lands. Every verdict comes with a confidence level and its reasons.</span></div>
+      <div class="m"><b data-i18n="m4h">4 · Risk & legality signals</b><span data-i18n="m4p">Official EU country risk (Regulation 2025/1093) and indigenous lands. Every verdict comes with a confidence level and its reasons.</span></div>
     </div>
   </section>
 
@@ -340,9 +338,9 @@
   var T = {
     en: {saving:"Saving…", saved:"✓ Report saved:", open:"Open report", pdf:"Download PDF", copy:"Copy link", no_api:"You can save the report after a satellite check.", bad_email:"Enter a valid email or leave the field empty."}, // il resto di EN è inline nell'HTML
     de: {
-      hero_ex:"Beispielergebnis", hero_try:"Prüfung mit diesen Beispiel-Grundstücken testen →", nav_how:"So funktioniert's", nav_eudr:"EUDR", nav_cta:"Gratis-Check", tagline:"Entwaldungsfrei-Nachweis für Kaffee",
+      hero_ex:"Beispielergebnis", hero_try:"Prüfung mit diesen Beispiel-Grundstücken testen →", nav_how:"So funktioniert's", nav_eudr:"EUDR", nav_cta:"Gratis-Check", tagline:"EUDR-Entwaldungscheck für Kaffee",
       hero_badge:"● EUDR-Frist · 30. Dez 2026",
-      hero_h1:"Beweisen Sie, dass Ihr Kaffee <em>entwaldungsfrei</em> ist.",
+      hero_h1:"Prüfen Sie, ob Ihr Kaffee <em>entwaldungsfrei</em> ist.",
       hero_p:"Die EU-Entwaldungsverordnung kommt 2026. Prüfen Sie Ihre gesamte Lieferkette in Sekunden mit Satellitendaten — <b>kostenlos</b> — und führen Sie die Aufzeichnungen, die die EUDR verlangt. Gemacht für Röstereien, die schnell Nachweise brauchen.",
       hero_cta:"Lieferkette prüfen — gratis", hero_note:"Kein Konto nötig · Ergebnis in Sekunden",
       trust_base:"Stichtag 31. Dez 2020",
@@ -358,10 +356,10 @@
       ph_email:"sie@roesterei.de (optional)", ph_company:"Name der Rösterei", btn_send:"Bericht + PDF speichern",
       acct_cta:'Grundstücke behalten, Chargen und DDS-Nummern erfassen und Warnungen erhalten? <a href="app.html">Kostenloses Konto erstellen</a> · <a href="pricing.html">Tarife</a>',
       nav_pricing:"Preise", nav_imp:"Für Importeure", nav_login:"Anmelden", l_imp:"Impressum", l_priv:"Datenschutz", l_terms:"AGB",
-      how_eyebrow:"So funktioniert's", how_h2:"Von Koordinaten zur Konformität",
+      how_eyebrow:"So funktioniert's", how_h2:"Von Koordinaten zur Sorgfaltsdokumentation",
       s1h:"Grundstücke eingeben", s1p:"Geolokationen der Lieferanten hinzufügen — oder später hochladen. In Minuten erledigt.",
       s2h:"Satelliten-Verifizierung", s2p:"Jedes Grundstück wird mit Sentinel-2, JRC und Hansen auf Waldverlust nach dem 31.12.2020 geprüft.",
-      s3h:"Aufzeichnungen führen", s3p:"Bericht als PDF speichern, Chargen und DDS-Nummern im kostenlosen Register führen und Kunden die geprüfte Herkunft zeigen.",
+      s3h:"Aufzeichnungen führen", s3p:"Bericht als PDF speichern, Chargen und DDS-Nummern im kostenlosen Register führen und Kunden Ihre Herkunftsdaten zeigen.",
       eudr_eyebrow:"Warum das zählt", eudr_h2:"Die EU-Entwaldungsverordnung",
       eudr_lead:"Ab dem 30. Dezember 2026 müssen Marktteilnehmer, die Kaffee in der EU in Verkehr bringen, grundstücksgenau nachweisen, dass er entwaldungsfrei und legal erzeugt ist. Verstöße bedeuten blockierte Sendungen und hohe Bußgelder.",
       f1:"Frist für mittlere &amp; große Marktteilnehmer (KMU: 30. Juni 2027).",
@@ -378,7 +376,7 @@
       m1h:"1 · Datenqualität", m1p:"Unmögliche oder vertauschte Koordinaten, Punkte im Meer, falsches Land, ungültige Polygone, die 4-Hektar-Regel.",
       m2h:"2 · Wald im Jahr 2020", m2p:"JRC Global Forest Cover 2020 — die Referenzkarte der EU — zeigt, ob das Grundstück zum Stichtag Wald war.",
       m3h:"3 · Verlust nach 2020", m3p:"Baumverlust nach Hansen/UMD ab 2021, mit wahrscheinlicher Ursache (WRI / Google DeepMind), um Entwaldung von Feuer oder Rückschnitt zu trennen.",
-      m4h:"4 · Risiko- und Legalitätssignale", m4p:"Offizielles EU-Länderrisiko (Verordnung 2025/1093), Schutzgebiete und indigene Gebiete. Jedes Ergebnis mit Vertrauensstufe und Begründung.",
+      m4h:"4 · Risiko- und Legalitätssignale", m4p:"Offizielles EU-Länderrisiko (Verordnung 2025/1093) und indigene Gebiete. Jedes Ergebnis mit Vertrauensstufe und Begründung.",
       band_h2:"Schlagen Sie die Frist — mit Sicherheit.",
       band_p:"Gratis starten. Sehen Sie genau, welche Lieferanten unbedenklich sind und welche einen zweiten Blick brauchen — vor Ihren Wettbewerbern.",
       band_cta:"Gratis-Check starten",
@@ -389,7 +387,7 @@
       hero_ex:"Esempio di risultato", hero_try:"Prova la verifica con questi appezzamenti di esempio →", nav_how:"Come funziona", nav_eudr:"EUDR", nav_cta:"Verifica gratis", tagline:"Verifica EUDR per il caffè", nav_duty:"Cosa devo fare?",
       nav_pricing:"Prezzi", nav_imp:"Per importatori", nav_login:"Accedi", l_imp:"Note legali", l_priv:"Privacy", l_terms:"Termini",
       hero_badge:"● Scadenza EUDR · 30 dic 2026",
-      hero_h1:"Dimostra che il tuo caffè è <em>senza deforestazione</em>.",
+      hero_h1:"Verifica se il tuo caffè è <em>senza deforestazione</em>.",
       hero_p:"Il Regolamento UE sulla deforestazione arriva nel 2026. Verifica tutta la tua filiera con i dati satellitari in pochi secondi — <b>gratis</b> — e conserva i dati che l'EUDR richiede. Pensato per le torrefazioni che hanno bisogno di prove, in fretta.",
       hero_cta:"Verifica la mia filiera — gratis", hero_note:"Nessun account · esito in pochi secondi",
       trust_base:"Data di riferimento 31 dic 2020",
@@ -403,10 +401,10 @@
       lead_p:"Ottieni un link e un PDF da mandare al tuo importatore, ai clienti o a un auditor. L'email è facoltativa.",
       ph_email:"tu@torrefazione.it (facoltativa)", ph_company:"Nome della torrefazione", btn_send:"Salva report + PDF",
       acct_cta:'Vuoi conservare questi appezzamenti, registrare lotti e numeri DDS e ricevere avvisi? <a href="app.html">Crea un account gratuito</a> · <a href="pricing.html">Piani</a>',
-      how_eyebrow:"Come funziona", how_h2:"Dalle coordinate alla conformità",
+      how_eyebrow:"Come funziona", how_h2:"Dalle coordinate alla documentazione EUDR",
       s1h:"Inserisci gli appezzamenti", s1p:"Aggiungi le geolocalizzazioni dei fornitori, oppure caricale dopo. Bastano pochi minuti.",
       s2h:"Verifica satellitare", s2p:"Ogni appezzamento è controllato per perdita di foresta dopo il 31/12/2020 con i dati JRC e Hansen/UMD.",
-      s3h:"Conserva i dati", s3p:"Salva il report in PDF, tieni lotti e numeri DDS nel registro gratuito e mostra ai clienti le origini verificate.",
+      s3h:"Conserva i dati", s3p:"Salva il report in PDF, tieni lotti e numeri DDS nel registro gratuito e mostra ai clienti i dati d'origine.",
       eudr_eyebrow:"Perché conta", eudr_h2:"Il Regolamento UE sulla deforestazione",
       eudr_lead:"Dal 30 dicembre 2026 chi immette caffè sul mercato UE deve dimostrare, appezzamento per appezzamento, che è senza deforestazione e prodotto legalmente. Chi non è in regola rischia spedizioni bloccate e sanzioni pesanti.",
       f1:"Scadenza per operatori medi e grandi (PMI: 30 giugno 2027).",
@@ -421,7 +419,7 @@
       m1h:"1 · Qualità dei dati", m1p:"Coordinate impossibili o invertite, punti in mare, paese sbagliato, poligoni non validi, la regola dei 4 ettari.",
       m2h:"2 · Foresta nel 2020", m2p:"La mappa JRC Global Forest Cover 2020, il riferimento dell'UE, dice se l'appezzamento era foresta alla data limite.",
       m3h:"3 · Perdita dopo il 2020", m3p:"Perdita di copertura arborea Hansen/UMD dal 2021, con la causa probabile (WRI / Google DeepMind) per distinguere la deforestazione da incendi o potature.",
-      m4h:"4 · Segnali di rischio e legalità", m4p:"Rischio paese ufficiale UE (Regolamento 2025/1093), aree protette e terre indigene. Ogni esito ha un livello di confidenza e le sue motivazioni.",
+      m4h:"4 · Segnali di rischio e legalità", m4p:"Rischio paese ufficiale UE (Regolamento 2025/1093) e terre indigene. Ogni esito ha un livello di confidenza e le sue motivazioni.",
       band_h2:"Arriva alla scadenza tranquillo.",
       band_p:"Inizia gratis. Scopri quali fornitori sono a posto e quali vanno guardati meglio, prima dei tuoi concorrenti.",
       band_cta:"Avvia la verifica gratuita",
@@ -432,7 +430,7 @@
       hero_ex:"Exemple de résultat", hero_try:"Essayer la vérification avec ces parcelles d'exemple →", nav_how:"Comment ça marche", nav_eudr:"EUDR", nav_cta:"Vérification gratuite", tagline:"Vérification EUDR du café", nav_duty:"Que dois-je faire ?",
       nav_pricing:"Tarifs", nav_imp:"Pour les importateurs", nav_login:"Connexion", l_imp:"Mentions légales", l_priv:"Confidentialité", l_terms:"Conditions",
       hero_badge:"● Échéance EUDR · 30 déc. 2026",
-      hero_h1:"Prouvez que votre café est <em>sans déforestation</em>.",
+      hero_h1:"Vérifiez si votre café est <em>sans déforestation</em>.",
       hero_p:"Le règlement européen sur la déforestation s'applique en 2026. Vérifiez toute votre chaîne d'approvisionnement avec des données satellitaires en quelques secondes — <b>gratuitement</b> — et conservez les informations exigées par l'EUDR. Conçu pour les torréfacteurs qui ont besoin de preuves, vite.",
       hero_cta:"Vérifier ma chaîne d'approvisionnement — gratuit", hero_note:"Sans compte · résultat en quelques secondes",
       trust_base:"Date de référence 31 déc. 2020",
@@ -446,10 +444,10 @@
       lead_p:"Obtenez un lien et un PDF à envoyer à votre importateur, à vos clients ou à un auditeur. L'e-mail est facultatif.",
       ph_email:"vous@torrefaction.fr (facultatif)", ph_company:"Nom de la torréfaction", btn_send:"Enregistrer le rapport + PDF",
       acct_cta:'Vous voulez conserver ces parcelles, enregistrer lots et numéros DDS et recevoir des alertes ? <a href="app.html">Créez un compte gratuit</a> · <a href="pricing.html">Offres</a>',
-      how_eyebrow:"Comment ça marche", how_h2:"Des coordonnées à la conformité",
+      how_eyebrow:"Comment ça marche", how_h2:"Des coordonnées au dossier EUDR",
       s1h:"Saisissez les parcelles", s1p:"Ajoutez les géolocalisations de vos fournisseurs, ou importez-les plus tard. Quelques minutes suffisent.",
       s2h:"Vérification satellitaire", s2p:"Chaque parcelle est contrôlée pour toute perte de forêt après le 31/12/2020 avec les données JRC et Hansen/UMD.",
-      s3h:"Conservez les informations", s3p:"Enregistrez le rapport en PDF, tenez lots et numéros DDS dans le registre gratuit et montrez vos origines vérifiées à vos clients.",
+      s3h:"Conservez les informations", s3p:"Enregistrez le rapport en PDF, tenez lots et numéros DDS dans le registre gratuit et montrez vos données d'origine à vos clients.",
       eudr_eyebrow:"Pourquoi c'est important", eudr_h2:"Le règlement européen sur la déforestation",
       eudr_lead:"À partir du 30 décembre 2026, quiconque met du café sur le marché de l'UE doit prouver, parcelle par parcelle, qu'il est sans déforestation et produit légalement. Sinon : expéditions bloquées et lourdes sanctions.",
       f1:"Échéance pour les moyens et grands opérateurs (micro et petites entreprises : 30 juin 2027).",
@@ -464,7 +462,7 @@
       m1h:"1 · Qualité des données", m1p:"Coordonnées impossibles ou inversées, points en mer, mauvais pays, polygones non valides, règle des 4 hectares.",
       m2h:"2 · Forêt en 2020", m2p:"La carte JRC Global Forest Cover 2020, référence de l'UE, indique si la parcelle était une forêt à la date butoir.",
       m3h:"3 · Perte après 2020", m3p:"Perte de couvert arboré Hansen/UMD depuis 2021, avec sa cause probable (WRI / Google DeepMind) pour distinguer la déforestation des incendies ou de la taille.",
-      m4h:"4 · Signaux de risque et de légalité", m4p:"Risque pays officiel de l'UE (règlement 2025/1093), aires protégées et terres autochtones. Chaque résultat indique un niveau de confiance et ses motifs.",
+      m4h:"4 · Signaux de risque et de légalité", m4p:"Risque pays officiel de l'UE (règlement 2025/1093) et terres autochtones. Chaque résultat indique un niveau de confiance et ses motifs.",
       band_h2:"Abordez l'échéance sereinement.",
       band_p:"Commencez gratuitement. Voyez quels fournisseurs sont en règle et lesquels méritent un examen, avant vos concurrents.",
       band_cta:"Lancer la vérification gratuite",
@@ -475,7 +473,7 @@
       hero_ex:"Ejemplo de resultado", hero_try:"Probar la verificación con estas parcelas de ejemplo →", nav_how:"Cómo funciona", nav_eudr:"EUDR", nav_cta:"Verificación gratuita", tagline:"Verificación EUDR del café", nav_duty:"¿Qué debo hacer?",
       nav_pricing:"Precios", nav_imp:"Para importadores", nav_login:"Acceder", l_imp:"Aviso legal", l_priv:"Privacidad", l_terms:"Condiciones",
       hero_badge:"● Plazo EUDR · 30 dic. 2026",
-      hero_h1:"Demuestre que su café está <em>libre de deforestación</em>.",
+      hero_h1:"Compruebe si su café está <em>libre de deforestación</em>.",
       hero_p:"El Reglamento europeo sobre deforestación se aplica en 2026. Verifique toda su cadena de suministro con datos satelitales en segundos — <b>gratis</b> — y conserve los datos que exige el EUDR. Pensado para tostadores que necesitan pruebas, rápido.",
       hero_cta:"Verificar mi cadena de suministro — gratis", hero_note:"Sin cuenta · resultado en segundos",
       trust_base:"Fecha de referencia 31 dic. 2020",
@@ -489,10 +487,10 @@
       lead_p:"Obtenga un enlace y un PDF para enviar a su importador, a sus clientes o a un auditor. El correo es opcional.",
       ph_email:"usted@tostador.es (opcional)", ph_company:"Nombre del tostador", btn_send:"Guardar informe + PDF",
       acct_cta:'¿Quiere conservar estas parcelas, registrar lotes y números DDS y recibir alertas? <a href="app.html">Cree una cuenta gratuita</a> · <a href="pricing.html">Planes</a>',
-      how_eyebrow:"Cómo funciona", how_h2:"De las coordenadas al cumplimiento",
+      how_eyebrow:"Cómo funciona", how_h2:"De las coordenadas al expediente EUDR",
       s1h:"Introduzca las parcelas", s1p:"Añada las geolocalizaciones de sus proveedores, o súbalas más tarde. Bastan unos minutos.",
       s2h:"Verificación satelital", s2p:"Cada parcela se controla para detectar pérdida de bosque después del 31/12/2020 con los datos JRC y Hansen/UMD.",
-      s3h:"Conserve los datos", s3p:"Guarde el informe en PDF, lleve lotes y números DDS en el registro gratuito y muestre a sus clientes los orígenes verificados.",
+      s3h:"Conserve los datos", s3p:"Guarde el informe en PDF, lleve lotes y números DDS en el registro gratuito y muestre a sus clientes los datos de origen.",
       eudr_eyebrow:"Por qué importa", eudr_h2:"El Reglamento europeo sobre deforestación",
       eudr_lead:"Desde el 30 de diciembre de 2026, quien introduzca café en el mercado de la UE debe demostrar, parcela por parcela, que está libre de deforestación y producido legalmente. Si no: envíos bloqueados y sanciones elevadas.",
       f1:"Plazo para operadores medianos y grandes (micro y pequeñas empresas: 30 de junio de 2027).",
@@ -507,7 +505,7 @@
       m1h:"1 · Calidad de los datos", m1p:"Coordenadas imposibles o invertidas, puntos en el mar, país equivocado, polígonos no válidos, la regla de las 4 hectáreas.",
       m2h:"2 · Bosque en 2020", m2p:"El mapa JRC Global Forest Cover 2020, referencia de la UE, indica si la parcela era bosque en la fecha límite.",
       m3h:"3 · Pérdida después de 2020", m3p:"Pérdida de cobertura arbórea Hansen/UMD desde 2021, con su causa probable (WRI / Google DeepMind) para distinguir la deforestación de incendios o podas.",
-      m4h:"4 · Señales de riesgo y legalidad", m4p:"Riesgo país oficial de la UE (Reglamento 2025/1093), áreas protegidas y tierras indígenas. Cada resultado indica un nivel de confianza y sus motivos.",
+      m4h:"4 · Señales de riesgo y legalidad", m4p:"Riesgo país oficial de la UE (Reglamento 2025/1093) y tierras indígenas. Cada resultado indica un nivel de confianza y sus motivos.",
       band_h2:"Llegue al plazo con tranquilidad.",
       band_p:"Empiece gratis. Vea qué proveedores están en regla y cuáles hay que revisar, antes que sus competidores.",
       band_cta:"Iniciar la verificación gratuita",
@@ -518,7 +516,7 @@
       hero_ex:"Przykładowy wynik", hero_try:"Wypróbuj weryfikację na tych przykładowych działkach →", nav_how:"Jak to działa", nav_eudr:"EUDR", nav_cta:"Bezpłatna weryfikacja", tagline:"Weryfikacja EUDR kawy", nav_duty:"Co muszę zrobić?",
       nav_pricing:"Cennik", nav_imp:"Dla importerów", nav_login:"Zaloguj", l_imp:"Nota prawna", l_priv:"Prywatność", l_terms:"Regulamin",
       hero_badge:"● Termin EUDR · 30 gru 2026",
-      hero_h1:"Udowodnij, że Twoja kawa <em>nie powoduje wylesiania</em>.",
+      hero_h1:"Sprawdź, czy Twoja kawa <em>nie powoduje wylesiania</em>.",
       hero_p:"Unijne rozporządzenie w sprawie wylesiania zacznie obowiązywać w 2026 r. Sprawdź cały łańcuch dostaw na podstawie danych satelitarnych w kilka sekund — <b>za darmo</b> — i przechowuj dane, których wymaga EUDR. Stworzone dla palarni, które szybko potrzebują dowodów.",
       hero_cta:"Sprawdź mój łańcuch dostaw — za darmo", hero_note:"Bez konta · wynik w kilka sekund",
       trust_base:"Data odniesienia 31 gru 2020",
@@ -532,10 +530,10 @@
       lead_p:"Otrzymasz link i PDF do wysłania importerowi, klientom lub audytorowi. E-mail jest opcjonalny.",
       ph_email:"ty@palarnia.pl (opcjonalnie)", ph_company:"Nazwa palarni", btn_send:"Zapisz raport + PDF",
       acct_cta:'Chcesz zachować te działki, zapisywać partie i numery DDS oraz otrzymywać alerty? <a href="app.html">Załóż bezpłatne konto</a> · <a href="pricing.html">Plany</a>',
-      how_eyebrow:"Jak to działa", how_h2:"Od współrzędnych do zgodności",
+      how_eyebrow:"Jak to działa", how_h2:"Od współrzędnych do dokumentacji EUDR",
       s1h:"Wpisz działki", s1p:"Dodaj geolokalizację od dostawców albo prześlij ją później. Wystarczy kilka minut.",
       s2h:"Weryfikacja satelitarna", s2p:"Każda działka jest sprawdzana pod kątem utraty lasu po 31.12.2020 na podstawie danych JRC i Hansen/UMD.",
-      s3h:"Przechowuj dane", s3p:"Zapisz raport w PDF, prowadź partie i numery DDS w bezpłatnym rejestrze i pokaż klientom zweryfikowane pochodzenie.",
+      s3h:"Przechowuj dane", s3p:"Zapisz raport w PDF, prowadź partie i numery DDS w bezpłatnym rejestrze i pokaż klientom dane o pochodzeniu.",
       eudr_eyebrow:"Dlaczego to ważne", eudr_h2:"Unijne rozporządzenie w sprawie wylesiania",
       eudr_lead:"Od 30 grudnia 2026 r. każdy, kto wprowadza kawę na rynek UE, musi wykazać, działka po działce, że nie powoduje ona wylesiania i została wyprodukowana legalnie. W przeciwnym razie grożą zatrzymane dostawy i wysokie kary.",
       f1:"Termin dla średnich i dużych podmiotów (mikro- i małe przedsiębiorstwa: 30 czerwca 2027 r.).",
@@ -550,7 +548,7 @@
       m1h:"1 · Jakość danych", m1p:"Niemożliwe lub zamienione współrzędne, punkty w morzu, niewłaściwy kraj, nieprawidłowe wielokąty, zasada 4 hektarów.",
       m2h:"2 · Las w 2020 r.", m2p:"Mapa JRC Global Forest Cover 2020, punkt odniesienia UE, pokazuje, czy działka była lasem w dacie granicznej.",
       m3h:"3 · Utrata po 2020 r.", m3p:"Utrata pokrywy drzewnej Hansen/UMD od 2021 r., z prawdopodobną przyczyną (WRI / Google DeepMind), aby odróżnić wylesianie od pożarów lub przycinki.",
-      m4h:"4 · Sygnały ryzyka i legalności", m4p:"Oficjalne unijne ryzyko kraju (rozporządzenie 2025/1093), obszary chronione i ziemie ludności rdzennej. Każdy wynik ma poziom pewności i uzasadnienie.",
+      m4h:"4 · Sygnały ryzyka i legalności", m4p:"Oficjalne unijne ryzyko kraju (rozporządzenie 2025/1093) i ziemie ludności rdzennej. Każdy wynik ma poziom pewności i uzasadnienie.",
       band_h2:"Podejdź do terminu ze spokojem.",
       band_p:"Zacznij za darmo. Zobacz, którzy dostawcy są w porządku, a których trzeba sprawdzić, zanim zrobi to konkurencja.",
       band_cta:"Uruchom bezpłatną weryfikację",
@@ -559,12 +557,12 @@
     }
   };
   var LABELS = {
-    en:{miss:"Data needed",high:"Elevated risk",low:"Clear (pending check)",ok:"Deforestation-free",risk:"At risk — review",nofor:"No forest (clear)",pending:"Satellite check pending",std:"Standard-risk origin · check pending",lowc:"Low-risk origin · check pending",highc:"High-risk origin",conf:{alta:"high confidence",media:"medium confidence",bassa:"low confidence"},crisk:{alto:"high-risk country",standard:"standard-risk country",basso:"low-risk country"}},
-    de:{miss:"Daten fehlen",high:"Erhöhtes Risiko",low:"Unbedenklich (Prüfung folgt)",ok:"Entwaldungsfrei",risk:"Risiko — prüfen",nofor:"Kein Wald (unbedenklich)",pending:"Satellitenprüfung folgt",std:"Herkunft Standardrisiko · Prüfung folgt",lowc:"Herkunft geringes Risiko · Prüfung folgt",highc:"Herkunft hohes Risiko",conf:{alta:"hohe Sicherheit",media:"mittlere Sicherheit",bassa:"geringe Sicherheit"},crisk:{alto:"Land mit hohem Risiko",standard:"Land mit Standardrisiko",basso:"Land mit geringem Risiko"}},
-    it:{miss:"Dati mancanti",high:"Rischio elevato",low:"Senza problemi (verifica in corso)",ok:"Senza deforestazione",risk:"A rischio — da rivedere",nofor:"Nessuna foresta (a posto)",pending:"Verifica satellitare in attesa",std:"Origine a rischio standard · verifica in attesa",lowc:"Origine a basso rischio · verifica in attesa",highc:"Origine ad alto rischio",conf:{alta:"confidenza alta",media:"confidenza media",bassa:"confidenza bassa"},crisk:{alto:"paese ad alto rischio",standard:"paese a rischio standard",basso:"paese a basso rischio"}},
-    fr:{miss:"Données manquantes",high:"Risque élevé",low:"Sans problème (vérification à venir)",ok:"Sans déforestation",risk:"À risque — à examiner",nofor:"Pas de forêt (sans problème)",pending:"Vérification satellitaire à venir",std:"Origine à risque standard · vérification à venir",lowc:"Origine à faible risque · vérification à venir",highc:"Origine à risque élevé",conf:{alta:"confiance élevée",media:"confiance moyenne",bassa:"confiance faible"},crisk:{alto:"pays à risque élevé",standard:"pays à risque standard",basso:"pays à faible risque"}},
-    es:{miss:"Faltan datos",high:"Riesgo elevado",low:"Sin problemas (verificación pendiente)",ok:"Libre de deforestación",risk:"En riesgo — revisar",nofor:"Sin bosque (sin problemas)",pending:"Verificación satelital pendiente",std:"Origen de riesgo estándar · verificación pendiente",lowc:"Origen de bajo riesgo · verificación pendiente",highc:"Origen de alto riesgo",conf:{alta:"confianza alta",media:"confianza media",bassa:"confianza baja"},crisk:{alto:"país de alto riesgo",standard:"país de riesgo estándar",basso:"país de bajo riesgo"}},
-    pl:{miss:"Brak danych",high:"Podwyższone ryzyko",low:"Bez zastrzeżeń (weryfikacja w toku)",ok:"Bez wylesiania",risk:"Ryzyko — do weryfikacji",nofor:"Brak lasu (bez zastrzeżeń)",pending:"Weryfikacja satelitarna w toku",std:"Pochodzenie o standardowym ryzyku · weryfikacja w toku",lowc:"Pochodzenie o niskim ryzyku · weryfikacja w toku",highc:"Pochodzenie o wysokim ryzyku",conf:{alta:"wysoka pewność",media:"średnia pewność",bassa:"niska pewność"},crisk:{alto:"kraj wysokiego ryzyka",standard:"kraj standardowego ryzyka",basso:"kraj niskiego ryzyka"}}
+    en:{miss:"Data needed",high:"Elevated risk",low:"Clear (pending check)",ok:"No forest loss detected",risk:"At risk — review",nofor:"No forest (clear)",pending:"Satellite check pending",std:"Standard-risk origin · check pending",lowc:"Low-risk origin · check pending",highc:"High-risk origin",conf:{alta:"high confidence",media:"medium confidence",bassa:"low confidence"},crisk:{alto:"high-risk country",standard:"standard-risk country",basso:"low-risk country"}},
+    de:{miss:"Daten fehlen",high:"Erhöhtes Risiko",low:"Unbedenklich (Prüfung folgt)",ok:"Kein Waldverlust erkannt",risk:"Risiko — prüfen",nofor:"Kein Wald (unbedenklich)",pending:"Satellitenprüfung folgt",std:"Herkunft Standardrisiko · Prüfung folgt",lowc:"Herkunft geringes Risiko · Prüfung folgt",highc:"Herkunft hohes Risiko",conf:{alta:"hohe Sicherheit",media:"mittlere Sicherheit",bassa:"geringe Sicherheit"},crisk:{alto:"Land mit hohem Risiko",standard:"Land mit Standardrisiko",basso:"Land mit geringem Risiko"}},
+    it:{miss:"Dati mancanti",high:"Rischio elevato",low:"Senza problemi (verifica in corso)",ok:"Nessuna perdita forestale rilevata",risk:"A rischio — da rivedere",nofor:"Nessuna foresta (a posto)",pending:"Verifica satellitare in attesa",std:"Origine a rischio standard · verifica in attesa",lowc:"Origine a basso rischio · verifica in attesa",highc:"Origine ad alto rischio",conf:{alta:"confidenza alta",media:"confidenza media",bassa:"confidenza bassa"},crisk:{alto:"paese ad alto rischio",standard:"paese a rischio standard",basso:"paese a basso rischio"}},
+    fr:{miss:"Données manquantes",high:"Risque élevé",low:"Sans problème (vérification à venir)",ok:"Aucune perte forestière détectée",risk:"À risque — à examiner",nofor:"Pas de forêt (sans problème)",pending:"Vérification satellitaire à venir",std:"Origine à risque standard · vérification à venir",lowc:"Origine à faible risque · vérification à venir",highc:"Origine à risque élevé",conf:{alta:"confiance élevée",media:"confiance moyenne",bassa:"confiance faible"},crisk:{alto:"pays à risque élevé",standard:"pays à risque standard",basso:"pays à faible risque"}},
+    es:{miss:"Faltan datos",high:"Riesgo elevado",low:"Sin problemas (verificación pendiente)",ok:"Sin pérdida forestal detectada",risk:"En riesgo — revisar",nofor:"Sin bosque (sin problemas)",pending:"Verificación satelital pendiente",std:"Origen de riesgo estándar · verificación pendiente",lowc:"Origen de bajo riesgo · verificación pendiente",highc:"Origen de alto riesgo",conf:{alta:"confianza alta",media:"confianza media",bassa:"confianza baja"},crisk:{alto:"país de alto riesgo",standard:"país de riesgo estándar",basso:"país de bajo riesgo"}},
+    pl:{miss:"Brak danych",high:"Podwyższone ryzyko",low:"Bez zastrzeżeń (weryfikacja w toku)",ok:"Nie wykryto utraty lasu",risk:"Ryzyko — do weryfikacji",nofor:"Brak lasu (bez zastrzeżeń)",pending:"Weryfikacja satelitarna w toku",std:"Pochodzenie o standardowym ryzyku · weryfikacja w toku",lowc:"Pochodzenie o niskim ryzyku · weryfikacja w toku",highc:"Pochodzenie o wysokim ryzyku",conf:{alta:"wysoka pewność",media:"średnia pewność",bassa:"niska pewność"},crisk:{alto:"kraj wysokiego ryzyka",standard:"kraj standardowego ryzyka",basso:"kraj niskiego ryzyka"}}
   };
   var lang="en";
   var PH_C={en:"Country",de:"Land",fr:"Pays",it:"Paese",es:"País",pl:"Kraj"};

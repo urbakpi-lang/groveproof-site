@@ -4,7 +4,7 @@
 <meta charset="utf-8">
 <title>My account — GroveProof · EUDR check for coffee</title>
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<meta name="description" content="Your GroveProof account: EUDR register of lots and DDS numbers, plots of origin, satellite checks, public origins page and badge.">
+<meta name="description" content="Your GroveProof account: EUDR register of lots and DDS numbers, plots of origin, satellite checks and public origins page.">
 <link rel="icon" href="assets/favicon.svg" type="image/svg+xml">
 <link rel="icon" href="assets/favicon-32.png" sizes="32x32" type="image/png">
 <link rel="apple-touch-icon" href="assets/apple-touch-icon.png">
@@ -12,18 +12,17 @@
 <meta property="og:type" content="website">
 <meta property="og:site_name" content="GroveProof — EUDR deforestation check for coffee">
 <meta property="og:title" content="My account — GroveProof · EUDR check for coffee">
-<meta property="og:description" content="Your GroveProof account: EUDR register of lots and DDS numbers, plots of origin, satellite checks, public origins page and badge.">
+<meta property="og:description" content="Your GroveProof account: EUDR register of lots and DDS numbers, plots of origin, satellite checks and public origins page.">
 <meta property="og:url" content="https://groveproof.com/app.html">
 <meta property="og:image" content="https://groveproof.com/assets/og.jpg">
 <meta property="og:image:width" content="1200">
 <meta property="og:image:height" content="630">
-<meta property="og:image:alt" content="GroveProof — prove your coffee is deforestation-free">
+<meta property="og:image:alt" content="GroveProof — EUDR deforestation check for coffee">
 <meta name="twitter:card" content="summary_large_image">
 <meta name="robots" content="noindex">
-<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,600;9..144,900&family=Libre+Franklin:wght@400;500;600;700&family=IBM+Plex+Mono:wght@400;600&display=swap">
-<link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css">
-<script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+<link rel="stylesheet" href="assets/fonts/fonts.css">
+<link rel="stylesheet" href="assets/leaflet/leaflet.css">
+<script src="assets/leaflet/leaflet.js"></script>
 <script src="assets/map.js"></script>
 <link rel="stylesheet" href="assets/gp.css">
 <script src="assets/gp.js"></script>
@@ -66,7 +65,7 @@
       <button data-tab="overview" class="on" data-t="tab_overview">Overview</button>
       <button data-tab="register" data-t="tab_register">Register</button>
       <button data-tab="plots" data-t="tab_plots">Plots</button>
-      <button data-tab="public" data-t="tab_public">Badge &amp; public page</button>
+      <button data-tab="public" data-t="tab_public">Public origins page</button>
       <button data-tab="settings" data-t="tab_settings">Settings</button>
     </div>
     <div id="msg"></div>
@@ -75,7 +74,7 @@
     <div data-pane="overview">
       <div class="grid g4">
         <div class="card kpi"><div class="n" id="kPlots">0</div><div class="k" data-t="k_plots">Plots</div></div>
-        <div class="card kpi"><div class="n" id="kOk" style="color:var(--good)">0</div><div class="k" data-t="k_ok">Deforestation-free</div></div>
+        <div class="card kpi"><div class="n" id="kOk" style="color:var(--good)">0</div><div class="k" data-t="k_ok">No forest loss detected</div></div>
         <div class="card kpi"><div class="n" id="kRisk" style="color:var(--bad)">0</div><div class="k" data-t="k_risk">At risk</div></div>
         <div class="card kpi"><div class="n" id="kLots">0</div><div class="k" data-t="k_lots">Lots in the register</div></div>
       </div>
@@ -130,6 +129,7 @@
 
     <!-- particelle -->
     <div data-pane="plots" class="hide">
+      <p class="faint gp-disc" style="font-size:.8rem;margin:0 0 .8rem"></p>
       <div class="card">
         <div class="row" style="justify-content:space-between">
           <h3 style="margin:0" data-t="plots_h">Plots of origin</h3>
@@ -157,19 +157,19 @@
       </div>
     </div>
 
-    <!-- pagina pubblica e badge -->
+    <!-- pagina pubblica -->
     <div data-pane="public" class="hide">
       <div class="grid g2">
         <div class="card">
-          <h3 data-t="pub_h">Your public "verified origins" page</h3>
-          <p class="faint" data-t="pub_p">Put the QR code on your bags and the badge on your shop: customers see your verified origins (locations rounded to about 1 km, no producer names).</p>
+          <h3 data-t="pub_h">Your public origins page</h3>
+          <p class="faint" data-t="pub_p">Put the QR code on your bags: customers see where your coffee comes from (locations rounded to about 1 km, no producer names). Do not present the page as a seal or certificate.</p>
           <form id="pubForm" autocomplete="off">
             <label class="f" data-t="f_slug">Public address</label>
             <div class="row" style="flex-wrap:nowrap"><span class="faint mono" id="slugPrefix" style="white-space:nowrap"></span><input class="i mono" name="slug" placeholder="my-roastery"></div>
             <label class="f" data-t="f_pubtext">Text for your customers</label><textarea class="i" name="public_text" rows="3"></textarea>
             <label class="f" data-t="f_web">Website</label><input class="i" name="website">
             <label class="f"><input type="checkbox" name="public"> <span data-t="f_public">Page published</span></label>
-            <label class="f"><input type="checkbox" name="share_plots"> <span data-t="f_share">Share my verified plots with other GroveProof users (no names, only results)</span></label>
+            <label class="f"><input type="checkbox" name="share_plots"> <span data-t="f_share">Share my checked plots with other GroveProof users (no names, only results)</span></label>
             <div class="row" style="margin-top:.6rem"><button class="btn sm" type="submit" data-t="save">Save</button></div>
           </form>
         </div>
@@ -201,115 +201,115 @@ GP.strings = {
   en:{login_h:"Sign in to GroveProof",login_p:"No password: we email you a sign-in link. A free account is created automatically.",email:"Email",login_btn:"Send sign-in link",
     login_terms:'By signing in you accept the <a href="terms.html">terms</a> and the <a href="privacy.html">privacy policy</a>.',login_sent:"Check your inbox: the link is valid for 30 minutes.",login_nomail:"The email service is not configured yet. Please contact us.",
     loading:"Loading…",waking:"Waking up the server, this can take up to a minute…",upgrade:"Upgrade",logout:"Sign out",
-    tab_overview:"Overview",tab_register:"Register",tab_plots:"Plots",tab_public:"Badge & public page",tab_settings:"Settings",
-    k_plots:"Plots",k_ok:"Deforestation-free",k_risk:"At risk",k_lots:"Lots in the register",start_h:"Get started",plan_h:"Your plan",
+    tab_overview:"Overview",tab_register:"Register",tab_plots:"Plots",tab_public:"Public origins page",tab_settings:"Settings",
+    k_plots:"Plots",k_ok:"No forest loss detected",k_risk:"At risk",k_lots:"Lots in the register",start_h:"Get started",plan_h:"Your plan",
     dl_csv:"Download register (Excel/CSV)",dl_pdf:"Download register (PDF)",dl_note:"Keep these records for 5 years and show them on request (EUDR).",
-    s1:"Name your company",s2:"Add your importer or supplier",s3:"Record a lot with its DDS reference number",s4:"Import your plots of origin",s5:"Run the satellite check",s6:"Publish your verified-origins page",
-    plan_of:"%u of %l plots used",plan_free:"Free",plan_pro:"Pro",plan_business:"Business",plan_cta:"Need more plots, alerts or the custom badge? See the plans.",
+    s1:"Name your company",s2:"Add your importer or supplier",s3:"Record a lot with its DDS reference number",s4:"Import your plots of origin",s5:"Run the satellite check",s6:"Publish your origins page",
+    plan_of:"%u of %l plots used",plan_free:"Free",plan_pro:"Pro",plan_business:"Business",plan_cta:"Need more plots or alerts? See the plans.",
     lots_h:"Lots: purchases and sales",lot_new:"+ Add lot",lots_p:"For each lot keep the supplier, the quantity and the DDS reference number of the operator who placed the coffee on the EU market.",
     f_date:"Date",f_dir:"Type",dir_in:"Purchase",dir_out:"Sale",f_supplier:"Supplier / customer",f_product:"Product",f_origin:"Origin country",f_dds:"DDS reference number",f_ddsv:"DDS verification number",f_code:"Lot / contract code",f_notes:"Notes",
     save:"Save",cancel:"Cancel",edit:"Edit",del:"Delete",confirm_del:"Delete this item?",none_yet:"Nothing yet.",
     sup_h:"Suppliers and customers",sup_new:"+ Add",f_name:"Name",f_role:"Role",r_importer:"Importer / trader",r_exporter:"Exporter",r_coop:"Cooperative",r_farm:"Farm",r_customer:"Customer",f_country:"Country",f_address:"Address",f_eori:"EORI / registration no.",
     plots_h:"Plots of origin",import:"Import GeoJSON / KML / CSV",plot_new:"+ Add plot",check_new:"Check new plots",check_all:"Re-check all",f_ref:"Plot ID",f_area:"Area (ha)",
     checking:"Checking plots with satellite data…",checked:"%n plots checked.",imported:"%a added, %u updated.",no_plots:"No plots found in the file.",
-    pub_h:'Your public "verified origins" page',pub_p:"Put the QR code on your bags and the badge on your shop: customers see your verified origins (locations rounded to about 1 km, no producer names).",
-    f_slug:"Public address",f_pubtext:"Text for your customers",f_web:"Website",f_public:"Page published",f_share:"Share my verified plots with other GroveProof users (no names, only results)",
-    pub_off:"Choose a public address and tick “Page published” to get your badge and QR code.",pub_link:"Your page",badge:"Badge",qr:"QR code for your bags",embed:"Code for your website",dl_qr:"Download QR (SVG)",
+    pub_h:"Your public origins page",pub_p:"Put the QR code on your bags: customers see where your coffee comes from (locations rounded to about 1 km, no producer names). Do not present the page as a seal or certificate.",
+    f_slug:"Public address",f_pubtext:"Text for your customers",f_web:"Website",f_public:"Page published",f_share:"Share my checked plots with other GroveProof users (no names, only results)",
+    pub_off:"Choose a public address and tick “Page published” to get your page link and QR code.",pub_link:"Your page",badge:"Badge",qr:"QR code for your bags",embed:"Code for your website",dl_qr:"Download QR (SVG)",
     tab_settings2:"Settings",f_company:"Company name",f_kind:"Company type",k_roaster:"Roastery",f_lang:"Language of results and reports",saved:"Saved.",
     th_date:"Date",th_party:"Supplier/customer",th_product:"Product",th_origin:"Origin",th_dds:"DDS ref.",th_plot:"Plot",th_country:"Country",th_result:"Result",th_checked:"Checked",th_role:"Role",th_name:"Name"},
   de:{login_h:"Bei GroveProof anmelden",login_p:"Kein Passwort: Wir senden Ihnen einen Anmeldelink per E-Mail. Ein kostenloses Konto wird automatisch erstellt.",email:"E-Mail",login_btn:"Anmeldelink senden",
     login_terms:'Mit der Anmeldung akzeptieren Sie die <a href="terms.html">AGB</a> und die <a href="privacy.html">Datenschutzerklärung</a>.',login_sent:"Prüfen Sie Ihr Postfach: Der Link ist 30 Minuten gültig.",login_nomail:"Der E-Mail-Dienst ist noch nicht eingerichtet. Bitte kontaktieren Sie uns.",
     loading:"Wird geladen…",waking:"Server startet, das kann bis zu einer Minute dauern…",upgrade:"Upgrade",logout:"Abmelden",
-    tab_overview:"Übersicht",tab_register:"Register",tab_plots:"Grundstücke",tab_public:"Siegel & öffentliche Seite",tab_settings:"Einstellungen",
-    k_plots:"Grundstücke",k_ok:"Entwaldungsfrei",k_risk:"Risiko",k_lots:"Chargen im Register",start_h:"Erste Schritte",plan_h:"Ihr Tarif",
+    tab_overview:"Übersicht",tab_register:"Register",tab_plots:"Grundstücke",tab_public:"Öffentliche Herkunftsseite",tab_settings:"Einstellungen",
+    k_plots:"Grundstücke",k_ok:"Kein Waldverlust erkannt",k_risk:"Risiko",k_lots:"Chargen im Register",start_h:"Erste Schritte",plan_h:"Ihr Tarif",
     dl_csv:"Register herunterladen (Excel/CSV)",dl_pdf:"Register herunterladen (PDF)",dl_note:"Diese Aufzeichnungen 5 Jahre aufbewahren und auf Anfrage vorlegen (EUDR).",
-    s1:"Firmennamen eintragen",s2:"Importeur oder Lieferanten anlegen",s3:"Charge mit DDS-Referenznummer erfassen",s4:"Herkunftsgrundstücke importieren",s5:"Satellitenprüfung starten",s6:"Seite „geprüfte Herkunft“ veröffentlichen",
-    plan_of:"%u von %l Grundstücken genutzt",plan_free:"Free",plan_pro:"Pro",plan_business:"Business",plan_cta:"Mehr Grundstücke, Warnungen oder eigenes Siegel? Siehe Tarife.",
+    s1:"Firmennamen eintragen",s2:"Importeur oder Lieferanten anlegen",s3:"Charge mit DDS-Referenznummer erfassen",s4:"Herkunftsgrundstücke importieren",s5:"Satellitenprüfung starten",s6:"Herkunftsseite veröffentlichen",
+    plan_of:"%u von %l Grundstücken genutzt",plan_free:"Free",plan_pro:"Pro",plan_business:"Business",plan_cta:"Mehr Grundstücke oder Warnungen? Siehe Tarife.",
     lots_h:"Chargen: Einkäufe und Verkäufe",lot_new:"+ Charge",lots_p:"Für jede Charge Lieferant, Menge und DDS-Referenznummer des Marktteilnehmers festhalten, der den Kaffee in der EU in Verkehr gebracht hat.",
     f_date:"Datum",f_dir:"Art",dir_in:"Einkauf",dir_out:"Verkauf",f_supplier:"Lieferant / Kunde",f_product:"Produkt",f_origin:"Herkunftsland",f_dds:"DDS-Referenznummer",f_ddsv:"DDS-Verifizierungsnummer",f_code:"Chargen-/Vertragsnr.",f_notes:"Notizen",
     save:"Speichern",cancel:"Abbrechen",edit:"Bearbeiten",del:"Löschen",confirm_del:"Diesen Eintrag löschen?",none_yet:"Noch nichts erfasst.",
     sup_h:"Lieferanten und Kunden",sup_new:"+ Hinzufügen",f_name:"Name",f_role:"Rolle",r_importer:"Importeur / Händler",r_exporter:"Exporteur",r_coop:"Kooperative",r_farm:"Farm",r_customer:"Kunde",f_country:"Land",f_address:"Adresse",f_eori:"EORI / Registriernr.",
     plots_h:"Herkunftsgrundstücke",import:"GeoJSON / KML / CSV importieren",plot_new:"+ Grundstück",check_new:"Neue prüfen",check_all:"Alle neu prüfen",f_ref:"Grundstücks-ID",f_area:"Fläche (ha)",
     checking:"Grundstücke werden mit Satellitendaten geprüft…",checked:"%n Grundstücke geprüft.",imported:"%a hinzugefügt, %u aktualisiert.",no_plots:"Keine Grundstücke in der Datei gefunden.",
-    pub_h:"Ihre öffentliche Seite „geprüfte Herkunft“",pub_p:"QR-Code auf die Tüten, Siegel in den Shop: Kunden sehen Ihre geprüften Herkünfte (Lage auf ca. 1 km gerundet, keine Produzentennamen).",
+    pub_h:"Ihre öffentliche Herkunftsseite",pub_p:"QR-Code auf die Tüten: Kunden sehen, woher Ihr Kaffee kommt (Lage auf ca. 1 km gerundet, keine Produzentennamen). Bitte die Seite nicht als Siegel oder Zertifikat bewerben.",
     f_slug:"Öffentliche Adresse",f_pubtext:"Text für Ihre Kunden",f_web:"Website",f_public:"Seite veröffentlicht",f_share:"Meine geprüften Grundstücke mit anderen GroveProof-Nutzern teilen (ohne Namen, nur Ergebnisse)",
-    pub_off:"Wählen Sie eine öffentliche Adresse und aktivieren Sie „Seite veröffentlicht“, um Siegel und QR-Code zu erhalten.",pub_link:"Ihre Seite",badge:"Siegel",qr:"QR-Code für Ihre Tüten",embed:"Code für Ihre Website",dl_qr:"QR herunterladen (SVG)",
+    pub_off:"Wählen Sie eine öffentliche Adresse und aktivieren Sie „Seite veröffentlicht“, um Link und QR-Code zu erhalten.",pub_link:"Ihre Seite",badge:"Siegel",qr:"QR-Code für Ihre Tüten",embed:"Code für Ihre Website",dl_qr:"QR herunterladen (SVG)",
     f_company:"Firmenname",f_kind:"Unternehmensart",k_roaster:"Rösterei",f_lang:"Sprache der Ergebnisse und Berichte",saved:"Gespeichert.",
     th_date:"Datum",th_party:"Lieferant/Kunde",th_product:"Produkt",th_origin:"Herkunft",th_dds:"DDS-Ref.",th_plot:"Grundstück",th_country:"Land",th_result:"Ergebnis",th_checked:"Geprüft",th_role:"Rolle",th_name:"Name"},
   it:{login_h:"Accedi a GroveProof",login_p:"Nessuna password: ti mandiamo un link di accesso via email. L'account gratuito si crea da solo.",email:"Email",login_btn:"Invia il link di accesso",
     login_terms:'Accedendo accetti i <a href="terms.html">termini</a> e l\'<a href="privacy.html">informativa privacy</a>.',login_sent:"Controlla la posta: il link vale 30 minuti.",login_nomail:"Il servizio email non è ancora attivo. Contattaci.",
     loading:"Caricamento…",waking:"Il server si sta svegliando, può servire fino a un minuto…",upgrade:"Passa a un piano superiore",logout:"Esci",
-    tab_overview:"Panoramica",tab_register:"Registro",tab_plots:"Appezzamenti",tab_public:"Badge e pagina pubblica",tab_settings:"Impostazioni",
-    k_plots:"Appezzamenti",k_ok:"Senza deforestazione",k_risk:"A rischio",k_lots:"Lotti nel registro",start_h:"Per iniziare",plan_h:"Il tuo piano",
+    tab_overview:"Panoramica",tab_register:"Registro",tab_plots:"Appezzamenti",tab_public:"Pagina pubblica delle origini",tab_settings:"Impostazioni",
+    k_plots:"Appezzamenti",k_ok:"Nessuna perdita forestale rilevata",k_risk:"A rischio",k_lots:"Lotti nel registro",start_h:"Per iniziare",plan_h:"Il tuo piano",
     dl_csv:"Scarica il registro (Excel/CSV)",dl_pdf:"Scarica il registro (PDF)",dl_note:"Conserva questi dati per 5 anni e mostrali su richiesta (EUDR).",
-    s1:"Inserisci il nome dell'azienda",s2:"Aggiungi l'importatore o il fornitore",s3:"Registra un lotto con il numero DDS",s4:"Importa gli appezzamenti d'origine",s5:"Avvia la verifica satellitare",s6:"Pubblica la pagina delle origini verificate",
-    plan_of:"%u di %l appezzamenti usati",plan_free:"Free",plan_pro:"Pro",plan_business:"Business",plan_cta:"Servono più appezzamenti, avvisi o il badge personalizzato? Guarda i piani.",
+    s1:"Inserisci il nome dell'azienda",s2:"Aggiungi l'importatore o il fornitore",s3:"Registra un lotto con il numero DDS",s4:"Importa gli appezzamenti d'origine",s5:"Avvia la verifica satellitare",s6:"Pubblica la pagina delle origini",
+    plan_of:"%u di %l appezzamenti usati",plan_free:"Free",plan_pro:"Pro",plan_business:"Business",plan_cta:"Servono più appezzamenti o avvisi? Guarda i piani.",
     lots_h:"Lotti: acquisti e vendite",lot_new:"+ Aggiungi lotto",lots_p:"Per ogni lotto conserva fornitore, quantità e numero di riferimento DDS dell'operatore che ha immesso il caffè sul mercato UE.",
     f_date:"Data",f_dir:"Tipo",dir_in:"Acquisto",dir_out:"Vendita",f_supplier:"Fornitore / cliente",f_product:"Prodotto",f_origin:"Paese d'origine",f_dds:"Numero di riferimento DDS",f_ddsv:"Numero di verifica DDS",f_code:"Codice lotto / contratto",f_notes:"Note",
     save:"Salva",cancel:"Annulla",edit:"Modifica",del:"Elimina",confirm_del:"Eliminare questa voce?",none_yet:"Ancora niente.",
     sup_h:"Fornitori e clienti",sup_new:"+ Aggiungi",f_name:"Nome",f_role:"Ruolo",r_importer:"Importatore / trader",r_exporter:"Esportatore",r_coop:"Cooperativa",r_farm:"Azienda agricola",r_customer:"Cliente",f_country:"Paese",f_address:"Indirizzo",f_eori:"EORI / n. registrazione",
     plots_h:"Appezzamenti d'origine",import:"Importa GeoJSON / KML / CSV",plot_new:"+ Aggiungi appezzamento",check_new:"Verifica i nuovi",check_all:"Riverifica tutti",f_ref:"Codice appezzamento",f_area:"Area (ha)",
     checking:"Verifica degli appezzamenti con i dati satellitari…",checked:"%n appezzamenti verificati.",imported:"%a aggiunti, %u aggiornati.",no_plots:"Nessun appezzamento trovato nel file.",
-    pub_h:"La tua pagina pubblica delle origini verificate",pub_p:"Metti il QR sulle confezioni e il badge sul negozio online: i clienti vedono le origini verificate (posizione arrotondata a circa 1 km, senza nomi dei produttori).",
-    f_slug:"Indirizzo pubblico",f_pubtext:"Testo per i tuoi clienti",f_web:"Sito web",f_public:"Pagina pubblicata",f_share:"Condividi i miei appezzamenti verificati con gli altri utenti GroveProof (senza nomi, solo esiti)",
-    pub_off:"Scegli un indirizzo pubblico e spunta “Pagina pubblicata” per avere badge e QR.",pub_link:"La tua pagina",badge:"Badge",qr:"QR per le confezioni",embed:"Codice per il tuo sito",dl_qr:"Scarica il QR (SVG)",
+    pub_h:"La tua pagina pubblica delle origini",pub_p:"Metti il QR sulle confezioni: i clienti vedono da dove arriva il tuo caffè (posizione arrotondata a circa 1 km, senza nomi dei produttori). Non presentare la pagina come marchio o certificato.",
+    f_slug:"Indirizzo pubblico",f_pubtext:"Testo per i tuoi clienti",f_web:"Sito web",f_public:"Pagina pubblicata",f_share:"Condividi i miei appezzamenti controllati con gli altri utenti GroveProof (senza nomi, solo esiti)",
+    pub_off:"Scegli un indirizzo pubblico e spunta “Pagina pubblicata” per avere link e QR.",pub_link:"La tua pagina",badge:"Badge",qr:"QR per le confezioni",embed:"Codice per il tuo sito",dl_qr:"Scarica il QR (SVG)",
     f_company:"Nome dell'azienda",f_kind:"Tipo di azienda",k_roaster:"Torrefazione",f_lang:"Lingua di esiti e report",saved:"Salvato.",
     th_date:"Data",th_party:"Fornitore/cliente",th_product:"Prodotto",th_origin:"Origine",th_dds:"Rif. DDS",th_plot:"Appezzamento",th_country:"Paese",th_result:"Esito",th_checked:"Verificato",th_role:"Ruolo",th_name:"Nome"},
   fr:{login_h:"Se connecter à GroveProof",login_p:"Pas de mot de passe : nous vous envoyons un lien de connexion par e-mail. Un compte gratuit est créé automatiquement.",email:"E-mail",login_btn:"Envoyer le lien de connexion",
     login_terms:'En vous connectant, vous acceptez les <a href="terms.html">conditions</a> et la <a href="privacy.html">politique de confidentialité</a>.',login_sent:"Consultez votre boîte de réception : le lien est valable 30 minutes.",login_nomail:"Le service d'e-mail n'est pas encore configuré. Contactez-nous.",
     loading:"Chargement…",waking:"Démarrage du serveur, cela peut prendre jusqu'à une minute…",upgrade:"Changer d'offre",logout:"Se déconnecter",
-    tab_overview:"Aperçu",tab_register:"Registre",tab_plots:"Parcelles",tab_public:"Badge et page publique",tab_settings:"Paramètres",
-    k_plots:"Parcelles",k_ok:"Sans déforestation",k_risk:"À risque",k_lots:"Lots au registre",start_h:"Pour commencer",plan_h:"Votre offre",
+    tab_overview:"Aperçu",tab_register:"Registre",tab_plots:"Parcelles",tab_public:"Page publique des origines",tab_settings:"Paramètres",
+    k_plots:"Parcelles",k_ok:"Aucune perte forestière détectée",k_risk:"À risque",k_lots:"Lots au registre",start_h:"Pour commencer",plan_h:"Votre offre",
     dl_csv:"Télécharger le registre (Excel/CSV)",dl_pdf:"Télécharger le registre (PDF)",dl_note:"Conservez ces informations 5 ans et présentez-les sur demande (EUDR).",
-    s1:"Indiquez le nom de votre entreprise",s2:"Ajoutez votre importateur ou fournisseur",s3:"Enregistrez un lot avec son numéro de référence DDS",s4:"Importez vos parcelles d'origine",s5:"Lancez la vérification satellitaire",s6:"Publiez votre page d'origines vérifiées",
-    plan_of:"%u parcelles utilisées sur %l",plan_free:"Free",plan_pro:"Pro",plan_business:"Business",plan_cta:"Besoin de plus de parcelles, d'alertes ou du badge personnalisé ? Voir les offres.",
+    s1:"Indiquez le nom de votre entreprise",s2:"Ajoutez votre importateur ou fournisseur",s3:"Enregistrez un lot avec son numéro de référence DDS",s4:"Importez vos parcelles d'origine",s5:"Lancez la vérification satellitaire",s6:"Publiez votre page des origines",
+    plan_of:"%u parcelles utilisées sur %l",plan_free:"Free",plan_pro:"Pro",plan_business:"Business",plan_cta:"Besoin de plus de parcelles ou d'alertes ? Voir les offres.",
     lots_h:"Lots : achats et ventes",lot_new:"+ Ajouter un lot",lots_p:"Pour chaque lot, conservez le fournisseur, la quantité et le numéro de référence de la déclaration de diligence raisonnée (DDS) de l'opérateur qui a mis le café sur le marché de l'UE.",
     f_date:"Date",f_dir:"Type",dir_in:"Achat",dir_out:"Vente",f_supplier:"Fournisseur / client",f_product:"Produit",f_origin:"Pays d'origine",f_dds:"Numéro de référence DDS",f_ddsv:"Numéro de vérification DDS",f_code:"Code du lot / contrat",f_notes:"Notes",
     save:"Enregistrer",cancel:"Annuler",edit:"Modifier",del:"Supprimer",confirm_del:"Supprimer cet élément ?",none_yet:"Rien pour l'instant.",
     sup_h:"Fournisseurs et clients",sup_new:"+ Ajouter",f_name:"Nom",f_role:"Rôle",r_importer:"Importateur / négociant",r_exporter:"Exportateur",r_coop:"Coopérative",r_farm:"Exploitation agricole",r_customer:"Client",f_country:"Pays",f_address:"Adresse",f_eori:"EORI / n° d'immatriculation",
     plots_h:"Parcelles d'origine",import:"Importer GeoJSON / KML / CSV",plot_new:"+ Ajouter une parcelle",check_new:"Vérifier les nouvelles",check_all:"Tout revérifier",f_ref:"Code de la parcelle",f_area:"Surface (ha)",
     checking:"Vérification des parcelles avec les données satellitaires…",checked:"%n parcelles vérifiées.",imported:"%a ajoutées, %u mises à jour.",no_plots:"Aucune parcelle trouvée dans le fichier.",
-    pub_h:"Votre page publique « origines vérifiées »",pub_p:"Mettez le QR code sur vos sachets et le badge sur votre boutique en ligne : vos clients voient vos origines vérifiées (positions arrondies à environ 1 km, sans nom de producteur).",
-    f_slug:"Adresse publique",f_pubtext:"Texte pour vos clients",f_web:"Site web",f_public:"Page publiée",f_share:"Partager mes parcelles vérifiées avec les autres utilisateurs de GroveProof (sans noms, uniquement les résultats)",
-    pub_off:"Choisissez une adresse publique et cochez « Page publiée » pour obtenir votre badge et votre QR code.",pub_link:"Votre page",badge:"Badge",qr:"QR code pour vos sachets",embed:"Code pour votre site",dl_qr:"Télécharger le QR (SVG)",
+    pub_h:"Votre page publique des origines",pub_p:"Mettez le QR code sur vos sachets : vos clients voient d'où vient votre café (positions arrondies à environ 1 km, sans nom de producteur). Ne présentez pas la page comme un label ou un certificat.",
+    f_slug:"Adresse publique",f_pubtext:"Texte pour vos clients",f_web:"Site web",f_public:"Page publiée",f_share:"Partager mes parcelles contrôlées avec les autres utilisateurs de GroveProof (sans noms, uniquement les résultats)",
+    pub_off:"Choisissez une adresse publique et cochez « Page publiée » pour obtenir le lien et le QR code.",pub_link:"Votre page",badge:"Badge",qr:"QR code pour vos sachets",embed:"Code pour votre site",dl_qr:"Télécharger le QR (SVG)",
     f_company:"Nom de l'entreprise",f_kind:"Type d'entreprise",k_roaster:"Torréfacteur",f_lang:"Langue des résultats et des rapports",saved:"Enregistré.",
     th_date:"Date",th_party:"Fournisseur/client",th_product:"Produit",th_origin:"Origine",th_dds:"Réf. DDS",th_plot:"Parcelle",th_country:"Pays",th_result:"Résultat",th_checked:"Vérifiée",th_role:"Rôle",th_name:"Nom"},
   es:{login_h:"Acceder a GroveProof",login_p:"Sin contraseña: le enviamos un enlace de acceso por correo. La cuenta gratuita se crea automáticamente.",email:"Correo electrónico",login_btn:"Enviar enlace de acceso",
     login_terms:'Al acceder acepta las <a href="terms.html">condiciones</a> y la <a href="privacy.html">política de privacidad</a>.',login_sent:"Revise su bandeja de entrada: el enlace es válido 30 minutos.",login_nomail:"El servicio de correo aún no está configurado. Contáctenos.",
     loading:"Cargando…",waking:"Iniciando el servidor, puede tardar hasta un minuto…",upgrade:"Mejorar plan",logout:"Cerrar sesión",
-    tab_overview:"Resumen",tab_register:"Registro",tab_plots:"Parcelas",tab_public:"Sello y página pública",tab_settings:"Ajustes",
-    k_plots:"Parcelas",k_ok:"Libres de deforestación",k_risk:"En riesgo",k_lots:"Lotes en el registro",start_h:"Primeros pasos",plan_h:"Su plan",
+    tab_overview:"Resumen",tab_register:"Registro",tab_plots:"Parcelas",tab_public:"Página pública de orígenes",tab_settings:"Ajustes",
+    k_plots:"Parcelas",k_ok:"Sin pérdida forestal detectada",k_risk:"En riesgo",k_lots:"Lotes en el registro",start_h:"Primeros pasos",plan_h:"Su plan",
     dl_csv:"Descargar el registro (Excel/CSV)",dl_pdf:"Descargar el registro (PDF)",dl_note:"Conserve estos datos 5 años y muéstrelos cuando se los pidan (EUDR).",
-    s1:"Indique el nombre de su empresa",s2:"Añada su importador o proveedor",s3:"Registre un lote con su número de referencia DDS",s4:"Importe sus parcelas de origen",s5:"Inicie la verificación satelital",s6:"Publique su página de orígenes verificados",
-    plan_of:"%u de %l parcelas usadas",plan_free:"Free",plan_pro:"Pro",plan_business:"Business",plan_cta:"¿Necesita más parcelas, alertas o el sello personalizado? Vea los planes.",
+    s1:"Indique el nombre de su empresa",s2:"Añada su importador o proveedor",s3:"Registre un lote con su número de referencia DDS",s4:"Importe sus parcelas de origen",s5:"Inicie la verificación satelital",s6:"Publique su página de orígenes",
+    plan_of:"%u de %l parcelas usadas",plan_free:"Free",plan_pro:"Pro",plan_business:"Business",plan_cta:"¿Necesita más parcelas o alertas? Vea los planes.",
     lots_h:"Lotes: compras y ventas",lot_new:"+ Añadir lote",lots_p:"Para cada lote conserve el proveedor, la cantidad y el número de referencia de la declaración de diligencia debida (DDS) del operador que introdujo el café en el mercado de la UE.",
     f_date:"Fecha",f_dir:"Tipo",dir_in:"Compra",dir_out:"Venta",f_supplier:"Proveedor / cliente",f_product:"Producto",f_origin:"País de origen",f_dds:"Número de referencia DDS",f_ddsv:"Número de verificación DDS",f_code:"Código de lote / contrato",f_notes:"Notas",
     save:"Guardar",cancel:"Cancelar",edit:"Editar",del:"Eliminar",confirm_del:"¿Eliminar este elemento?",none_yet:"Todavía nada.",
     sup_h:"Proveedores y clientes",sup_new:"+ Añadir",f_name:"Nombre",f_role:"Función",r_importer:"Importador / comerciante",r_exporter:"Exportador",r_coop:"Cooperativa",r_farm:"Finca",r_customer:"Cliente",f_country:"País",f_address:"Dirección",f_eori:"EORI / n.º de registro",
     plots_h:"Parcelas de origen",import:"Importar GeoJSON / KML / CSV",plot_new:"+ Añadir parcela",check_new:"Verificar las nuevas",check_all:"Volver a verificar todas",f_ref:"Código de parcela",f_area:"Superficie (ha)",
     checking:"Verificando las parcelas con datos satelitales…",checked:"%n parcelas verificadas.",imported:"%a añadidas, %u actualizadas.",no_plots:"No se encontraron parcelas en el archivo.",
-    pub_h:"Su página pública de «orígenes verificados»",pub_p:"Ponga el código QR en sus bolsas y el sello en su tienda online: sus clientes ven sus orígenes verificados (ubicaciones redondeadas a aprox. 1 km, sin nombres de productores).",
-    f_slug:"Dirección pública",f_pubtext:"Texto para sus clientes",f_web:"Sitio web",f_public:"Página publicada",f_share:"Compartir mis parcelas verificadas con otros usuarios de GroveProof (sin nombres, solo resultados)",
-    pub_off:"Elija una dirección pública y marque «Página publicada» para obtener su sello y su código QR.",pub_link:"Su página",badge:"Sello",qr:"Código QR para sus bolsas",embed:"Código para su sitio web",dl_qr:"Descargar QR (SVG)",
+    pub_h:"Su página pública de orígenes",pub_p:"Ponga el código QR en sus bolsas: sus clientes ven de dónde viene su café (ubicaciones redondeadas a aprox. 1 km, sin nombres de productores). No presente la página como sello o certificado.",
+    f_slug:"Dirección pública",f_pubtext:"Texto para sus clientes",f_web:"Sitio web",f_public:"Página publicada",f_share:"Compartir mis parcelas revisadas con otros usuarios de GroveProof (sin nombres, solo resultados)",
+    pub_off:"Elija una dirección pública y marque «Página publicada» para obtener el enlace y el código QR.",pub_link:"Su página",badge:"Sello",qr:"Código QR para sus bolsas",embed:"Código para su sitio web",dl_qr:"Descargar QR (SVG)",
     f_company:"Nombre de la empresa",f_kind:"Tipo de empresa",k_roaster:"Tostador",f_lang:"Idioma de los resultados y los informes",saved:"Guardado.",
     th_date:"Fecha",th_party:"Proveedor/cliente",th_product:"Producto",th_origin:"Origen",th_dds:"Ref. DDS",th_plot:"Parcela",th_country:"País",th_result:"Resultado",th_checked:"Verificada",th_role:"Función",th_name:"Nombre"},
   pl:{login_h:"Zaloguj się do GroveProof",login_p:"Bez hasła: wysyłamy link do logowania e-mailem. Bezpłatne konto tworzy się automatycznie.",email:"E-mail",login_btn:"Wyślij link do logowania",
     login_terms:'Logując się, akceptujesz <a href="terms.html">regulamin</a> i <a href="privacy.html">politykę prywatności</a>.',login_sent:"Sprawdź skrzynkę: link jest ważny 30 minut.",login_nomail:"Usługa e-mail nie jest jeszcze skonfigurowana. Skontaktuj się z nami.",
     loading:"Ładowanie…",waking:"Uruchamianie serwera, może to potrwać do minuty…",upgrade:"Zmień plan",logout:"Wyloguj",
-    tab_overview:"Przegląd",tab_register:"Rejestr",tab_plots:"Działki",tab_public:"Odznaka i strona publiczna",tab_settings:"Ustawienia",
-    k_plots:"Działki",k_ok:"Bez wylesiania",k_risk:"Ryzyko",k_lots:"Partie w rejestrze",start_h:"Pierwsze kroki",plan_h:"Twój plan",
+    tab_overview:"Przegląd",tab_register:"Rejestr",tab_plots:"Działki",tab_public:"Publiczna strona pochodzenia",tab_settings:"Ustawienia",
+    k_plots:"Działki",k_ok:"Nie wykryto utraty lasu",k_risk:"Ryzyko",k_lots:"Partie w rejestrze",start_h:"Pierwsze kroki",plan_h:"Twój plan",
     dl_csv:"Pobierz rejestr (Excel/CSV)",dl_pdf:"Pobierz rejestr (PDF)",dl_note:"Przechowuj te dane przez 5 lat i udostępniaj je na żądanie (EUDR).",
-    s1:"Podaj nazwę firmy",s2:"Dodaj importera lub dostawcę",s3:"Zapisz partię z numerem referencyjnym DDS",s4:"Zaimportuj działki pochodzenia",s5:"Uruchom weryfikację satelitarną",s6:"Opublikuj stronę ze zweryfikowanym pochodzeniem",
-    plan_of:"Wykorzystano %u z %l działek",plan_free:"Free",plan_pro:"Pro",plan_business:"Business",plan_cta:"Potrzebujesz więcej działek, alertów lub własnej odznaki? Zobacz plany.",
+    s1:"Podaj nazwę firmy",s2:"Dodaj importera lub dostawcę",s3:"Zapisz partię z numerem referencyjnym DDS",s4:"Zaimportuj działki pochodzenia",s5:"Uruchom weryfikację satelitarną",s6:"Opublikuj stronę pochodzenia",
+    plan_of:"Wykorzystano %u z %l działek",plan_free:"Free",plan_pro:"Pro",plan_business:"Business",plan_cta:"Potrzebujesz więcej działek lub alertów? Zobacz plany.",
     lots_h:"Partie: zakupy i sprzedaż",lot_new:"+ Dodaj partię",lots_p:"Dla każdej partii zachowaj dostawcę, ilość i numer referencyjny oświadczenia o należytej staranności (DDS) podmiotu, który wprowadził kawę na rynek UE.",
     f_date:"Data",f_dir:"Rodzaj",dir_in:"Zakup",dir_out:"Sprzedaż",f_supplier:"Dostawca / klient",f_product:"Produkt",f_origin:"Kraj pochodzenia",f_dds:"Numer referencyjny DDS",f_ddsv:"Numer weryfikacyjny DDS",f_code:"Kod partii / umowy",f_notes:"Uwagi",
     save:"Zapisz",cancel:"Anuluj",edit:"Edytuj",del:"Usuń",confirm_del:"Usunąć ten element?",none_yet:"Na razie nic.",
     sup_h:"Dostawcy i klienci",sup_new:"+ Dodaj",f_name:"Nazwa",f_role:"Rola",r_importer:"Importer / handlowiec",r_exporter:"Eksporter",r_coop:"Spółdzielnia",r_farm:"Gospodarstwo",r_customer:"Klient",f_country:"Kraj",f_address:"Adres",f_eori:"EORI / nr rejestracyjny",
     plots_h:"Działki pochodzenia",import:"Importuj GeoJSON / KML / CSV",plot_new:"+ Dodaj działkę",check_new:"Sprawdź nowe",check_all:"Sprawdź wszystkie ponownie",f_ref:"Kod działki",f_area:"Powierzchnia (ha)",
     checking:"Weryfikacja działek na podstawie danych satelitarnych…",checked:"Zweryfikowane działki: %n.",imported:"Dodane: %a, zaktualizowane: %u.",no_plots:"Nie znaleziono działek w pliku.",
-    pub_h:"Twoja publiczna strona „zweryfikowane pochodzenie”",pub_p:"Umieść kod QR na opakowaniach, a odznakę w sklepie internetowym: klienci zobaczą zweryfikowane pochodzenie (lokalizacje zaokrąglone do ok. 1 km, bez nazwisk producentów).",
-    f_slug:"Adres publiczny",f_pubtext:"Tekst dla klientów",f_web:"Strona internetowa",f_public:"Strona opublikowana",f_share:"Udostępniaj moje zweryfikowane działki innym użytkownikom GroveProof (bez nazwisk, tylko wyniki)",
-    pub_off:"Wybierz adres publiczny i zaznacz „Strona opublikowana”, aby otrzymać odznakę i kod QR.",pub_link:"Twoja strona",badge:"Odznaka",qr:"Kod QR na opakowania",embed:"Kod na stronę internetową",dl_qr:"Pobierz kod QR (SVG)",
+    pub_h:"Twoja publiczna strona pochodzenia",pub_p:"Umieść kod QR na opakowaniach: klienci zobaczą, skąd pochodzi Twoja kawa (lokalizacje zaokrąglone do ok. 1 km, bez nazwisk producentów). Nie przedstawiaj tej strony jako znaku ani certyfikatu.",
+    f_slug:"Adres publiczny",f_pubtext:"Tekst dla klientów",f_web:"Strona internetowa",f_public:"Strona opublikowana",f_share:"Udostępniaj moje sprawdzone działki innym użytkownikom GroveProof (bez nazwisk, tylko wyniki)",
+    pub_off:"Wybierz adres publiczny i zaznacz „Strona opublikowana”, aby otrzymać link i kod QR.",pub_link:"Twoja strona",badge:"Odznaka",qr:"Kod QR na opakowania",embed:"Kod na stronę internetową",dl_qr:"Pobierz kod QR (SVG)",
     f_company:"Nazwa firmy",f_kind:"Rodzaj firmy",k_roaster:"Palarnia",f_lang:"Język wyników i raportów",saved:"Zapisano.",
     th_date:"Data",th_party:"Dostawca/klient",th_product:"Produkt",th_origin:"Pochodzenie",th_dds:"Nr ref. DDS",th_plot:"Działka",th_country:"Kraj",th_result:"Wynik",th_checked:"Sprawdzono",th_role:"Rola",th_name:"Nazwa"}
 };
@@ -445,11 +445,8 @@ GP.strings = {
     $("slugPrefix").textContent = site+"o.html?s=";
     f.elements.slug.value=o.slug||""; f.elements.public_text.value=o.public_text||""; f.elements.website.value=o.website||""; f.elements.public.checked=!!o.public; f.elements.share_plots.checked=!!o.share_plots;
     if(!(o.public&&o.slug)){ $("pubPreview").innerHTML='<p class="muted">'+esc(t("pub_off"))+'</p>'; return; }
-    var page=site+"o.html?s="+encodeURIComponent(o.slug), badge=GP.API+"/badge/"+encodeURIComponent(o.slug)+".svg?lang="+GP.lang, qr=GP.API+"/qr/"+encodeURIComponent(o.slug)+".svg";
-    var code='<a href="'+page+'" target="_blank" rel="noopener"><img src="'+badge+'" alt="GroveProof — origins verified" width="320" height="64"></a>';
+    var page=site+"o.html?s="+encodeURIComponent(o.slug), qr=GP.API+"/qr/"+encodeURIComponent(o.slug)+".svg";
     $("pubPreview").innerHTML='<h3>'+esc(t("pub_link"))+'</h3><p><a href="'+esc(page)+'" target="_blank" rel="noopener">'+esc(page)+'</a></p>'+
-      '<h3>'+esc(t("badge"))+'</h3><p><img src="'+esc(badge)+'" alt="badge" width="320" height="64"></p>'+
-      '<h3>'+esc(t("embed"))+'</h3><pre class="code">'+esc(code)+'</pre>'+
       '<h3>'+esc(t("qr"))+'</h3><p><img src="'+esc(qr)+'" alt="QR" width="160" height="160" style="background:#fff;border-radius:8px"></p><a class="btn sm ghost" href="'+esc(qr)+'" download="groveproof-qr.svg">'+esc(t("dl_qr"))+'</a>';
   }
   $("pubForm").onsubmit=async function(e){ e.preventDefault(); var f=this;
