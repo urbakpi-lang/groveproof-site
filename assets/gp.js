@@ -76,12 +76,12 @@
   // ---------- menu e piè di pagina ----------
   var LEAF = '<svg viewBox="0 0 24 24" fill="none"><path d="M4 20c0-9 6-15 16-16-1 10-7 16-16 16Z" fill="#2E7D52"/><path d="M4 20 14 10" stroke="#FBF8F2" stroke-width="1.6" stroke-linecap="round"/></svg>';
   var NAV = {
-    en: { check: "Free check", pricing: "Pricing", importers: "For importers", app: "My account", impressum: "Legal notice", privacy: "Privacy", terms: "Terms", method: "Methodology" },
-    de: { check: "Gratis-Check", pricing: "Preise", importers: "Für Importeure", app: "Mein Konto", impressum: "Impressum", privacy: "Datenschutz", terms: "AGB", method: "Methodik" },
-    it: { check: "Controllo gratuito", pricing: "Prezzi", importers: "Per importatori", app: "Il mio account", impressum: "Note legali", privacy: "Privacy", terms: "Termini", method: "Metodologia" },
-    fr: { check: "Vérification gratuite", pricing: "Tarifs", importers: "Pour les importateurs", app: "Mon compte", impressum: "Mentions légales", privacy: "Confidentialité", terms: "Conditions", method: "Méthodologie" },
-    es: { check: "Verificación gratuita", pricing: "Precios", importers: "Para importadores", app: "Mi cuenta", impressum: "Aviso legal", privacy: "Privacidad", terms: "Condiciones", method: "Metodología" },
-    pl: { check: "Bezpłatna weryfikacja", pricing: "Cennik", importers: "Dla importerów", app: "Moje konto", impressum: "Nota prawna", privacy: "Prywatność", terms: "Regulamin", method: "Metodologia" }
+    en: { check: "Free check", pricing: "Free & contact", importers: "For importers", app: "My account", impressum: "Legal notice", privacy: "Privacy", terms: "Terms", method: "Methodology" },
+    de: { check: "Gratis-Check", pricing: "Kostenlos & Kontakt", importers: "Für Importeure", app: "Mein Konto", impressum: "Impressum", privacy: "Datenschutz", terms: "AGB", method: "Methodik" },
+    it: { check: "Controllo gratuito", pricing: "Gratis e contatti", importers: "Per importatori", app: "Il mio account", impressum: "Note legali", privacy: "Privacy", terms: "Termini", method: "Metodologia" },
+    fr: { check: "Vérification gratuite", pricing: "Gratuit & contact", importers: "Pour les importateurs", app: "Mon compte", impressum: "Mentions légales", privacy: "Confidentialité", terms: "Conditions", method: "Méthodologie" },
+    es: { check: "Verificación gratuita", pricing: "Gratis y contacto", importers: "Para importadores", app: "Mi cuenta", impressum: "Aviso legal", privacy: "Privacidad", terms: "Condiciones", method: "Metodología" },
+    pl: { check: "Bezpłatna weryfikacja", pricing: "Za darmo i kontakt", importers: "Dla importerów", app: "Moje konto", impressum: "Nota prawna", privacy: "Prywatność", terms: "Regulamin", method: "Metodologia" }
   };
   // il nome non va mai da solo: sempre con la frase che spiega cosa fa
   var TAG = { en: "EUDR deforestation check for coffee", de: "EUDR-Entwaldungscheck für Kaffee", it: "Verifica EUDR per il caffè",

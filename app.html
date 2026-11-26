@@ -59,7 +59,7 @@
   <section id="vApp" class="hide">
     <div class="row" style="justify-content:space-between">
       <div><h1 id="orgTitle" style="margin:0">—</h1><div class="faint" id="orgSub"></div></div>
-      <div class="row"><span class="chip" id="planChip">free</span><a class="btn sm ghost" href="pricing.html#pro" data-t="upgrade">Upgrade</a><button class="btn sm ghost" id="logoutBtn" data-t="logout">Sign out</button></div>
+      <div class="row"><span class="chip hide" id="planChip">free</span><button class="btn sm ghost" id="logoutBtn" data-t="logout">Sign out</button></div>
     </div>
     <div class="tabs" id="tabs">
       <button data-tab="overview" class="on" data-t="tab_overview">Overview</button>
@@ -80,7 +80,7 @@
       </div>
       <div class="grid g2" style="margin-top:1rem">
         <div class="card"><h3 data-t="start_h">Get started</h3><ol class="steps" id="steps"></ol></div>
-        <div class="card"><h3 data-t="plan_h">Your plan</h3><div id="planBox"></div>
+        <div class="card"><h3 data-t="plan_h">Usage</h3><div id="planBox"></div>
           <div class="row" style="margin-top:.8rem"><button class="btn sm ghost" id="dlCsv" data-t="dl_csv">Download register (Excel/CSV)</button><button class="btn sm ghost" id="dlPdf" data-t="dl_pdf">Download register (PDF)</button></div>
           <p class="faint" data-t="dl_note">Keep these records for 5 years and show them on request (EUDR).</p></div>
       </div>
@@ -202,7 +202,7 @@ GP.strings = {
     login_terms:'By signing in you accept the <a href="terms.html">terms</a> and the <a href="privacy.html">privacy policy</a>.',login_sent:"Check your inbox: the link is valid for 30 minutes.",login_nomail:"The email service is not configured yet. Please contact us.",
     loading:"Loading…",waking:"Waking up the server, this can take up to a minute…",upgrade:"Upgrade",logout:"Sign out",
     tab_overview:"Overview",tab_register:"Register",tab_plots:"Plots",tab_public:"Public origins page",tab_settings:"Settings",
-    k_plots:"Plots",k_ok:"No forest loss detected",k_risk:"At risk",k_lots:"Lots in the register",start_h:"Get started",plan_h:"Your plan",
+    k_plots:"Plots",k_ok:"No forest loss detected",k_risk:"At risk",k_lots:"Lots in the register",start_h:"Get started",plan_h:"Usage",
     dl_csv:"Download register (Excel/CSV)",dl_pdf:"Download register (PDF)",dl_note:"Keep these records for 5 years and show them on request (EUDR).",
     s1:"Name your company",s2:"Add your importer or supplier",s3:"Record a lot with its DDS reference number",s4:"Import your plots of origin",s5:"Run the satellite check",s6:"Publish your origins page",
     plan_of:"%u of %l plots used",plan_free:"Free",plan_pro:"Pro",plan_business:"Business",plan_cta:"Need more plots or alerts? See the plans.",
@@ -221,10 +221,10 @@ GP.strings = {
     login_terms:'Mit der Anmeldung akzeptieren Sie die <a href="terms.html">AGB</a> und die <a href="privacy.html">Datenschutzerklärung</a>.',login_sent:"Prüfen Sie Ihr Postfach: Der Link ist 30 Minuten gültig.",login_nomail:"Der E-Mail-Dienst ist noch nicht eingerichtet. Bitte kontaktieren Sie uns.",
     loading:"Wird geladen…",waking:"Server startet, das kann bis zu einer Minute dauern…",upgrade:"Upgrade",logout:"Abmelden",
     tab_overview:"Übersicht",tab_register:"Register",tab_plots:"Grundstücke",tab_public:"Öffentliche Herkunftsseite",tab_settings:"Einstellungen",
-    k_plots:"Grundstücke",k_ok:"Kein Waldverlust erkannt",k_risk:"Risiko",k_lots:"Chargen im Register",start_h:"Erste Schritte",plan_h:"Ihr Tarif",
+    k_plots:"Grundstücke",k_ok:"Kein Waldverlust erkannt",k_risk:"Risiko",k_lots:"Chargen im Register",start_h:"Erste Schritte",plan_h:"Nutzung",
     dl_csv:"Register herunterladen (Excel/CSV)",dl_pdf:"Register herunterladen (PDF)",dl_note:"Diese Aufzeichnungen 5 Jahre aufbewahren und auf Anfrage vorlegen (EUDR).",
     s1:"Firmennamen eintragen",s2:"Importeur oder Lieferanten anlegen",s3:"Charge mit DDS-Referenznummer erfassen",s4:"Herkunftsgrundstücke importieren",s5:"Satellitenprüfung starten",s6:"Herkunftsseite veröffentlichen",
-    plan_of:"%u von %l Grundstücken genutzt",plan_free:"Free",plan_pro:"Pro",plan_business:"Business",plan_cta:"Mehr Grundstücke oder Warnungen? Siehe Tarife.",
+    plan_of:"%u von %l Grundstücken genutzt",plan_free:"Kostenlos",plan_pro:"Pro",plan_business:"Business",plan_cta:"Mehr Grundstücke oder Warnungen? Siehe Tarife.",
     lots_h:"Chargen: Einkäufe und Verkäufe",lot_new:"+ Charge",lots_p:"Für jede Charge Lieferant, Menge und DDS-Referenznummer des Marktteilnehmers festhalten, der den Kaffee in der EU in Verkehr gebracht hat.",
     f_date:"Datum",f_dir:"Art",dir_in:"Einkauf",dir_out:"Verkauf",f_supplier:"Lieferant / Kunde",f_product:"Produkt",f_origin:"Herkunftsland",f_dds:"DDS-Referenznummer",f_ddsv:"DDS-Verifizierungsnummer",f_code:"Chargen-/Vertragsnr.",f_notes:"Notizen",
     save:"Speichern",cancel:"Abbrechen",edit:"Bearbeiten",del:"Löschen",confirm_del:"Diesen Eintrag löschen?",none_yet:"Noch nichts erfasst.",
@@ -240,10 +240,10 @@ GP.strings = {
     login_terms:'Accedendo accetti i <a href="terms.html">termini</a> e l\'<a href="privacy.html">informativa privacy</a>.',login_sent:"Controlla la posta: il link vale 30 minuti.",login_nomail:"Il servizio email non è ancora attivo. Contattaci.",
     loading:"Caricamento…",waking:"Il server si sta svegliando, può servire fino a un minuto…",upgrade:"Passa a un piano superiore",logout:"Esci",
     tab_overview:"Panoramica",tab_register:"Registro",tab_plots:"Appezzamenti",tab_public:"Pagina pubblica delle origini",tab_settings:"Impostazioni",
-    k_plots:"Appezzamenti",k_ok:"Nessuna perdita forestale rilevata",k_risk:"A rischio",k_lots:"Lotti nel registro",start_h:"Per iniziare",plan_h:"Il tuo piano",
+    k_plots:"Appezzamenti",k_ok:"Nessuna perdita forestale rilevata",k_risk:"A rischio",k_lots:"Lotti nel registro",start_h:"Per iniziare",plan_h:"Utilizzo",
     dl_csv:"Scarica il registro (Excel/CSV)",dl_pdf:"Scarica il registro (PDF)",dl_note:"Conserva questi dati per 5 anni e mostrali su richiesta (EUDR).",
     s1:"Inserisci il nome dell'azienda",s2:"Aggiungi l'importatore o il fornitore",s3:"Registra un lotto con il numero DDS",s4:"Importa gli appezzamenti d'origine",s5:"Avvia la verifica satellitare",s6:"Pubblica la pagina delle origini",
-    plan_of:"%u di %l appezzamenti usati",plan_free:"Free",plan_pro:"Pro",plan_business:"Business",plan_cta:"Servono più appezzamenti o avvisi? Guarda i piani.",
+    plan_of:"%u di %l appezzamenti usati",plan_free:"Gratuito",plan_pro:"Pro",plan_business:"Business",plan_cta:"Servono più appezzamenti o avvisi? Guarda i piani.",
     lots_h:"Lotti: acquisti e vendite",lot_new:"+ Aggiungi lotto",lots_p:"Per ogni lotto conserva fornitore, quantità e numero di riferimento DDS dell'operatore che ha immesso il caffè sul mercato UE.",
     f_date:"Data",f_dir:"Tipo",dir_in:"Acquisto",dir_out:"Vendita",f_supplier:"Fornitore / cliente",f_product:"Prodotto",f_origin:"Paese d'origine",f_dds:"Numero di riferimento DDS",f_ddsv:"Numero di verifica DDS",f_code:"Codice lotto / contratto",f_notes:"Note",
     save:"Salva",cancel:"Annulla",edit:"Modifica",del:"Elimina",confirm_del:"Eliminare questa voce?",none_yet:"Ancora niente.",
@@ -259,10 +259,10 @@ GP.strings = {
     login_terms:'En vous connectant, vous acceptez les <a href="terms.html">conditions</a> et la <a href="privacy.html">politique de confidentialité</a>.',login_sent:"Consultez votre boîte de réception : le lien est valable 30 minutes.",login_nomail:"Le service d'e-mail n'est pas encore configuré. Contactez-nous.",
     loading:"Chargement…",waking:"Démarrage du serveur, cela peut prendre jusqu'à une minute…",upgrade:"Changer d'offre",logout:"Se déconnecter",
     tab_overview:"Aperçu",tab_register:"Registre",tab_plots:"Parcelles",tab_public:"Page publique des origines",tab_settings:"Paramètres",
-    k_plots:"Parcelles",k_ok:"Aucune perte forestière détectée",k_risk:"À risque",k_lots:"Lots au registre",start_h:"Pour commencer",plan_h:"Votre offre",
+    k_plots:"Parcelles",k_ok:"Aucune perte forestière détectée",k_risk:"À risque",k_lots:"Lots au registre",start_h:"Pour commencer",plan_h:"Utilisation",
     dl_csv:"Télécharger le registre (Excel/CSV)",dl_pdf:"Télécharger le registre (PDF)",dl_note:"Conservez ces informations 5 ans et présentez-les sur demande (EUDR).",
     s1:"Indiquez le nom de votre entreprise",s2:"Ajoutez votre importateur ou fournisseur",s3:"Enregistrez un lot avec son numéro de référence DDS",s4:"Importez vos parcelles d'origine",s5:"Lancez la vérification satellitaire",s6:"Publiez votre page des origines",
-    plan_of:"%u parcelles utilisées sur %l",plan_free:"Free",plan_pro:"Pro",plan_business:"Business",plan_cta:"Besoin de plus de parcelles ou d'alertes ? Voir les offres.",
+    plan_of:"%u parcelles utilisées sur %l",plan_free:"Gratuit",plan_pro:"Pro",plan_business:"Business",plan_cta:"Besoin de plus de parcelles ou d'alertes ? Voir les offres.",
     lots_h:"Lots : achats et ventes",lot_new:"+ Ajouter un lot",lots_p:"Pour chaque lot, conservez le fournisseur, la quantité et le numéro de référence de la déclaration de diligence raisonnée (DDS) de l'opérateur qui a mis le café sur le marché de l'UE.",
     f_date:"Date",f_dir:"Type",dir_in:"Achat",dir_out:"Vente",f_supplier:"Fournisseur / client",f_product:"Produit",f_origin:"Pays d'origine",f_dds:"Numéro de référence DDS",f_ddsv:"Numéro de vérification DDS",f_code:"Code du lot / contrat",f_notes:"Notes",
     save:"Enregistrer",cancel:"Annuler",edit:"Modifier",del:"Supprimer",confirm_del:"Supprimer cet élément ?",none_yet:"Rien pour l'instant.",
@@ -278,10 +278,10 @@ GP.strings = {
     login_terms:'Al acceder acepta las <a href="terms.html">condiciones</a> y la <a href="privacy.html">política de privacidad</a>.',login_sent:"Revise su bandeja de entrada: el enlace es válido 30 minutos.",login_nomail:"El servicio de correo aún no está configurado. Contáctenos.",
     loading:"Cargando…",waking:"Iniciando el servidor, puede tardar hasta un minuto…",upgrade:"Mejorar plan",logout:"Cerrar sesión",
     tab_overview:"Resumen",tab_register:"Registro",tab_plots:"Parcelas",tab_public:"Página pública de orígenes",tab_settings:"Ajustes",
-    k_plots:"Parcelas",k_ok:"Sin pérdida forestal detectada",k_risk:"En riesgo",k_lots:"Lotes en el registro",start_h:"Primeros pasos",plan_h:"Su plan",
+    k_plots:"Parcelas",k_ok:"Sin pérdida forestal detectada",k_risk:"En riesgo",k_lots:"Lotes en el registro",start_h:"Primeros pasos",plan_h:"Uso",
     dl_csv:"Descargar el registro (Excel/CSV)",dl_pdf:"Descargar el registro (PDF)",dl_note:"Conserve estos datos 5 años y muéstrelos cuando se los pidan (EUDR).",
     s1:"Indique el nombre de su empresa",s2:"Añada su importador o proveedor",s3:"Registre un lote con su número de referencia DDS",s4:"Importe sus parcelas de origen",s5:"Inicie la verificación satelital",s6:"Publique su página de orígenes",
-    plan_of:"%u de %l parcelas usadas",plan_free:"Free",plan_pro:"Pro",plan_business:"Business",plan_cta:"¿Necesita más parcelas o alertas? Vea los planes.",
+    plan_of:"%u de %l parcelas usadas",plan_free:"Gratis",plan_pro:"Pro",plan_business:"Business",plan_cta:"¿Necesita más parcelas o alertas? Vea los planes.",
     lots_h:"Lotes: compras y ventas",lot_new:"+ Añadir lote",lots_p:"Para cada lote conserve el proveedor, la cantidad y el número de referencia de la declaración de diligencia debida (DDS) del operador que introdujo el café en el mercado de la UE.",
     f_date:"Fecha",f_dir:"Tipo",dir_in:"Compra",dir_out:"Venta",f_supplier:"Proveedor / cliente",f_product:"Producto",f_origin:"País de origen",f_dds:"Número de referencia DDS",f_ddsv:"Número de verificación DDS",f_code:"Código de lote / contrato",f_notes:"Notas",
     save:"Guardar",cancel:"Cancelar",edit:"Editar",del:"Eliminar",confirm_del:"¿Eliminar este elemento?",none_yet:"Todavía nada.",
@@ -297,10 +297,10 @@ GP.strings = {
     login_terms:'Logując się, akceptujesz <a href="terms.html">regulamin</a> i <a href="privacy.html">politykę prywatności</a>.',login_sent:"Sprawdź skrzynkę: link jest ważny 30 minut.",login_nomail:"Usługa e-mail nie jest jeszcze skonfigurowana. Skontaktuj się z nami.",
     loading:"Ładowanie…",waking:"Uruchamianie serwera, może to potrwać do minuty…",upgrade:"Zmień plan",logout:"Wyloguj",
     tab_overview:"Przegląd",tab_register:"Rejestr",tab_plots:"Działki",tab_public:"Publiczna strona pochodzenia",tab_settings:"Ustawienia",
-    k_plots:"Działki",k_ok:"Nie wykryto utraty lasu",k_risk:"Ryzyko",k_lots:"Partie w rejestrze",start_h:"Pierwsze kroki",plan_h:"Twój plan",
+    k_plots:"Działki",k_ok:"Nie wykryto utraty lasu",k_risk:"Ryzyko",k_lots:"Partie w rejestrze",start_h:"Pierwsze kroki",plan_h:"Wykorzystanie",
     dl_csv:"Pobierz rejestr (Excel/CSV)",dl_pdf:"Pobierz rejestr (PDF)",dl_note:"Przechowuj te dane przez 5 lat i udostępniaj je na żądanie (EUDR).",
     s1:"Podaj nazwę firmy",s2:"Dodaj importera lub dostawcę",s3:"Zapisz partię z numerem referencyjnym DDS",s4:"Zaimportuj działki pochodzenia",s5:"Uruchom weryfikację satelitarną",s6:"Opublikuj stronę pochodzenia",
-    plan_of:"Wykorzystano %u z %l działek",plan_free:"Free",plan_pro:"Pro",plan_business:"Business",plan_cta:"Potrzebujesz więcej działek lub alertów? Zobacz plany.",
+    plan_of:"Wykorzystano %u z %l działek",plan_free:"Bezpłatny",plan_pro:"Pro",plan_business:"Business",plan_cta:"Potrzebujesz więcej działek lub alertów? Zobacz plany.",
     lots_h:"Partie: zakupy i sprzedaż",lot_new:"+ Dodaj partię",lots_p:"Dla każdej partii zachowaj dostawcę, ilość i numer referencyjny oświadczenia o należytej staranności (DDS) podmiotu, który wprowadził kawę na rynek UE.",
     f_date:"Data",f_dir:"Rodzaj",dir_in:"Zakup",dir_out:"Sprzedaż",f_supplier:"Dostawca / klient",f_product:"Produkt",f_origin:"Kraj pochodzenia",f_dds:"Numer referencyjny DDS",f_ddsv:"Numer weryfikacyjny DDS",f_code:"Kod partii / umowy",f_notes:"Uwagi",
     save:"Zapisz",cancel:"Anuluj",edit:"Edytuj",del:"Usuń",confirm_del:"Usunąć ten element?",none_yet:"Na razie nic.",
@@ -371,7 +371,7 @@ GP.strings = {
     var done=[!!o.name, state.suppliers.length>0, state.lots.some(function(l){return l.dds_reference;}), state.plots.length>0, state.plots.some(function(p){return p.verdict;}), !!(o.public&&o.slug)];
     $("steps").innerHTML = ["s1","s2","s3","s4","s5","s6"].map(function(k,i){ return '<li class="'+(done[i]?"done":"")+'">'+esc(t(k))+'</li>'; }).join("");
     var pct = Math.min(100, Math.round(u.plots / u.limits.plots * 100));
-    $("planBox").innerHTML = '<div><b>'+esc(t("plan_"+o.plan))+'</b> · '+esc(t("plan_of").replace("%u",u.plots).replace("%l",u.limits.plots))+'</div><div class="usage"><i style="width:'+pct+'%"></i></div>'+(o.plan==="free"?'<p class="faint">'+esc(t("plan_cta"))+' <a href="pricing.html">→</a></p>':"");
+    $("planBox").innerHTML = '<div><b>'+esc(t("plan_"+o.plan))+'</b> · '+esc(t("plan_of").replace("%u",u.plots).replace("%l",u.limits.plots))+'</div><div class="usage"><i style="width:'+pct+'%"></i></div>';
     renderLots(); renderSups(); renderPlots(); renderPublic(); renderSettings();
   }
 
