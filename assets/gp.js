@@ -84,7 +84,7 @@
     pl: { check: "Bezpłatna weryfikacja", pricing: "Cennik", importers: "Dla importerów", app: "Moje konto", impressum: "Nota prawna", privacy: "Prywatność", terms: "Regulamin", method: "Metodologia" }
   };
   // il nome non va mai da solo: sempre con la frase che spiega cosa fa
-  var TAG = { en: "EUDR deforestation check for coffee", de: "Entwaldungsfrei-Nachweis für Kaffee", it: "Verifica EUDR per il caffè",
+  var TAG = { en: "EUDR deforestation check for coffee", de: "EUDR-Entwaldungscheck für Kaffee", it: "Verifica EUDR per il caffè",
     fr: "Vérification EUDR du café", es: "Verificación EUDR del café", pl: "Weryfikacja EUDR kawy" };
   var LANGNAME = { en: "EN · English", de: "DE · Deutsch", fr: "FR · Français", it: "IT · Italiano", es: "ES · Español", pl: "PL · Polski" };
   GP.tagline = function () { return TAG[GP.lang] || TAG.en; };

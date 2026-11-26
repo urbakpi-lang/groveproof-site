@@ -2,12 +2,12 @@
    Satellite: Sentinel-2 cloudless 2016 di EOX (licenza CC BY 4.0, uso commerciale consentito con attribuzione). */
 (function () {
   var T = {
-    en: { map: "Map", sat: "Satellite (2016)", ok: "Deforestation-free", risk: "At risk", miss: "Data needed", full: "Full screen", exit: "Exit full screen" },
-    de: { map: "Karte", sat: "Satellit (2016)", ok: "Entwaldungsfrei", risk: "Risiko", miss: "Daten fehlen", full: "Vollbild", exit: "Vollbild beenden" },
-    fr: { map: "Carte", sat: "Satellite (2016)", ok: "Sans déforestation", risk: "À risque", miss: "Données manquantes", full: "Plein écran", exit: "Quitter le plein écran" },
-    it: { map: "Mappa", sat: "Satellite (2016)", ok: "Senza deforestazione", risk: "A rischio", miss: "Dati mancanti", full: "Schermo intero", exit: "Esci dallo schermo intero" },
-    es: { map: "Mapa", sat: "Satélite (2016)", ok: "Libre de deforestación", risk: "En riesgo", miss: "Faltan datos", full: "Pantalla completa", exit: "Salir de pantalla completa" },
-    pl: { map: "Mapa", sat: "Satelita (2016)", ok: "Bez wylesiania", risk: "Ryzyko", miss: "Brak danych", full: "Pełny ekran", exit: "Zamknij pełny ekran" }
+    en: { map: "Map", sat: "Satellite (2016)", ok: "No loss detected", risk: "At risk", miss: "Data needed", full: "Full screen", exit: "Exit full screen" },
+    de: { map: "Karte", sat: "Satellit (2016)", ok: "Kein Waldverlust", risk: "Risiko", miss: "Daten fehlen", full: "Vollbild", exit: "Vollbild beenden" },
+    fr: { map: "Carte", sat: "Satellite (2016)", ok: "Aucune perte", risk: "À risque", miss: "Données manquantes", full: "Plein écran", exit: "Quitter le plein écran" },
+    it: { map: "Mappa", sat: "Satellite (2016)", ok: "Nessuna perdita", risk: "A rischio", miss: "Dati mancanti", full: "Schermo intero", exit: "Esci dallo schermo intero" },
+    es: { map: "Mapa", sat: "Satélite (2016)", ok: "Sin pérdida", risk: "En riesgo", miss: "Faltan datos", full: "Pantalla completa", exit: "Salir de pantalla completa" },
+    pl: { map: "Mapa", sat: "Satelita (2016)", ok: "Brak utraty", risk: "Ryzyko", miss: "Brak danych", full: "Pełny ekran", exit: "Zamknij pełny ekran" }
   };
   var COL = { ok: "#2F8D5E", risk: "#C0432F", miss: "#C8891A" };
   var css = ".gp-legend{background:rgba(255,255,255,.94);color:#1E1912;border-radius:8px;padding:6px 9px;font:500 12px 'Libre Franklin',system-ui,sans-serif;box-shadow:0 1px 4px rgba(0,0,0,.25);line-height:1.6}" +
