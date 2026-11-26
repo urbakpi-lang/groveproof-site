@@ -1,7 +1,7 @@
 /* GroveProof — script comune: lingua, chiamate al motore, sessione, menu, mappa, lettura file. */
 (function () {
   var GP = window.GP = {};
-  GP.API = "https://geo-engine-6rcq.onrender.com";
+  GP.API = "https://geo-engine-eu.onrender.com";
 
   // ---------- lingua ----------
   function store(k, v) { try { if (v === undefined) return localStorage.getItem(k); if (v === null) localStorage.removeItem(k); else localStorage.setItem(k, v); } catch (e) { return null; } }
